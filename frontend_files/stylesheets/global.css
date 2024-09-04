@@ -1,0 +1,65 @@
+@charset "UTF-8";
+
+/* global */
+
+/* create global variables here */
+:root { 
+    --std_border_radius: 10px;
+    --citro_blue: #B4D1F7;
+}
+
+/* create global properties here */
+* {
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* end of global */
+
+
+/* header */
+
+/* 
+    header style notes: 
+    -grid layout w/ empty first block used for navigation bar 
+*/
+#nav_bar {
+    /* grid properties*/
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+
+    /* other styling properties */
+    background-color: var(--citro_blue); /* Citronaut Blue */
+
+}
+
+#title_text {
+    /* grid properties */
+    grid-column: 2;
+    place-self: center;
+
+    /* other styling properties */
+    padding: 20px;
+}
+
+#account_options {
+    /* grid properties */
+    grid-column: 3;
+    justify-self: right;
+    align-self: center;
+
+    /* other styling properties */
+    margin: 0 20px;
+    padding: 8px;
+    color: #fff;
+    background: linear-gradient(180deg, #77a9ea 0%, #5899ee 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+}
+
+#account_options:hover {
+    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+}
+/* end of header */
