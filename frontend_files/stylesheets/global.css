@@ -5,7 +5,9 @@
 /* create global variables here */
 :root { 
     --std_border_radius: 10px;
+    --std_drop_shadow: 8px 8px 15px #b2afaf;
     --citro_blue: #B4D1F7;
+    --off_white: #FAF9F6;
 }
 
 /* create global properties here */
@@ -19,11 +21,6 @@
 
 
 /* header */
-
-/* 
-    header style notes: 
-    -grid layout w/ empty first block used for navigation bar 
-*/
 #nav_bar {
     /* grid properties*/
     width: 100vw;
@@ -63,3 +60,37 @@
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
 }
 /* end of header */
+
+
+/* content section */
+#content {
+    /* grid properties */
+    width: 100vw;
+    display: grid;
+    grid-template-columns: [margin1]10% [list_box]35% [margin2]10% [details_box]35% [margin3]10%;
+
+    /* other styling properties */
+    height: 80vh;
+    margin: 20px;
+}
+
+#content > div {
+    width: 100%;
+    height: 100%;
+    background-color: var(--off_white);
+    box-shadow: var(--std_drop_shadow);
+    border-radius: var(--std_border_radius);
+}
+
+#contacts_list {
+    /* grid properties */
+    grid-column: list_box;
+    place-self: center;
+}
+
+#details_pane {
+    /* grid properties */
+    grid-column: details_box;
+    place-self: center;
+}
+/* end of content section */
