@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="js/interface.js"></script>
+    <script src="js/scripts.js" defer></script>
     <link rel="stylesheet" href="stylesheets/global.css">
     <title>Give Me Space</title>
 </head>
@@ -17,12 +16,21 @@
 
     <!-- This contains the contacts list and the expanded contact box (see figma for reference) -->
     <div id="content">
-        <div id="contacts_list">
-            <p>contact list placeholder</p>
+
+        <div id="contacts_list_container">
+            <ul id="dynamic_contacts_list">
+
+            </ul>
+            <button id="new_contact_button">New Contact</button>
         </div>
+
         <div id="details_pane">
             <p>details pane placeholder</p>
         </div>
+
     </div> <!-- end of content -->
+
+    <!-- This contains the popup form to fill out when creating a new contact -->
+     <div id="new_contact_form"></div>
 </body>
 </html>
