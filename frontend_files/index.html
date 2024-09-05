@@ -31,6 +31,21 @@
     </div> <!-- end of content -->
 
     <!-- This contains the popup form to fill out when creating a new contact -->
-     <div id="new_contact_form"></div>
+     <div id="new_contact_container">
+        <form action="" id="new_contact_form"> <!-- TODO: replace 'action' field with API call once needed -->
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" name="fname" placeholder="John">
+
+            <label for="lname">Last Name:</label>
+            <input type="text" id="lname" name="lname" placeholder="Doe">
+
+            <label for="email">Email Address:</label>
+            <input type="text" id="email" name="email" placeholder="user@website.tld">
+
+            <input class="submit_button" type="submit" value="Create New Contact">
+        </form> 
+     </div> 
+
+     <div id="gray_out"></div>
 </body>
 </html>

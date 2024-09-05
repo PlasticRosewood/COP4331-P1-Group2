@@ -31,3 +31,6 @@ function deleteContact(targetContact) {
 
 newContactButton.addEventListener('click', appendContact);
 // end of dynamic contacts list
+
+// script for new contact form
+
