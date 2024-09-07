@@ -22,11 +22,89 @@
 /* end of global */
 
 body{
+    display: flex;
     width: 100%;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     background-image: url('starry_background.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     /* backup color */
     background-color: black;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 50% 50%; /*Two columns of equal width*/
+    gap: 50px; /*space between text and form*/
+    align-items: center;
+    max-width: 1200px;
+    width: 100%;
+}
+
+form{
+    display: grid;
+    grid-template-rows: 10% 5% auto auto 5% auto;
+    background-color: var(--off_white);
+    position: absolute;
+    width: 320px;
+    height: 400px;
+    padding: 10px 5px 20px 5px;
+    margin: -10vh 850px;
+    border-radius: var(--std_border_radius);
+}
+
+input[type='text'], input[type='password']{
+    display: block;
+    background-color: var(--off_white);
+    margin: auto;
+    border: 1.5px solid white;
+    width: 200px;
+    padding: 10px 40px;
+    border-radius: var(--std_border_radius);
+    text-align: center;
+    color: black;
+    font-size: 15px;
+}
+
+button{
+    border: none;
+    background-color: var(--citro_blue);
+    margin: auto;
+    width: 283px;
+    display: block;
+    border-radius: var(--std_border_radius);
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.line{
+    border-top: 1px solid rgb(49, 95, 139);
+    opacity: 0.2
+}
+
+.create_account{
+    width: 180px;
+    font-size: 14px;
+    background-color: orange;
+    text-align: center;
+}
+
+.site_info{
+    color: var(--citro_blue);
+    text-align: left;
+}
+
+.site_info h2{
+    font-size: 2rem;
+}
+
+.site_info h1{
+    font-size: 4rem;
+}
+
+.options{
+    text-align: center;
 }
