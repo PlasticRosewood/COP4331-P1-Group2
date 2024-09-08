@@ -10,8 +10,14 @@ switch ($request_uri) {
     case '/api/contacts':
         echo 'Contacts';
         break;
-    case '/api/login'
-        echo 'Login';
+    case '/api/login':
+        require_once 'controllers/AccountController.php';
+        $controller = new AccountController();
+        switch($request_method) {
+            case 'POST':
+                $controller->login($data);
+                break;
+        }
         break;
     default:
         http_response_code(400);
