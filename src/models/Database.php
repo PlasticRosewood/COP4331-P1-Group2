@@ -13,7 +13,7 @@ class Database {
         $this->dbConnection = new PDO($dsn, $user, $pass, $options);
     }
     
-    public function run($sql, $params = []): Generator {
+    public function run($sql, $params = []) {
         $stmt = $this->dbConnection->prepare($sql);
 
         $stmt->execute($params);
