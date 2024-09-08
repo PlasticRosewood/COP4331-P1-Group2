@@ -13,20 +13,12 @@ class Database {
         $this->dbConnection = new PDO($dsn, $user, $pass, $options);
     }
     
-    public function query($sql, $params = []): array | bool {
+    public function run($sql, $params = []): Generator {
         $stmt = $this->dbConnection->prepare($sql);
 
-        if($stmt->execute($params)) {
-            return $stmt->fetchAll();
-        }
+        $stmt->execute($params);
 
-        return false;
+        return $stmt;
     }
-
-    public function execute($sql, $params = []): bool {
-        $stmt = $this->dbConnection->prepare($sql);
-        return $stmt->execute($params);
-    }
-
 }
 ?>

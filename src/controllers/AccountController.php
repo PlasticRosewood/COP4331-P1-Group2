@@ -22,9 +22,9 @@ class AccountController {
             ':password' => $data['password']
         ];
 
-        $user = $this->db->query($stmt, $params);
+        $stmt = $this->db->run($stmt, $params);
 
-        if($user) {
+        if($user = $stmt->fetch()) {
             # TODO: store in PHP session
             echo $user['id'];
         }
