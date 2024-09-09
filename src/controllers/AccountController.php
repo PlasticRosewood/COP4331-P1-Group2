@@ -19,7 +19,7 @@ class AccountController {
         $stmt = 'SELECT id FROM UserAccountInfo WHERE username = :username AND password_hash = :password_hash';
         $params = [
             ':username' => $data['username'],
-            ':password_hash' => password_verify($data['password']),
+            ':password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
         ];
 
         $stmt = $this->db->run($stmt, $params);
@@ -40,7 +40,7 @@ class AccountController {
         $stmt = 'INSERT INTO UserAccountInfo (username, password_hash) VALUES (:username, :password_hash)';
         $params = [
             ':username' => $data['username'],
-            ':password_hash' => password_hash($data['password']),
+            ':password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
         ];
 
         if ($this->db->run($stmt, $params)) {
