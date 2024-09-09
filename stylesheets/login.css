@@ -24,35 +24,38 @@
 body{
     display: flex;
     width: 100%;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center;
+    align-items: center; */
     min-height: 100vh;
     background-image: url('starry_background.jpg');
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
     /* backup color */
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.95);
 }
 
 .container{
+    width: 100vw;
     display: grid;
-    grid-template-columns: 50% 50%; /*Two columns of equal width*/
-    gap: 50px; /*space between text and form*/
+    grid-template-columns: [margin1]15% [text_area]35% [login_box]35% [margin3]15%; /*Two columns of equal width*/
     align-items: center;
     max-width: 1200px;
     width: 100%;
 }
 
+.login_panel{
+    width: 100%;
+    grid-column: login_box;
+}
+
 form{
     display: grid;
-    grid-template-rows: 10% 5% auto auto 5% auto;
     background-color: var(--off_white);
-    position: absolute;
-    width: 320px;
-    height: 400px;
-    padding: 10px 5px 20px 5px;
-    margin: -10vh 850px;
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    /* margin: -10vh 850px; */
     border-radius: var(--std_border_radius);
 }
 
@@ -60,11 +63,12 @@ input[type='text'], input[type='password']{
     display: block;
     background-color: var(--off_white);
     margin: auto;
-    border: 1.5px solid white;
-    width: 200px;
-    padding: 10px 40px;
+    border: 1.5px solid rgb(189, 189, 189);
+    width: 80%;
+    height: 50%;
+    padding: 10px 10px;
     border-radius: var(--std_border_radius);
-    text-align: center;
+    text-align: left;
     color: black;
     font-size: 15px;
 }
@@ -73,7 +77,7 @@ button{
     border: none;
     background-color: var(--citro_blue);
     margin: auto;
-    width: 283px;
+    width: 85%;
     display: block;
     border-radius: var(--std_border_radius);
     padding: 10px 0;
@@ -93,16 +97,20 @@ button{
 }
 
 .site_info{
-    color: var(--citro_blue);
+    grid-column: text_area;
+    color: var(--off_white);
     text-align: left;
+    font-size: 1.5rem;
 }
 
 .site_info h2{
-    font-size: 2rem;
+    font-size: 4rem;
+    color: var(--citro_blue)
 }
 
 .site_info h1{
-    font-size: 4rem;
+    font-size: 7rem;
+    color: var(--citro_blue)
 }
 
 .options{
