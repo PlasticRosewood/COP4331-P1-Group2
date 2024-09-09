@@ -8,7 +8,6 @@ $data = json_decode($json_input, true);
 
 switch ($request_uri) {
     case '/api/contacts':
-        echo 'Contacts';
         break;
     case '/api/login':
         require_once 'controllers/AccountController.php';
