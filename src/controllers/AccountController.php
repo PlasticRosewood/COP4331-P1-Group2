@@ -28,6 +28,9 @@ class AccountController {
             # TODO: store in PHP session
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['logged_in'] = true;
+            http_response_code(200);
+        } else {
+            http_response_code(401);
         }
     }
 
