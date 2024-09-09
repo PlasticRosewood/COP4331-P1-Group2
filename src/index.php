@@ -1,4 +1,5 @@
 <?php
+require_once 'controllers/AccountController.php';
 // Routing for API requests
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -9,12 +10,19 @@ $data = json_decode($json_input, true);
 switch ($request_uri) {
     case '/api/contacts':
         break;
-    case '/api/login':
-        require_once 'controllers/AccountController.php';
+    case '/api/auth/login':
         $controller = new AccountController();
         switch($request_method) {
             case 'POST':
                 $controller->login($data);
+                break;
+        }
+        break;
+    case '/api/auth/register':
+        $controller = new AccountController();
+        switch($request_method) {
+            case 'POST':
+                $controller->register($data);
                 break;
         }
         break;
