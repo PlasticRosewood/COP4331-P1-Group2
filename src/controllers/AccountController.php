@@ -7,6 +7,7 @@ class AccountController {
     
     public function __construct() {
         $this->db = new Database(HOST, DB, USER, PASS, CHARSET);
+        session_start();
     }
 
     public function login(array $data): void {
@@ -26,8 +27,21 @@ class AccountController {
 
         if($user = $stmt->fetch()) {
             # TODO: store in PHP session
-            echo $user['id'];
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['logged_in'] = true;
         }
+    }
+
+    public function logout(): void {
+        session_unset();
+        session_destroy();
+    }
+
+    public function is_authorized(int $id): bool {
+        if (!isset($_SESSION['user_id'])) {
+        }
+
+        return $_SESSION['user_id'] === $id;
     }
 }
 ?>
