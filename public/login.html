@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src="js/interface.js"></script>
+    <script src="js/login.js"></script>
     <link rel="stylesheet" href="stylesheets/login.css">
     <title>Give Me Space</title>
 </head>
@@ -14,12 +13,12 @@
         <div class="login_panel">
             <form>
                 <h4 class="options">Existing Users</h4> 
-                <input type = "text" placeholder = "Username">
-                <input type = "password" placeholder = "Password"> 
-                <button type = "submit">Login</button> 
+                <input type = "text" id="username_field" placeholder = "Username">
+                <input type = "password" id="password_field" placeholder = "Password"> 
+                <button onclick="userLogin()" type = "submit">Login</button> 
                 <div class="line"></div> 
                 <h4 class="options">New to Give Me Space?</h4> 
-                <button class="create_account">Create New Account</button> 
+                <button onclick="createAccount()" class="create_account">Create New Account</button> 
             </form>
         </div>
 
