@@ -22,12 +22,12 @@
 /* end of global */
 
 body{
-    display: flex;
+    /* display: flex; */
     width: 100%;
-    /* justify-content: center;
-    align-items: center; */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
-    background-image: url('starry_background.jpg');
+    background-image: url(https://wallpaperaccess.com/full/741658.jpg);
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -38,15 +38,17 @@ body{
 .container{
     width: 100vw;
     display: grid;
-    grid-template-columns: [margin1]15% [text_area]35% [login_box]35% [margin3]15%; /*Two columns of equal width*/
-    align-items: center;
-    max-width: 1200px;
+    grid-template-columns: [margin1]10% [text_area]35% [margin2]10% [login_box]35% [margin3]10%; /*Two columns of equal width*/
+    grid-template-rows: [margin_top]40% [elements]40% [margin_bottom]20%;
+    justify-items: center;
     width: 100%;
 }
 
 .login_panel{
     width: 100%;
+    max-width: 600px;
     grid-column: login_box;
+    grid-row: elements;
 }
 
 form{
@@ -55,8 +57,9 @@ form{
     width: 100%;
     height: auto;
     padding: 5px;
-    /* margin: -10vh 850px; */
     border-radius: var(--std_border_radius);
+    font-size: 20px;
+    gap: 15px;
 }
 
 input[type='text'], input[type='password']{
@@ -70,7 +73,7 @@ input[type='text'], input[type='password']{
     border-radius: var(--std_border_radius);
     text-align: left;
     color: black;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 button{
@@ -82,6 +85,11 @@ button{
     border-radius: var(--std_border_radius);
     padding: 10px 0;
     cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover{
+    background-color: #a6bdfc;
 }
 
 .line{
@@ -90,14 +98,19 @@ button{
 }
 
 .create_account{
-    width: 180px;
-    font-size: 14px;
+    width: 250px;
+    font-size: 15px;
     background-color: orange;
     text-align: center;
 }
 
+.create_account:hover{
+    background-color: rgb(255, 187, 0);
+}
+
 .site_info{
     grid-column: text_area;
+    grid-row: elements;
     color: var(--off_white);
     text-align: left;
     font-size: 1.5rem;
