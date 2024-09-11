@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+/* global */
+
+/* create global variables here */
+:root { 
+    --std_border_radius: 10px;
+    --std_drop_shadow: 8px 8px 15px #b2afaf;
+    --citro_blue: #B4D1F7;
+    --off_white: #FAF9F6;
+}
+
+/* Joshua was here */
+
+/* create global properties here */
+* {
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+/* end of global */
+
+body{
+    /* display: flex; */
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-image: url(https://wallpaperaccess.com/full/741658.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    /* backup color */
+    background-color: rgba(0, 0, 0, 0.95);
+}
+
+.container{
+    width: 100vw;
+    display: grid;
+    grid-template-columns: [margin1]10% [text_area]35% [margin2]10% [login_box]35% [margin3]10%; /*Two columns of equal width*/
+    grid-template-rows: [margin_top]40% [elements]40% [margin_bottom]20%;
+    justify-items: center;
+    width: 100%;
+}
+
+.login_panel{
+    width: 100%;
+    max-width: 600px;
+    grid-column: login_box;
+    grid-row: elements;
+}
+
+form{
+    display: grid;
+    background-color: var(--off_white);
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    border-radius: var(--std_border_radius);
+    font-size: 20px;
+    gap: 15px;
+}
+
+input[type='text'], input[type='password']{
+    display: block;
+    background-color: var(--off_white);
+    margin: auto;
+    border: 1.5px solid rgb(189, 189, 189);
+    width: 80%;
+    height: 50%;
+    padding: 10px 10px;
+    border-radius: var(--std_border_radius);
+    text-align: left;
+    color: black;
+    font-size: 20px;
+}
+
+button{
+    border: none;
+    background-color: var(--citro_blue);
+    margin: auto;
+    width: 85%;
+    display: block;
+    border-radius: var(--std_border_radius);
+    padding: 10px 0;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover{
+    background-color: #a6bdfc;
+}
+
+.line{
+    border-top: 1px solid rgb(49, 95, 139);
+    opacity: 0.2
+}
+
+.create_account{
+    width: 250px;
+    font-size: 15px;
+    background-color: orange;
+    text-align: center;
+}
+
+.create_account:hover{
+    background-color: rgb(255, 187, 0);
+}
+
+.site_info{
+    grid-column: text_area;
+    grid-row: elements;
+    color: var(--off_white);
+    text-align: left;
+    font-size: 1.5rem;
+}
+
+.site_info h2{
+    font-size: 4rem;
+    color: var(--citro_blue)
+}
+
+.site_info h1{
+    font-size: 7rem;
+    color: var(--citro_blue)
+}
+
+.options{
+    text-align: center;
+}
