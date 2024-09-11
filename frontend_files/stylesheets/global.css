@@ -102,6 +102,35 @@
 #contacts_list_container {
     /* grid properties */
     grid-column: list_box;
+    display: grid;
+    grid-template-rows: [search_bar] 14% [contact_cards] 66% [new_contacts_btn] 20%;
+}
+
+#dynamic_contacts_list {
+    /* grid properties */
+    grid-row: contact_cards;
+}
+
+#dynamic_contacts_list > ul {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#dynamic_contacts_list > li {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+#new_contact_button {
+    /* grid properties */
+    grid-row: new_contacts_btn;
+    place-self: center;
+
+    /* other styling properties */
+    width: 50%;
+    height: 60%;
 }
 
 #details_pane {
@@ -109,14 +138,6 @@
     grid-column: details_box;
 }
 /* end of content grid */
-
-/* dynamic contacts list */
-#dynamic_contacts_list > li {
-    background-color: #f7f7f7;
-    border: 1px solid #ddd;
-    padding: 5px;
-    margin-top: 5px;
-}
 /* end of dynamic contacts list */
 
 
@@ -145,7 +166,7 @@
     animation: grow 0.2s ease forwards;
 
     /* grid properties */
-    display: none; /* this is changed in the JavaScript */
+    display: none; /* this is changed to 'grid' in the JavaScript */
     grid-template-rows: 100%;
 
     /* other styling properties */
@@ -157,7 +178,7 @@
     /* grid properties */
     grid-row: 1;
     place-self: center;
-    place-content: center;
+    place-content: center; 
     display: grid;
     grid-template-rows: [label1] 9% [input1] 15% [label2] 9% [input2] 15% [label3] 9% [input3] 15% [submit] 18%;
 
