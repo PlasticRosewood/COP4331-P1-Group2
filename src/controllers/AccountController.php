@@ -10,8 +10,8 @@ class AccountController {
         session_start();
     }
 
-    public function handleRequest(array $request_uri, string $request_method, array $data): void {
-        switch(request_uri[0]) {
+    public function handleRequest(array $request_uri_chunks, string $request_method, array $data): void {
+        switch($request_uri_chunks[0]) {
             case 'login':
                 switch($request_method) {
                     case 'POST':
