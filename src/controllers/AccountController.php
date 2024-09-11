@@ -36,19 +36,22 @@ class AccountController {
             return;
         }
 
-        $stmt = 'SELECT id FROM UserAccountInfo WHERE username = :username AND password_hash = :password_hash';
+        $stmt = 'SELECT id, password_hash FROM UserAccountInfo WHERE username = :username';
         $params = [
             ':username' => $data['username'],
-            ':password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
         ];
 
         $stmt = $this->db->run($stmt, $params);
 
         if($user = $stmt->fetch()) {
-            # TODO: store in PHP session
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['logged_in'] = true;
-            http_response_code(200);
+            if (password_verify($data['password'], $user['password_hash'])) {
+                # TODO: store in PHP session
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['logged_in'] = true;
+                http_response_code(200);
+            } else {
+                http_response_code(401);
+            }
         } else {
             http_response_code(401);
         }
