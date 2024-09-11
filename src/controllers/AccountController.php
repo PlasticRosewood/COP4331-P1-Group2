@@ -10,6 +10,26 @@ class AccountController {
         session_start();
     }
 
+    public function handleRequest(array $request_uri, string $request_method, array $data): void {
+        switch(request_uri[0]) {
+            case 'login':
+                switch($request_method) {
+                    case 'POST':
+                        $this->login($data);
+                        break;
+                }
+                break;
+            case 'register': 
+                switch($request_method) {
+                    case 'POST':
+                        $this->register($data);
+                        break;
+                }
+                break;
+        }
+
+    }
+
     public function login(array $data): void {
         if (!isset($data['username']) || !isset($data['password'])) {
             http_response_code(401);
