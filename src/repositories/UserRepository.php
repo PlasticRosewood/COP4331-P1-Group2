@@ -5,7 +5,7 @@ class UserRepository {
     private $db;
     
     public function __construct(Database $db) {
-        $this->db = db;
+        $this->db = $db;
     }
 
     public function findUserByUsername(string $username): ?array {
@@ -17,7 +17,7 @@ class UserRepository {
 
         $result = $this->db->run($stmt, $params);
 
-        if($user = $stmt->fetch()) {
+        if($user = $result->fetch()) {
             return $user;
         } else {
             return null;
@@ -43,7 +43,7 @@ class UserRepository {
         ];
 
         if ($this->db->run($stmt, $params)) {
-            return $this->db->lastInsertId();
+            return $this->db->dbConnection->lastInsertId();
         } else {
             return null;
         }
