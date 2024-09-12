@@ -1,14 +1,12 @@
 RewriteEngine On
 
-RewriteBase /
+RewriteRule ^api(/.*)?$ src/index.php [L,QSA]
 
-# Route API requests to src/index.php
-RewriteCond %{REQUEST_URI} ^/api/
-RewriteRule ^api/(.*)$ /src/index.php [QSA,L]
-
-# Redirect all requests to the public folder
 RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_URI} !^/src/
 RewriteCond %{REQUEST_URI} !^/api/
+RewriteRule ^(.*)$ public/$1 [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /public/$1 [L]
+RewriteRule ^(.*)$ public/index.php [L]
