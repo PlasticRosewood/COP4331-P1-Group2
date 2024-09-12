@@ -10,28 +10,31 @@ function showNewContactsForm() {
 
 function hideNewContactForm() {
     newContactsForm.style.display = 'none';
-    newContactsForm.style.display = 'none';
+    grayOutScreen.style.display = 'none';
 }
+document.getElementById('form_close_button').addEventListener('click', hideNewContactForm);
 
+// prevent page reload on form submission
+var form = document.getElementById('new_contact_form');
+function handleForm(event) { event.preventDefault(); } 
+form.addEventListener('submit', handleForm);
 
 var dynamicContactList = document.getElementById('dynamic_contacts_list');
+
 var newContactButton = document.getElementById('new_contact_button');   // brings up the form
+newContactButton.addEventListener('click', showNewContactsForm);
+
 var createContactButton = document.getElementById('new_contact_submit'); // submits the form
 
-// TODO: change temporary code to pertinent & permanent code
-// TODO: link this function to form completion instead of pressing the new contact button 
-function appendContact() {
-    showNewContactsForm();
-
+function appendContact(contactID) {
     // create new list item
-    var tempNewItem = document.createElement('li');
-    tempNewItem.textContent = 'This is a test';
-    // TODO: In reality, set text content to fname, lname, email, etc...
+    var newContact = document.createElement('li');
+    newContact.classList.add('contact_card');
     
     // create delete button to add to it 
     var deleteButton = document.createElement('button');
     deleteButton.textContent = 'Delete';
-    deleteButton.classList.add('delete_button');
+    deleteButton.classList.add('card_delete_button');
     deleteButton.addEventListener('click', function(event) {
         var thisItem = event.target.parentNode; // target li parent
         deleteContact(thisItem);
@@ -51,11 +54,6 @@ function appendContact() {
     // add entire button to list
     dynamicContactList.appendChild(tempNewItem);
 }
-
-// event listener 
-
-
-createContactButton.preventDefault(); // prevent form submission
 
 
 // function accepts an li element and removes it from the ul
