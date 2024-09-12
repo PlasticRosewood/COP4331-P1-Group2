@@ -21,11 +21,11 @@ class ContactController {
         }
 
         $user_id = $this->tokenGenerator->getUserIdFromToken($matches[1]);
-        if($data == null) {
+        if($user_id == null) {
             $this->sendJsonResponse(['error' => 'Invalid token passed.']);
         }
 
-        if($request_method == 'POST') {
+        if($request_method == 'GET') {
             $contacts = $this->repository->getContactsForId($user_id);
             if ($contacts != null) {
                 $this->sendJsonResponse(['contacts' => $contacts], 200);
