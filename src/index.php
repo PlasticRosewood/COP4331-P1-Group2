@@ -33,12 +33,12 @@ $jwt = new TokenGenerator(JWT_SECRET);
 switch (array_shift($request_uri_chunks)) {
     case 'contact':
         $repository = new ContactRepository($db);
-        $controller = new ContactController($repository);
+        $controller = new ContactController($repository, $jwt);
         $controller->handleRequest($request_uri_chunks, $request_method, $data);
         break;
     case 'auth':
         $repository = new UserRepository($db);
-        $controller = new AccountController($repository);
+        $controller = new AccountController($repository, $jwt);
         $controller->handleRequest($request_uri_chunks, $request_method, $data);
         break;
     default:

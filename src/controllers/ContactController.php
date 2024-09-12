@@ -9,7 +9,7 @@ class ContactController {
     private ContactRepository $repository;
     private TokenGenerator $tokenGenerator;
 
-    public function __construct(UserRepository $repository, TokenGenerator $tokenGenerator) {
+    public function __construct(ContactRepository $repository, TokenGenerator $tokenGenerator) {
         $this->repository = $repository;
     }
 
