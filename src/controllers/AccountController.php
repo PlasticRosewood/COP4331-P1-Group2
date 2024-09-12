@@ -42,8 +42,7 @@ class AccountController {
         if($user = $this->repository->findUserByUsername($data['username'])) {
             if (password_verify($data['password'], $user['password_hash'])) {
                 # TODO: Either send the User ID or figure out JWTs..
-                //$this->createSession($user['id']);
-                http_response_code(200);
+                $this->sendJsonResponse(['user_id' => $user['id']], 200);
             } else {
                 $this->sendJsonResponse(['error' => 'Incorrect username and password combination.'], 401);
             }
