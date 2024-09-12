@@ -32,19 +32,7 @@ async function userLogin() {
         
         if (!response.ok) {
             throw new Error('Response status: ' + response.status);
-        } 
-        
-        // error logging code
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.indexOf('application/json') !== -1) {
-            const data = await response.json();
-            console.log('Connection successful on userLogin()', data);
-        } else {
-            const text = await response.text();
-            console.error('Expected JSON, got:\n', text);
-            throw new Error('Server returned non-JSON response');
-        }  
-        
+        }         
 
         // successful login
         if (response.status === 200) {
