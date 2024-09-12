@@ -11,6 +11,7 @@ class ContactController {
 
     public function __construct(ContactRepository $repository, TokenGenerator $tokenGenerator) {
         $this->repository = $repository;
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function handleRequest(array $request_uri_chunks, string $request_method, ?array $data): void {

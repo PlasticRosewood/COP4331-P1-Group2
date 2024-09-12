@@ -1,7 +1,10 @@
 <?php
+
+
 require_once(__DIR__ . '/../../vendor/autoload.php');
 
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 define('ALGORITHM', 'HS512');
 
@@ -30,7 +33,7 @@ class TokenGenerator {
 
     public function getUserIdFromToken(string $token): ?int {
         try {
-            $data = JWT::decode($token, $this->secret, ALGORITHM);
+            $data = JWT::decode($token, new Key($this->secret), [ALGORITHM]);
             return $data->user_id;
         } catch (Exception $e) {
             // Failed to validate token
