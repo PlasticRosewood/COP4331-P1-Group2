@@ -1,8 +1,8 @@
 <?php
 // Routing for API requests
 require_once 'controllers/AccountController.php';
-require_once(__DIR__ . '/../models/Database.php');
-require_once(__DIR__ . '/../config/db_credentials.php');
+require_once('models/Database.php');
+require_once('config/db_credentials.php');
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $request_method = $_SERVER['REQUEST_METHOD'];
