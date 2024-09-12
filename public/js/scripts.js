@@ -2,12 +2,14 @@
 var newContactsForm = document.getElementById('new_contact_container');
 var grayOutScreen = document.getElementById('gray_out');
 
-// function for bringing up new contacts form
+// code for bringing up new contacts form
 function showNewContactsForm() {
     newContactsForm.style.display = 'grid';
     grayOutScreen.style.display = 'block';
 }
+document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm);   // brings up the form
 
+// code for hiding contact form
 function hideNewContactForm() {
     newContactsForm.style.display = 'none';
     grayOutScreen.style.display = 'none';
@@ -20,10 +22,6 @@ function handleForm(event) { event.preventDefault(); }
 form.addEventListener('submit', handleForm);
 
 var dynamicContactList = document.getElementById('dynamic_contacts_list');
-
-var newContactButton = document.getElementById('new_contact_button');   // brings up the form
-newContactButton.addEventListener('click', showNewContactsForm);
-
 var createContactButton = document.getElementById('new_contact_submit'); // submits the form
 
 function appendContact(contactID) {
