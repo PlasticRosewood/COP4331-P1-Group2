@@ -146,7 +146,7 @@ async function deleteContact(contactID) {
     }
 }
 
-function editContact(contactID) { // TODO: make call to edit contact from API
+async function editContact(contactID) { // TODO: make call to edit contact from API
     const url = urlBase + '/' + contactID;
 
     try {
@@ -165,10 +165,11 @@ function editContact(contactID) { // TODO: make call to edit contact from API
         if (!response.ok) {
             throw new Error('Response status: ' + response.status);
         }
-     } catch(error) {
+    } catch(error) {
         console.log('Error with editContact() function!');
         console.error(error);
-}
+    }
+}   
 // end of dynamic contacts list
 
 
