@@ -23,13 +23,39 @@
     padding: 10px;
     margin: 5px;
     color: #fff;
+    font-size: large;;
     background: linear-gradient(180deg, #77a9ea 0%, #5899ee 100%);
     border: 0;
     border-radius: var(--std_border_radius);
 }
-
 .submit_button:hover {
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+}
+
+.edit_button {
+    padding: 10px;
+    margin: 5px;
+    color: #fff;
+    font-size: large;
+    background: linear-gradient(180deg, #07cd6a 0%, #07c044 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+}
+.edit_button:hover {
+    background: linear-gradient(180deg, #00cc66 0%, #02af3c 100%);
+}
+
+.delete_button {
+    padding: 10px;
+    margin: 5px;
+    color: #fff;
+    font-size: large;
+    background: linear-gradient(180deg, #ec403a 0%, #ca1919 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+}
+.delete_button:hover {
+    background: linear-gradient(180deg, #ED0800 0%, #ba0c0c 100%);
 }
 
 /* end of global */
@@ -141,11 +167,10 @@
     
     /* other styling properties */
     padding: 5px;
-    margin: 5px;
+    margin: 8px;
     overflow: hidden;
     overflow-y: auto;
 }
-
 
 #dynamic_contacts_list > li {
     padding: 15px;
@@ -153,22 +178,13 @@
     list-style-type: none;
     border-radius: var(--std_border_radius);
     box-shadow: 3px 3px 5px #cccbc9;
-    background-color: #ffffff;
-}
-
-@keyframes hightlight_item {
-    0% {
-        transform: scale(1);
-        box-shadow: 3px 3px 5px #cccbc9;
-    }
-    100% {
-        transform: scale(1.02);
-        box-shadow: 5px 5px 6px #cccbc9;
-    }
+    background-color: #ffffff;   
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
 }
 
 #dynamic_contacts_list > li:hover, #dynamic_contacts_list > li:focus {
-    animation: hightlight_item 0.1s ease forwards;
+    transform: scale(1.02);
+    box-shadow: 5px 5px 6px #cccbc9;
 }
 
 #new_contact_button {
@@ -180,13 +196,23 @@
     width: 50%;
     height: 60%;
 }
+/* end of dynamic contacts list */
 
+/* details pane properties */
 #details_pane {
     /* grid properties */
     grid-column: details_box;
+    display: grid;
+    grid-template-rows: [contact_name] 20% [contact_info] 60% [contact_actions] 20%;
 }
+
+
+
+
 /* end of content grid */
-/* end of dynamic contacts list */
+
+
+
 
 
 /* new contact form */
