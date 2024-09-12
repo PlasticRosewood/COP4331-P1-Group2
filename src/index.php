@@ -1,6 +1,8 @@
 <?php
-require_once 'controllers/AccountController.php';
 // Routing for API requests
+require_once 'controllers/AccountController.php';
+require_once(__DIR__ . '/../models/Database.php');
+require_once(__DIR__ . '/../config/db_credentials.php');
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $request_method = $_SERVER['REQUEST_METHOD'];
@@ -19,12 +21,16 @@ if(!$request_uri || array_shift($request_uri_chunks) != 'api') {
 $json_input = file_get_contents('php://input');
 $data = json_decode($json_input, true);
 
+# Initialize DB
+$db = new Database(HOST, DB, USER, PASS, CHARSET);
+
 
 switch (array_shift($request_uri_chunks)) {
     case 'contact':
         break;
     case 'auth':
-        $controller = new AccountController();
+        $repository = new UserRepository($db);
+        $controller = new AccountController($repository);
         $controller->handleRequest($request_uri_chunks, $request_method, $data);
         break;
     default:
