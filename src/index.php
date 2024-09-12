@@ -1,5 +1,8 @@
 <?php
 // Routing for API requests
+require_once 'repositories/ContactRepository.php';
+require_once 'repositories/UserRepository.php';
+require_once 'controllers/ContactController.php';
 require_once 'controllers/AccountController.php';
 require_once('models/Database.php');
 require_once('config/db_credentials.php');
@@ -27,6 +30,9 @@ $db = new Database(HOST, DB, USER, PASS, CHARSET);
 
 switch (array_shift($request_uri_chunks)) {
     case 'contact':
+        $repository = new ContactRepository($db);
+        $controller = new ContactController($repository);
+        $controller->handleRequest($request_uri_chunks, $request_method, $data);
         break;
     case 'auth':
         $repository = new UserRepository($db);

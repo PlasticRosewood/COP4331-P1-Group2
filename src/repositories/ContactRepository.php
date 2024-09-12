@@ -13,6 +13,10 @@ class ContactRepository {
         $stmt = 'SELECT * FROM ContactInfo WHERE created_by_id = :user_id';
         $result = $this->db->run($stmt, ['user_id' => $user_id]);
 
-        return $result->fetchAll();
+        if($result) {
+            return $result->fetchAll();
+        } else {
+            return null;
+        }
     }
 }
