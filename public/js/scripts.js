@@ -79,18 +79,23 @@ async function appendContact(contactID) {
             throw new Error('Reponse status: ' + response.status);
         }
 
-        
+        const contactData = await response.json();
 
         // create new list item
         var newContact = document.createElement('li');
         newContact.classList.add('contact_card');
+
+        // add name field to card
+        var nameField = document.createElement('h2');
+        nameField.textContent = contactData.firstname + ' ' + contactData.lastname;
+        tempNewItem.appendChild(nameField);
         
         // create delete button to add to it 
         var deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('card_delete_button');
         deleteButton.addEventListener('click', function(event) {
-            var thisItem = event.target.parentNode; // target li parent
+            var thisItem = event.target.parentNode; // target li parent //TODO: ensure this sends the correct ID
             deleteContact(thisItem);
         });
         tempNewItem.appendChild(deleteButton);
@@ -116,12 +121,53 @@ async function appendContact(contactID) {
 
 
 // function accepts an li element and removes it from the ul
-function deleteContact(targetContact) { // TODO: make call to remove from API
-    dynamicContactList.removeChild(targetContact);
+async function deleteContact(contactID) { 
+    const url = urlBase + '/' + contactID;
+
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                contactId: contactID
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Response status: ' + response.status);
+        }
+
+        //TODO: handle response codes properly
+    } catch(error) {
+        console.log('Error with deleteContact() function!');
+        console.error(error);
+    }
 }
 
-function editContact(targetContact) { // TODO: make call to edit contact from API
-    alert('Cannot edit contacts right now!');
+function editContact(contactID) { // TODO: make call to edit contact from API
+    const url = urlBase + '/' + contactID;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contactId: contactID,
+                //TODO: poll contact update from form
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Response status: ' + response.status);
+        }
+     } catch(error) {
+        console.log('Error with editContact() function!');
+        console.error(error);
 }
 // end of dynamic contacts list
 
