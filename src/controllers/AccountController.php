@@ -1,13 +1,33 @@
 <?php
 require_once(__DIR__ . '/../models/Database.php');
 require_once(__DIR__ . '/../config/db_credentials.php');
+require_once(__DIR__ . '/../repositories/UserRepository.php');
 
 class AccountController {
-    private $db;
-    
-    public function __construct() {
-        $this->db = new Database(HOST, DB, USER, PASS, CHARSET);
+    private $repository;
+    public function __construct(UserRepository $repository) {
+        $this->repository = $repository;
         session_start();
+    }
+
+    public function handleRequest(array $request_uri_chunks, string $request_method, array $data): void {
+        switch($request_uri_chunks[0]) {
+            case 'login':
+                switch($request_method) {
+                    case 'POST':
+                        $this->login($data);
+                        break;
+                }
+                break;
+            case 'register': 
+                switch($request_method) {
+                    case 'POST':
+                        $this->register($data);
+                        break;
+                }
+                break;
+        }
+
     }
 
     public function login(array $data): void {
@@ -16,22 +36,23 @@ class AccountController {
             return;
         }
 
-        $stmt = 'SELECT id FROM UserAccountInfo WHERE username = :username AND password_hash = :password_hash';
-        $params = [
-            ':username' => $data['username'],
-            ':password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
-        ];
-
-        $stmt = $this->db->run($stmt, $params);
-
-        if($user = $stmt->fetch()) {
-            # TODO: store in PHP session
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['logged_in'] = true;
-            http_response_code(200);
+        if($user = $this->repository->findUserByUsername($data['username'])) {
+            if (password_verify($data['password'], $user['password_hash'])) {
+                $this->createSession($user['id']);
+                http_response_code(200);
+            } else {
+                http_response_code(401);
+            }
         } else {
             http_response_code(401);
         }
+    }
+
+    public function createSession(int $userId): void {
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $userId;
+        $_SESSION['logged_in'] = true;
+        http_response_code(200);
     }
 
     public function register(array $data): void {
@@ -40,13 +61,14 @@ class AccountController {
             return;
         }
 
-        $stmt = 'INSERT INTO UserAccountInfo (username, password_hash) VALUES (:username, :password_hash)';
-        $params = [
-            ':username' => $data['username'],
-            ':password_hash' => password_hash($data['password'], PASSWORD_DEFAULT),
-        ];
+        // Check that user does not exist currently
+        if($this->repository->userExists($data['username'])) {
+            http_response_code(400);
+            return;  
+        }
 
-        if ($this->db->run($stmt, $params)) {
+
+        if ($this->repository->createUser($data['username'], $data['password'])) {
             http_response_code(200);
             # Automatically log in after registration
             $this->login($data);

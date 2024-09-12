@@ -1,7 +1,7 @@
 <?php
 
 class Database {
-    private $dbConnection;
+    public $dbConnection;
 
     public function __construct($host, $db, $user, $pass, $charset) {
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
