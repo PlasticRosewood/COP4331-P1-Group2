@@ -210,6 +210,10 @@ body{
 #details_pane {
     /* grid properties */
     grid-column: details_box;
+    display: grid;
+    grid-template-rows: [contact_name] 20% [contact_info] 60% [contact_actions] 20%;
+    border-top-right-radius: var(--std_border_radius);
+    border-bottom-right-radius: var(--std_border_radius);
 }
 
 
