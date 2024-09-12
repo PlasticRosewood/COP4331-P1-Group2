@@ -1,11 +1,11 @@
 <?php
 trait JsonResponseTrait {
-    protected function sendJson($data, $status = 200): ?array {
+    protected function sendJsonResponse($data, $status = 200): void {
         header('Content-Type: application/json');
 
         http_response_code($status);
 
-        return json_encode($data) ?? null;
+        echo(json_encode($data));
     }
 }
 

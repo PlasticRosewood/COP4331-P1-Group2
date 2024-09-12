@@ -2,9 +2,12 @@
 require_once(__DIR__ . '/../models/Database.php');
 require_once(__DIR__ . '/../config/db_credentials.php');
 require_once(__DIR__ . '/../repositories/UserRepository.php');
+require_once(__DIR__ . '/../traits/JsonResponseTrait.php');
 
 class AccountController {
-    private $repository;
+    use JsonResponseTrait;
+
+    private UserRepository $repository;
     public function __construct(UserRepository $repository) {
         $this->repository = $repository;
         session_start();
@@ -32,19 +35,20 @@ class AccountController {
 
     public function login(array $data): void {
         if (!isset($data['username']) || !isset($data['password'])) {
-            http_response_code(401);
+            $this->sendJsonResponse(['error' => 'Username and password must be set'], 401);
             return;
         }
 
         if($user = $this->repository->findUserByUsername($data['username'])) {
             if (password_verify($data['password'], $user['password_hash'])) {
-                $this->createSession($user['id']);
+                # TODO: Either send the User ID or figure out JWTs..
+                //$this->createSession($user['id']);
                 http_response_code(200);
             } else {
-                http_response_code(401);
+                $this->sendJsonResponse(['error' => 'Incorrect username and password combination.'], 401);
             }
         } else {
-            http_response_code(401);
+            $this->sendJsonResponse(['error' => 'Could not find user.'], 401);
         }
     }
 
@@ -52,18 +56,17 @@ class AccountController {
         session_regenerate_id(true);
         $_SESSION['user_id'] = $userId;
         $_SESSION['logged_in'] = true;
-        http_response_code(200);
     }
 
     public function register(array $data): void {
         if (!isset($data['username']) || !isset($data['password'])) {
-            http_response_code(400);
+            $this->sendJsonResponse(['error' => 'Username and password must be set'], 400);
             return;
         }
 
         // Check that user does not exist currently
         if($this->repository->userExists($data['username'])) {
-            http_response_code(400);
+            $this->sendJsonResponse(['error' => 'Username already exists.'], 400);
             return;  
         }
 
@@ -73,7 +76,7 @@ class AccountController {
             # Automatically log in after registration
             $this->login($data);
         } else {
-            http_response_code(400);
+            $this->sendJsonResponse(['error' => 'Failed to create user.'], 500);
         }
     }
 
