@@ -32,7 +32,7 @@ class ContactRepository {
         }
     }
 
-    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?int {
+    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?bool {
         $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
             VALUES (:created_by_id, :first_name, :last_name, :email)';
 
@@ -44,15 +44,14 @@ class ContactRepository {
         ];
 
         if ($this->db->run($stmt, $params)) {
-            // Not exactly sure what is best to return here to indicate success, so left same as User repo
-            return $this->db->dbConnection->lastInsertId();
+            return true;
         } else {
             return null;
         }
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
-    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): ?int {
+    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): ?bool {
         $stmt = 'UPDATE ContactInfo SET first_name = :first_name, last_name = :last_name, email = :email 
             WHERE contact_id = :contact_id';
 
@@ -64,20 +63,18 @@ class ContactRepository {
         ];
 
         if ($this->db->run($stmt, $params)) {
-            // Not exactly sure what is best to return here to indicate success, so left same as User repo
-            return $this->db->dbConnection->lastInsertId();
+            return true;
         } else {
             return null;
         }
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
-    public function deleteContact(int $contact_id): ?int {
+    public function deleteContact(int $contact_id): ?bool {
         $stmt = 'DELETE FROM ContactInfo WHERE contact_id = :contact_id';
 
         if ($this->db->run($stmt, ['contact_id' => $contact_id])) {
-            // Not exactly sure what is best to return here to indicate success, so left same as User repo
-            return $this->db->dbConnection->lastInsertId();
+            return true;
         } else {
             return null;
         }
