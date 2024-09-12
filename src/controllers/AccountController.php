@@ -1,16 +1,17 @@
 <?php
-require_once(__DIR__ . '/../models/Database.php');
-require_once(__DIR__ . '/../config/db_credentials.php');
 require_once(__DIR__ . '/../repositories/UserRepository.php');
 require_once(__DIR__ . '/../traits/JsonResponseTrait.php');
+require_once(__DIR__ . '/../utils/TokenGenerator.php');
 
 class AccountController {
     use JsonResponseTrait;
 
     private UserRepository $repository;
-    public function __construct(UserRepository $repository) {
+    private TokenGenerator $tokenGenerator;
+
+    public function __construct(UserRepository $repository, TokenGenerator $tokenGenerator) {
         $this->repository = $repository;
-        session_start();
+        $this->tokenGenerator = $tokenGenerator;
     }
 
     public function handleRequest(array $request_uri_chunks, string $request_method, array $data): void {
@@ -42,19 +43,14 @@ class AccountController {
         if($user = $this->repository->findUserByUsername($data['username'])) {
             if (password_verify($data['password'], $user['password_hash'])) {
                 # TODO: Either send the User ID or figure out JWTs..
-                $this->sendJsonResponse(['user_id' => $user['id']], 200);
+                $token = $this->tokenGenerator->generateToken($user['id']);
+                $this->sendJsonResponse(['token' => $token], 200);
             } else {
                 $this->sendJsonResponse(['error' => 'Incorrect username and password combination.'], 401);
             }
         } else {
             $this->sendJsonResponse(['error' => 'Could not find user.'], 401);
         }
-    }
-
-    public function createSession(int $userId): void {
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $userId;
-        $_SESSION['logged_in'] = true;
     }
 
     public function register(array $data): void {
@@ -77,19 +73,6 @@ class AccountController {
         } else {
             $this->sendJsonResponse(['error' => 'Failed to create user.'], 500);
         }
-    }
-
-    public function logout(): void {
-        session_unset();
-        session_destroy();
-    }
-
-    public function is_authorized(int $id): bool {
-        if (!isset($_SESSION['user_id'])) {
-            return false;
-        }
-
-        return $_SESSION['user_id'] === $id;
     }
 }
 ?>

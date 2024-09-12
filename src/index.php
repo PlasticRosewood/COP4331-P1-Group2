@@ -6,6 +6,7 @@ require_once 'controllers/ContactController.php';
 require_once 'controllers/AccountController.php';
 require_once('models/Database.php');
 require_once('config/db_credentials.php');
+require_once('config/jwt_token.php');
 
 $request_uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $request_method = $_SERVER['REQUEST_METHOD'];
@@ -26,6 +27,7 @@ $data = json_decode($json_input, true);
 
 # Initialize DB
 $db = new Database(HOST, DB, USER, PASS, CHARSET);
+$jwt = new TokenGenerator(JWT_SECRET);
 
 
 switch (array_shift($request_uri_chunks)) {
