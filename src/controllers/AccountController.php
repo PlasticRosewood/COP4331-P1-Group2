@@ -63,6 +63,19 @@ class AccountController {
             return;
         }
 
+        // Check that user does not exist currently
+        $stmt = "SELECT username FROM UserAccountInfo WHERE username = :username";
+        $params = [
+            ':username' => $data['username'],
+        ];
+        $stmt = $this->db->run($stmt, $params);
+
+        // User exists, bail out
+        if($stmt->rowCount() > 0) {
+            http_response_code(400);
+            return;
+        }
+
         $stmt = 'INSERT INTO UserAccountInfo (username, password_hash) VALUES (:username, :password_hash)';
         $params = [
             ':username' => $data['username'],
