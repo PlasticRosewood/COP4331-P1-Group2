@@ -1,0 +1,85 @@
+// saas --watch background.scss background.css
+
+
+/* Defines a keyframe animation for the stars*/ 
+@keyframes animStar{
+    from{
+        transform: translateY(0px);
+    }
+    to{
+        transform: translateY(-2000px);
+    }
+}
+
+/* Generates mutliple box-shadow values for stars */
+@function multipleBoxShadow($numStars) {
+    $value: "#{random(2000)}px #{random(2000)}px #FFF";
+    @for $i from 2 through $numStars {
+        $value: "#{$value}, #{random(2000)}px #{random(2000)}px #FFF";
+    }
+    @return unquote($value);
+}
+
+// Generate different sets of box-shadow values for stars of varying sizes
+// Generate different sets of box-shadow values for stars of varying sizes
+$shadows-small: multiple-box-shadow(700); // Small stars
+$shadows-medium: multiple-box-shadow(200); // Medium stars
+$shadows-big: multiple-box-shadow(100); // Big stars
+
+// Styling for the star layers container
+.star-layers {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  position: relative;
+
+  // Styling for each star layer
+  .star-layer {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background: transparent;
+
+    &::after {
+      content: " ";
+      position: absolute;
+      top: 2000px;
+      width: 1px;
+      height: 1px;
+      background: transparent;
+    }
+  }
+
+  // Apply styles to each star layer with different sizes
+  #stars {
+    box-shadow: $shadows-small; // Apply small star shadows
+    animation: animStar 50s linear infinite;
+    &::after {
+      box-shadow: $shadows-small; // Apply small star shadows to pseudo-element
+    }
+  }
+
+  #stars2 {
+    width: 2px;
+    height: 2px;
+    box-shadow: $shadows-medium; // Apply medium star shadows
+    animation: animStar 100s linear infinite;
+    &::after {
+      width: 2px;
+      height: 2px;
+      box-shadow: $shadows-medium; // Apply medium star shadows to pseudo-element
+    }
+  }
+
+  #stars3 {
+    width: 3px;
+    height: 3px;
+    box-shadow: $shadows-big; // Apply big star shadows
+    animation: animStar 150s linear infinite;
+    &::after {
+      width: 3px;
+      height: 3px;
+      box-shadow: $shadows-big; // Apply big star shadows to pseudo-element
+    }
+  }
+}
