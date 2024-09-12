@@ -9,7 +9,14 @@
     --citro_blue: #B4D1F7;
     --off_white: #FAF9F6;
 }
-
+body{
+    background-image: url(https://wallpaperaccess.com/full/741658.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    /* backup color */
+    background-color: rgba(0, 0, 0, 0.95);
+}
 /* Joshua was here */
 
 /* create global properties here */
@@ -82,8 +89,7 @@
     /* grid properties */
     width: 100vw;
     display: grid;
-    grid-template-columns: [margin1]10% [list_box]35% [margin2]10% [details_box]35% [margin3]10%;
-
+    grid-template-columns: [margin1]10% [list_box]35%  [details_box]45% [margin3]10%;
     /* other styling properties */
     height: 80vh;
     max-height: 80vh;
@@ -97,8 +103,6 @@
     height: 100%;
     place-self: center;
     background-color: var(--off_white);
-    box-shadow: var(--std_drop_shadow);
-    border-radius: var(--std_border_radius);
     overflow: hidden;
 }
 
@@ -107,6 +111,10 @@
     grid-column: list_box;
     display: grid;
     grid-template-rows: [search_bar] 14% [contact_cards] 66% [new_contacts_btn] 20%;
+    opacity: 80%;
+    border-top-left-radius: var(--std_border_radius);
+    border-bottom-left-radius: var(--std_border_radius);
+    
 }
 
 #search_row {
@@ -184,6 +192,8 @@
 #details_pane {
     /* grid properties */
     grid-column: details_box;
+    border-top-right-radius: var(--std_border_radius);
+    border-bottom-right-radius: var(--std_border_radius);
 }
 /* end of content grid */
 /* end of dynamic contacts list */
@@ -269,3 +279,4 @@
     z-index: 8;
 }
 /* end of new contact form */
+

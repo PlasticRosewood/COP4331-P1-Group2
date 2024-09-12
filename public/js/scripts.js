@@ -80,12 +80,14 @@ async function appendContact(contactID) {
         }
 
         const contactData = await response.json();
+
         // checking user position
-        /*if(!voidPosition(contactData.position)){
+        if(!voidPosition(contactData.position)){
             console.log("User was given too much space.");
             return;
         } 
-        */
+        
+
         // create new list item
         var newContact = document.createElement('li');
         newContact.classList.add('contact_card');
@@ -125,11 +127,11 @@ async function appendContact(contactID) {
 }
 
 // function checks if user is in positions 1-10, otherwise they are thrown into the void
-/*function voidPosition(userPosition) {
+function voidPosition(userPosition) {
     if(userPosition <= 10)
         return true;
     return false;
-} */
+} 
 
 // function accepts an li element and removes it from the ul
 async function deleteContact(contactID) { 
