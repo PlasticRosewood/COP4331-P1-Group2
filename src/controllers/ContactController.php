@@ -13,7 +13,7 @@ class ContactController {
         $this->repository = $repository;
     }
 
-    public function handleRequest(array $request_uri_chunks, string $request_method, array $data): void {
+    public function handleRequest(array $request_uri_chunks, string $request_method, ?array $data): void {
         // Everything here must be authorized with a user token.
         if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
             $this->sendJsonResponse(['error' => 'Missing auth header.']);
