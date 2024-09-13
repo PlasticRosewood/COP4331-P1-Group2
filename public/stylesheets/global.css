@@ -137,7 +137,8 @@ body{
     grid-column: list_box;
     display: grid;
     grid-template-rows: [search_bar] 14% [contact_cards] 66% [new_contacts_btn] 20%;
-    opacity: 80%;
+
+    /* other styling properties */
     border-top-left-radius: var(--std_border_radius);
     border-bottom-left-radius: var(--std_border_radius);
     
@@ -216,9 +217,18 @@ body{
     border-bottom-right-radius: var(--std_border_radius);
 }
 
+#contact_name {
+    align-self: end;
+    justify-self: center;
+}
 
+#contact_details {
+    padding: 30px;
+}
 
-
+#option_buttons {
+    justify-self: center;
+}
 /* end of content grid */
 
 
@@ -293,9 +303,39 @@ body{
     border-radius: var(--std_border_radius);
     border: 1px solid #ddd;
 }
+/* end of new contact form */
 
+/* delete confirmation pop-up */
+#delete_confirmation {
+    /* popup settings */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transform-origin: center;
+    width: 450px;
+    height: 300px;
+    padding: 20px;
+    z-index: 9;
+    animation: grow 0.2s ease forwards;
+    text-align: center;
+
+    /* grid properties */
+    display: grid; /* this is changed to 'grid' in the JavaScript */
+    grid-template-rows: 30% 15% 55%;
+    place-items: center;
+
+    /* other styling properties */
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+}
+
+
+/* end of delete confirmation pop-up */
+
+/* gray out div used for pop-up forms */
 #gray_out {
-    display: none; /* this is changed in the JavaScript */
+    /*display: none; /* this is changed in the JavaScript */
     position: absolute;
     top: 0;
     left: 0;
@@ -304,5 +344,4 @@ body{
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 8;
 }
-/* end of new contact form */
 
