@@ -20,7 +20,9 @@ function getSessionToken() {
     //cookie not found; redirect to login page
     window.location.href = '/login.html';
 }
-
+document.addEventListener("DOMContentLoaded", function() {
+    getSessionToken();
+  });
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
