@@ -1,4 +1,26 @@
 const urlBase = '/api/contact';
+let sessionToken;
+
+// validate user session
+function getSessionToken() {
+    let name = 'token=';
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        sessionToken = c.substring(name.length, c.length);
+        return;
+      }
+    }
+    
+    //cookie not found; redirect to login page
+    window.location.href = '/login.html';
+}
+
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');

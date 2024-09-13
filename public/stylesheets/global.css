@@ -321,7 +321,7 @@ body{
     text-align: center;
 
     /* grid properties */
-    display: grid; /* this is changed to 'grid' in the JavaScript */
+    display: none; /* this is changed to 'grid' in the JavaScript */
     grid-template-rows: 30% 15% 55%;
     place-items: center;
 
@@ -335,7 +335,7 @@ body{
 
 /* gray out div used for pop-up forms */
 #gray_out {
-    /*display: none; /* this is changed in the JavaScript */
+    display: none; /* this is changed in the JavaScript */
     position: absolute;
     top: 0;
     left: 0;

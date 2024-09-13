@@ -11,6 +11,12 @@ var form = document.getElementById('login_form');
 function handleForm(event) { event.preventDefault(); } 
 form.addEventListener('submit', handleForm);
 
+function setCookie(token) {
+    const date = new Date();
+    date.setTime(date.getTime() + 1 * 3600 * 1000); // 1 hour
+    document.cookie = 'token=' + token + ';expires=' + date.toUTCString() + ';';
+}
+
 async function userLogin() {
     usernameText = usernameField.value;
     passwordText = passwordField.value;
@@ -36,10 +42,11 @@ async function userLogin() {
 
         // successful login
         if (response.status === 200) {
-            // redirect to index.html
+            // store toekn and redirect to index.html
+            setCookie(response.text);
             window.location.href = '/index.html';
         } else if (response.status === 401) { // invalid login code
-            // TODO: alert user that account isn't found
+            alert('Account not found!')
             console.error('account not found!');
         }
 
@@ -74,6 +81,7 @@ async function createAccount() {
         if (response.status === 200) {
             //TODO: alert user of successful account creation
             console.log('account successfully created');
+            setCookie(response.text);
             window.location.href = '/index.html';
         } else if (response.status === 400) {
             //TODO: alert user of issue with creating account
