@@ -1,0 +1,13 @@
+{
+    "name": "group2/givemespace",
+    "description": "GiveMeSpace Contact Manager",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Group2\\Givemespace\\": "src/"
+        }
+    },
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    }
+}
