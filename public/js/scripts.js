@@ -22,7 +22,7 @@ function getSessionToken() {
 }
 document.addEventListener("DOMContentLoaded", function() {
     getSessionToken();
-  });
+});
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');

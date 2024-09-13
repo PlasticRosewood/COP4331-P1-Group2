@@ -42,8 +42,9 @@ async function userLogin() {
 
         // successful login
         if (response.status === 200) {
-            // store toekn and redirect to index.html
-            setCookie(response.text);
+            // store token and redirect to index.html
+            const responseData = await response.json();
+            setCookie(responseData.token);
             window.location.href = '/index.html';
         } else if (response.status === 401) { // invalid login code
             alert('Account not found!')
@@ -81,7 +82,8 @@ async function createAccount() {
         if (response.status === 200) {
             //TODO: alert user of successful account creation
             console.log('account successfully created');
-            setCookie(response.text);
+            const responseData = await response.json();
+            setCookie(responseData.token);
             window.location.href = '/index.html';
         } else if (response.status === 400) {
             //TODO: alert user of issue with creating account
