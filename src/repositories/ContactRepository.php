@@ -35,7 +35,7 @@ class ContactRepository {
         return $result->fetchAll();
     }
 
-    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?bool {
+    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): bool {
         $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
             VALUES (:created_by_id, :first_name, :last_name, :email)';
 
@@ -49,14 +49,14 @@ class ContactRepository {
         try {
             $result = $this->db->run($stmt, $params);
         } catch (PDOException $e) {
-            return null;
+            return false;
         }
 
         return $result->fetchAll();
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
-    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): ?bool {
+    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): bool {
         $stmt = 'UPDATE ContactInfo SET first_name = :first_name, last_name = :last_name, email = :email 
             WHERE contact_id = :contact_id';
 
@@ -70,21 +70,20 @@ class ContactRepository {
         try {
             $result = $this->db->run($stmt, $params);
         } catch (PDOException $e) {
-            return null;
+            return false;
         }
 
-        return $result->fetchAll();
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
-    public function deleteContact(int $contact_id): ?bool {
+    public function deleteContact(int $contact_id): bool {
         $stmt = 'DELETE FROM ContactInfo WHERE contact_id = :contact_id';
 
         
         try {
             $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
         } catch (PDOException $e) {
-            return null;
+            return false;
         }
 
         return $result->fetchAll();
