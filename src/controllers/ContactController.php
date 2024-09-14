@@ -17,17 +17,18 @@ class ContactController {
     public function handleRequest(array $request_uri_chunks, string $request_method, ?array $data): void {
         // Everything here must be authorized with a user token.
         if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
-            $this->sendJsonResponse(['error' => 'Missing auth header.']);
+            $this->sendJsonResponse(['error' => 'Missing auth header.', 401]);
         }
 
         $user_id = $this->tokenGenerator->getUserIdFromToken($matches[1]);
         if($user_id == null) {
-            $this->sendJsonResponse(['error' => 'Invalid token passed.']);
+            $this->sendJsonResponse(['error' => 'Invalid token passed.'], 401);
+            return;
         }
 
         if($request_method == 'GET') {
             $contacts = $this->repository->getContactsForId($user_id);
-            if ($contacts != null) {
+            if ($contacts !== null) {
                 $this->sendJsonResponse(['contacts' => $contacts], 200);
             } else {
                 $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
