@@ -22,7 +22,7 @@ class ContactController {
 
         $user_id = $this->tokenGenerator->getUserIdFromToken($matches[1]);
         if($user_id == null) {
-            $this->sendJsonResponse(['error' => 'Invalid token passed.']);
+            $this->sendJsonResponse(['error' => 'Invalid token passed.'], 401);
             return;
         }
 
