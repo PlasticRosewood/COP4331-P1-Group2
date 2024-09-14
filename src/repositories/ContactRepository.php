@@ -44,6 +44,20 @@ class ContactRepository {
         return $result->fetchAll();
     }
 
+    public function getContactById(int $contact_id): ?array {
+        $stmt = 'SELECT contact_id, first_name, last_name, email FROM ContactInfo WHERE contact_id = :contact_id';
+
+        try {
+            $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
+        } catch (PDOException $e) {
+            return null;
+        }
+
+        $contact = $result->fetch();
+
+        return $contact;
+    }
+
     public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?int {
         $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
             VALUES (:created_by_id, :first_name, :last_name, :email)';

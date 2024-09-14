@@ -52,8 +52,20 @@ class ContactController {
             return;
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
-            echo $contact_id;
-            return;
+            switch($request_method) {
+            case 'GET':
+                $this->getContactById($user_id);
+                return;
+            case 'PUT':
+                $this->updateContact($user_id, $data);
+                return;
+            case 'DELETE':
+                $this->deleteContact($user_id, $data);
+                return;
+            default:
+                $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
+                return;
+            }
         } else {
             $this->sendJsonResponse(['error' => 'Not found.'], 404);
             return;
