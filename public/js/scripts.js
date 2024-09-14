@@ -11,6 +11,7 @@ function Contact(id, fname, lname, email) { //TODO: add rating field once API an
 let cachedContacts;
 
 async function cacheContacts() {
+    let url = urlBase;
     try {
         const response = await fetch(url, {
             method: 'GET',
