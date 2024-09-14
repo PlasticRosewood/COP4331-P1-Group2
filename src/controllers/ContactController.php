@@ -29,7 +29,7 @@ class ContactController {
         $request_uri = implode('/', $request_uri_chunks);
 
         switch($request_uri) {
-        case 'contacts':
+        case '':
             switch($request_method) {
             case 'GET':
                 $contacts = $this->repository->getContactsForId($user_id);
@@ -40,6 +40,11 @@ class ContactController {
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
                 return;
             }
+        default:
+            $this->sendJsonResponse(['error' => 'Not found.'], 404);
+            return;
+        }
+
         }
     }
 
