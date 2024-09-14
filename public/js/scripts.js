@@ -1,6 +1,8 @@
 const urlBase = '/api/contact';
 let sessionToken;
 
+/* TODO: remove during local testing; restore during remote testing
+// TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
 function getSessionToken() {
     let name = 'token=';
@@ -22,7 +24,7 @@ function getSessionToken() {
 }
 document.addEventListener("DOMContentLoaded", function() {
     getSessionToken();
-});
+});*/
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
@@ -61,7 +63,8 @@ async function createContact() {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
             },
             body: JSON.stringify({
                 firstname: fname,

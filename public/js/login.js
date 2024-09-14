@@ -91,7 +91,6 @@ async function createAccount() {
         }
 
     } catch (error) {
-        console.log('Connection failed on createAccount()');
         console.error(error);
     }
 }

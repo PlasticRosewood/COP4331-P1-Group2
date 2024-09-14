@@ -231,13 +231,7 @@ body{
 }
 /* end of content grid */
 
-
-
-
-
-/* new contact form */
-
-/* grow animation for new contact form */
+/* grow animation for pop-up windows */
 @keyframes grow {
     0% {
         transform: translate(-50%, -50%) scale(0);
@@ -247,6 +241,31 @@ body{
     }
 }
 
+
+/* account options popup */
+#account_options_popup {
+    /* popup settings */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transform-origin: center;
+    width: 450px;
+    height: 300px;
+    padding: 20px;
+    z-index: 9;
+    animation: grow 0.2s ease forwards;
+    text-align: center;
+
+    display: none;
+
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+}
+
+
+
+/* new contact form */
 #new_contact_container {
     /* popup settings */
     position: absolute;
