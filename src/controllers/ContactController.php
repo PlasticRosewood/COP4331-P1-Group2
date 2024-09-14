@@ -29,8 +29,7 @@ class ContactController {
 
         $request_uri = implode('/', $request_uri_chunks);
 
-        switch($request_uri) {
-        case '':
+        if ($request_uri == '') {
             switch($request_method) {
             case 'GET':
                 $this->getContacts($user_id);
@@ -42,7 +41,13 @@ class ContactController {
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
                 return;
             }
-        default:
+        } else if ($request_uri == 'search') {
+            return;
+        } else if (is_numeric($request_uri)) {
+            $contact_id = intval($request_uri);
+            echo $contact_id;
+            return;
+        } else {
             $this->sendJsonResponse(['error' => 'Not found.'], 404);
             return;
         }
@@ -61,6 +66,7 @@ class ContactController {
     }
 
     public function createContact(int $user_id, ?array $data): void {
+        // TODO: Accept user rating
         if ($data === null) {
             $this->sendJsonResponse(['error' => 'No data sent'], 400);
             return;
