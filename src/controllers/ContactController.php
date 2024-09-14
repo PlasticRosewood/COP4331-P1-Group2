@@ -32,10 +32,11 @@ class ContactController {
         case '':
             switch($request_method) {
             case 'GET':
-                $contacts = $this->repository->getContactsForId($user_id);
+                $this->getContacts($user_id);
                 return;
             case 'POST':
-                $this->repository->createContact($user_id, $data);
+                $this->createContact($user_id, $data);
+                return;
             default:
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
                 return;
