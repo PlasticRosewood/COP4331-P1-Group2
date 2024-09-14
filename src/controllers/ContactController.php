@@ -26,14 +26,50 @@ class ContactController {
             return;
         }
 
-        if($request_method == 'GET') {
-            $contacts = $this->repository->getContactsForId($user_id);
-            if ($contacts !== null) {
-                $this->sendJsonResponse(['contacts' => $contacts], 200);
-            } else {
-                $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
-            }
+        $request_uri = implode('/', $request_uri_chunks);
 
+        switch($request_uri) {
+        case '':
+            switch($request_method) {
+            case 'GET':
+                $contacts = $this->repository->getContactsForId($user_id);
+                return;
+            case 'POST':
+                $this->repository->createContact($user_id, $data);
+            default:
+                $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
+                return;
+            }
+        default:
+            $this->sendJsonResponse(['error' => 'Not found.'], 404);
+            return;
+        }
+
+    }
+    
+
+    public function getContacts(int $user_id): void {
+        $contacts = $this->repository->getContactsForId($user_id);
+
+        if ($contacts !== null) {
+            $this->sendJsonResponse(['contacts' => $contacts], 200);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
+        }
+    }
+
+    public function createContact(int $user_id, array $data): void {
+        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
+            $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
+            return;
+        }
+
+        $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email']);
+
+        if ($result !== null) {
+            $this->sendJsonResponse(['id' => $result], 200);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not create contact'], 500);
         }
     }
 }
