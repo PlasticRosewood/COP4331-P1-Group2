@@ -28,7 +28,7 @@ class ContactController {
 
         if($request_method == 'GET') {
             $contacts = $this->repository->getContactsForId($user_id);
-            if ($contacts != null) {
+            if ($contacts !== null) {
                 $this->sendJsonResponse(['contacts' => $contacts], 200);
             } else {
                 $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
