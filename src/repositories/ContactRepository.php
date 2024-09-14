@@ -35,7 +35,7 @@ class ContactRepository {
         return $result->fetchAll();
     }
 
-    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): bool {
+    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?int {
         $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
             VALUES (:created_by_id, :first_name, :last_name, :email)';
 
@@ -48,11 +48,10 @@ class ContactRepository {
 
         try {
             $result = $this->db->run($stmt, $params);
+            return $this->db->dbConnection->lastInsertId();
         } catch (PDOException $e) {
-            return false;
+            return null;
         }
-
-        return $result->fetchAll();
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
@@ -73,19 +72,19 @@ class ContactRepository {
             return false;
         }
 
+        return true;
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
     public function deleteContact(int $contact_id): bool {
         $stmt = 'DELETE FROM ContactInfo WHERE contact_id = :contact_id';
 
-        
         try {
             $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
         } catch (PDOException $e) {
             return false;
         }
 
-        return $result->fetchAll();
+        return true;
     }
 }
