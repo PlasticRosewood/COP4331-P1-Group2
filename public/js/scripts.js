@@ -8,6 +8,7 @@ function Contact(id, fname, lname, email) { //TODO: add rating field once API an
     this.lname = lname;
     this.email = email;
 }
+
 let cachedContacts;
 
 async function cacheContacts() {
@@ -51,6 +52,15 @@ function displayCachedContacts() {
     }
 }
 
+function logout() {
+    // delete cookie
+    document.cookie = 'token=; Path=/; Expires=Thu, 11 Sep 2001 00:00:01 GMT;';
+
+    // return user to login page
+    window.location.href = '/login.html';
+}
+document.getElementById('sign_out').addEventListener('click', logout);
+
 // TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
 function getSessionToken() {
@@ -72,14 +82,32 @@ function getSessionToken() {
     window.location.href = '/login.html';
 }
 document.addEventListener("DOMContentLoaded", function() {
-    getSessionToken();
+    //getSessionToken();
     cacheContacts();
     appendContactToHTML();
 });
 
+// gray out screen for all popups
+var grayOutScreen = document.getElementById('gray_out');
+
+// variables for account options page
+var accountOptionsPopup = document.getElementById('account_options_popup');
+
+function showAccountOptionsPopup() {
+    accountOptionsPopup.style.display = 'grid';
+    grayOutScreen.style.display = 'block';
+}
+document.getElementById('account_options').addEventListener('click', showAccountOptionsPopup);
+
+function hideAccountOptionsPopup() {
+    accountOptionsPopup.style.display = 'none';
+    grayOutScreen.style.display = 'none';
+}
+document.getElementById('acc_opt_close_button').addEventListener('click', hideAccountOptionsPopup);
+
+
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
-var grayOutScreen = document.getElementById('gray_out');
 
 // code for bringing up new contacts form
 function showNewContactsForm() {

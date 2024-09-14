@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="js/scripts.js" defer></script>
+    <script src="js/auth.js" defer></script>
     <link rel="stylesheet" href="stylesheets/global.css">
     <link rel="icon" href="stylesheets/TempLogo.jpg">
     <title>Give Me Space</title>
@@ -24,7 +25,7 @@
                 <input type="text" id="search_bar" name="search_bar" placeholder="Search for a contact...">
             </div>
             <ul id="dynamic_contacts_list">
-                    
+
             </ul>
             <button id="new_contact_button" class="submit_button">New Contact</button>
         </div>
@@ -44,8 +45,9 @@
 
     <!-- Account options popup -->
     <div id="account_options_popup" class="popup_window">
-        <p id="sign_out">Sign Out</p>
-        <p id="delete_account">Delete Account</p>
+        <h3 id="acc_opt_close_button">x</h3>
+        <p id="sign_out" class="submit_button">Sign Out</p>
+        <p id="delete_account" class="delete_button">Delete Account</p>
     </div>
 
     <!-- This contains the popup form to fill out when creating a new contact -->
