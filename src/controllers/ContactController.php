@@ -17,7 +17,7 @@ class ContactController {
     public function handleRequest(array $request_uri_chunks, string $request_method, ?array $data): void {
         // Everything here must be authorized with a user token.
         if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'] ?? '', $matches)) {
-            $this->sendJsonResponse(['error' => 'Missing auth header.', 401]);
+            $this->sendJsonResponse(['error' => 'Missing auth header.'], 401);
             return;
         }
 
@@ -74,7 +74,8 @@ class ContactController {
         $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email']);
 
         if ($result !== null) {
-            $this->sendJsonResponse(['id' => $result], 200);
+            // TODO: Should this return the full contact?
+            $this->sendJsonResponse(['id' => $result], 201);
         } else {
             $this->sendJsonResponse(['error' => 'Could not create contact'], 500);
         }
