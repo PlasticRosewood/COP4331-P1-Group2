@@ -16,8 +16,9 @@ class ContactController {
 
     public function handleRequest(array $request_uri_chunks, string $request_method, ?array $data): void {
         // Everything here must be authorized with a user token.
-        if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'], $matches)) {
+        if (!preg_match('/Bearer\s(\S+)/', $_SERVER['HTTP_AUTHORIZATION'] ?? '', $matches)) {
             $this->sendJsonResponse(['error' => 'Missing auth header.', 401]);
+            return;
         }
 
         $user_id = $this->tokenGenerator->getUserIdFromToken($matches[1]);
@@ -32,10 +33,11 @@ class ContactController {
         case '':
             switch($request_method) {
             case 'GET':
-                $contacts = $this->repository->getContactsForId($user_id);
+                $this->getContacts($user_id);
                 return;
             case 'POST':
-                $this->repository->createContact($user_id, $data);
+                $this->createContact($user_id, $data);
+                return;
             default:
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
                 return;
@@ -59,6 +61,11 @@ class ContactController {
     }
 
     public function createContact(int $user_id, array $data): void {
+        if ($data === null) {
+            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+            return;
+        }
+
         if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
             $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
             return;

@@ -47,6 +47,7 @@ body{
     background: linear-gradient(180deg, #07cd6a 0%, #07c044 100%);
     border: 0;
     border-radius: var(--std_border_radius);
+    
 }
 .edit_button:hover {
     background: linear-gradient(180deg, #00cc66 0%, #02af3c 100%);
@@ -212,22 +213,47 @@ body{
     /* grid properties */
     grid-column: details_box;
     display: grid;
-    grid-template-rows: [contact_name] 20% [contact_info] 60% [contact_actions] 20%;
+    grid-template-rows: [contact_image] auto [contact_name] auto [contact_info] auto [number_control] auto [option_buttons] auto;
     border-top-right-radius: var(--std_border_radius);
     border-bottom-right-radius: var(--std_border_radius);
 }
-
+#contact_image {
+    border-radius: 50%; /* Optional: make image circular */
+    justify-self: center; /* Center the image horizontally */
+    align-self: center;
+}
 #contact_name {
-    align-self: end;
+    align-self: center;
     justify-self: center;
 }
-
 #contact_details {
     padding: 30px;
+    align-self: center;
+    justify-self: center;
 }
 
 #option_buttons {
     justify-self: center;
+    align-self: center;
+}
+#number_control{
+    align-self: center;
+    justify-self: center;
+}
+#number_display{
+    font-size:80px;
+}
+#decrement_button{
+    height:80px;
+    width:80px;
+    border-radius:50%;
+    font-size:70px;
+}
+#increment_button{
+    height:80px;
+    width:80px;
+    font-size:70px;
+    border-radius:50%;
 }
 /* end of content grid */
 
@@ -373,4 +399,3 @@ body{
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 8;
 }
-

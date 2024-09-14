@@ -34,6 +34,7 @@ switch (array_shift($request_uri_chunks)) {
     case 'contact':
         $repository = new ContactRepository($db);
         $controller = new ContactController($repository, $jwt);
+        http_response_code(400);
         $controller->handleRequest($request_uri_chunks, $request_method, $data);
         break;
     case 'auth':

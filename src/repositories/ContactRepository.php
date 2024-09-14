@@ -51,6 +51,8 @@ class ContactRepository {
         } catch (PDOException $e) {
             return false;
         }
+
+        return $result->fetchAll();
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
@@ -83,5 +85,7 @@ class ContactRepository {
         } catch (PDOException $e) {
             return false;
         }
+
+        return $result->fetchAll();
     }
 }
