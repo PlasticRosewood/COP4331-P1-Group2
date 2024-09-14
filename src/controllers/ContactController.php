@@ -27,17 +27,7 @@ class ContactController {
             return;
         }
 
-<<<<<<< HEAD
-        if($request_method == 'GET') {
-            $contacts = $this->repository->getContactsForId($user_id);
-            if ($contacts !== null) {
-                $this->sendJsonResponse(['contacts' => $contacts], 200);
-            } else {
-                $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
-            }
-=======
         $request_uri = implode('/', $request_uri_chunks);
->>>>>>> 364e9053243567ab6260c4dbecc9890e73846241
 
         switch($request_uri) {
         case '':
