@@ -1,7 +1,56 @@
 const urlBase = '/api/contact';
 let sessionToken;
 
-/* TODO: remove during local testing; restore during remote testing
+// create contact object and cache array upon startup
+function Contact(id, fname, lname, email) { //TODO: add rating field once API and DBA add it
+    this.id = id;
+    this.fname = fname;
+    this.lname = lname;
+    this.email = email;
+}
+let cachedContacts;
+
+async function cacheContacts() {
+    let url = urlBase;
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Response status: ' + response.status);
+        }
+
+        let jsonContacts = await response.json();
+        for (let i = 0; i < jsonContacts.length; i++) {
+            let cur = jsonContacts[i];
+            cachedContacts.push(new Contact(cur.id, cur.firstName, cur.lastName, cur.email));
+        }
+    } catch(error) {
+        console.log('Issue in cacheContacts()');
+        alert('Issue with caching contacts for user!');
+        console.error(error);
+    }
+}
+
+function appendContactToHTML(contactObject) { // accepts a contact object and creates a card for the contacts_list element
+    // create new list item
+    var newContact = document.createElement('li');
+    newContact.textContent = contactObject.fname + ' ' + contactObject.lname;
+    dynamicContactList.appendChild(tempNewItem);
+}
+
+function displayCachedContacts() {
+    for (let i = 0; i < cachedContacts.length; i++) {
+        appendContactToHTML(cacheContacts[i]);
+    }
+}
+
 // TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
 function getSessionToken() {
@@ -24,7 +73,9 @@ function getSessionToken() {
 }
 document.addEventListener("DOMContentLoaded", function() {
     getSessionToken();
-});*/
+    cacheContacts();
+    appendContactToHTML();
+});
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
@@ -88,7 +139,7 @@ async function createContact() {
     
 }
 
-// fetch and append a specific contact by its contact ID
+// fetch and append a specific contact by its contact ID FROM DATABASE
 var dynamicContactList = document.getElementById('dynamic_contacts_list');
 async function appendContact(contactID) {
     const url = urlBase + '/' + contactID;
@@ -113,39 +164,6 @@ async function appendContact(contactID) {
             console.log("User was given too much space.");
             return;
         } 
-        
-
-        // create new list item
-        var newContact = document.createElement('li');
-        newContact.classList.add('contact_card');
-
-        // add name field to card
-        var nameField = document.createElement('h2');
-        nameField.textContent = contactData.firstname + ' ' + contactData.lastname;
-        tempNewItem.appendChild(nameField);
-        
-        // create delete button to add to it 
-        var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.classList.add('card_delete_button');
-        deleteButton.addEventListener('click', function(event) {
-            var thisItem = event.target.parentNode; // target li parent //TODO: ensure this sends the correct ID
-            deleteContact(thisItem);
-        });
-        tempNewItem.appendChild(deleteButton);
-
-        // create edit button to add to it
-        var editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.classList.add('edit_button');
-        editButton.addEventListener('click', function(event) {
-            var thisItem = event.target.parentNode;
-            editContact(thisItem);
-        });
-        tempNewItem.appendChild(editButton);
-
-        // add entire button to list
-        dynamicContactList.appendChild(tempNewItem);
 
     } catch(error) {
         console.log('Error with appendContact() function!');
@@ -186,7 +204,7 @@ async function deleteContact(contactID) {
     }
 }
 
-async function editContact(contactID) { // TODO: make call to edit contact from API
+async function editContact(contactID) {
     const url = urlBase + '/' + contactID;
 
     try {
