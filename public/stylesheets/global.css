@@ -250,20 +250,29 @@ body{
     left: 50%;
     transform: translate(-50%, -50%) scale(0); 
     transform-origin: center;
-    width: 450px;
-    height: 300px;
+    width: 250px;
+    height: 100px;
     padding: 20px;
-    padding-top: 80px;
     z-index: 9;
     animation: grow 0.2s ease forwards;
     text-align: center;
 
+    /* grid properties */
     display: none; /* this is changed to grid in the js */
 
     background-color: var(--off_white);
     border-radius: var(--std_border_radius);
 }
 
+#account_options_popup > div {
+    display: grid;
+    grid-template-columns: 45% 45%;
+    column-gap: 10%;
+    place-items: center;
+
+    margin: 20px;
+    height: 80%;
+}
 
 
 /* new contact form */
