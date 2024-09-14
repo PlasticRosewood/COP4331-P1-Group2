@@ -60,7 +60,7 @@ class ContactController {
         }
     }
 
-    public function createContact(int $user_id, array $data): void {
+    public function createContact(int $user_id, ?array $data): void {
         if ($data === null) {
             $this->sendJsonResponse(['error' => 'No data sent'], 400);
             return;
