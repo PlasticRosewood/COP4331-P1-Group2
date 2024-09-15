@@ -54,13 +54,13 @@ class ContactController {
             $contact_id = intval($request_uri);
             switch($request_method) { //Note that none of these functions verify if the contact belongs to the right user
             case 'GET':
-                $this->getContactById($data);
+                $this->getContactById($contact_id);
                 return;
             case 'PUT':
-                $this->updateContact($data);
+                $this->updateContact($contact_id, $data);
                 return;
             case 'DELETE':
-                $this->deleteContact($data);
+                $this->deleteContact($contact_id);
                 return;
             default:
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
@@ -124,19 +124,13 @@ class ContactController {
         }
     }
 
-    public function getContactById(?array $data): void {
-        if ($data === null) {
-            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+    public function getContactById(int $contact_id): void {
+        if ($contact_id === null) {
+            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
             return;
         }
 
-        // Not certain if the contact ID would just be stored as 'id' like the schema
-        if (!isset($data['contactId'])) {
-            $this->sendJsonResponse(['error' => 'contactId must be sent'], 400);
-            return;
-        }
-
-        $contact = $this->repository->getContactById($data['contactId']);
+        $contact = $this->repository->getContactById($contact_id);
 
         if ($contact !== null) {
             $this->sendJsonResponse(['contact' => $contact], 200);
@@ -146,19 +140,24 @@ class ContactController {
     }
 
     // Unsure of behavior when handed a null value for one of the parameters, for optional params
-    public function updateContact(?array $data): void {
+    public function updateContact(int $contact_id, ?array $data): void {
         if ($data === null) {
             $this->sendJsonResponse(['error' => 'No data sent'], 400);
             return;
         }
 
-        //potential problem line here for null values, double check behavior when trying to only update one value
-        if (!isset($data['contactId']) || !isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
-            $this->sendJsonResponse(['error' => 'contactId, firstName, lastName, or email must be set'], 400);
+        if ($contact_id === null) {
+            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
             return;
         }
 
-        $result = $this->repository->updateContact($data['contactId'], $data['firstName'], $data['lastName'], $data['email']);
+        //potential problem line here for null values, double check behavior when trying to only update one value
+        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
+            $this->sendJsonResponse(['error' => 'firstName, lastName, or email must be set'], 400);
+            return;
+        }
+
+        $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email']);
 
         if ($result !== null) {
             // TODO: Should this return the full contact? - Copied comment as still may apply
@@ -168,18 +167,13 @@ class ContactController {
         }
     }
 
-    public function deleteContact(?array $data): void {
-        if ($data === null) {
-            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+    public function deleteContact(int $contact_id): void {
+        if ($contact_id === null) {
+            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
             return;
         }
 
-        if (!isset($data['contactId'])) {
-            $this->sendJsonResponse(['error' => 'contactId must be set'], 400);
-            return;
-        }
-
-        $result = $this->repository->deleteContact($data['contactId']);
+        $result = $this->repository->deleteContact($contact_id);
 
         if ($result !== null) {
             // Proper response may not be exactly this
