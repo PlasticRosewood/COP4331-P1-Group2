@@ -41,7 +41,14 @@ class ContactController {
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
                 return;
             }
-        } else if ($request_uri == 'search') {
+        } else if (str_starts_with($request_uri, 'search')) {
+            if ($request_method == 'GET') {
+                $this->searchContacts($user_id, $data);
+                return;
+            } else {
+                $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
+                return;
+            }
             return;
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
@@ -51,10 +58,28 @@ class ContactController {
             $this->sendJsonResponse(['error' => 'Not found.'], 404);
             return;
         }
+    }
 
+    public function searchContacts(int $user_id): void {
+        $query_params = [];
+        parse_str($_SERVER['QUERY_STRING'], $query_params);
+
+        $query = $query_params['query'] ?? null;
+
+        if ($query === null) {
+            $this->sendJsonResponse(['error' => "Search query term 'query' not provided"], 400);
+            return;
+        }
+
+        $contacts = $this->repository->getContactsByName($user_id, $query);
+
+        if ($contacts !== null) {
+            $this->sendJsonResponse(['contacts' => $contacts], 200);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not search contacts'], 500);
+        }
     }
     
-
     public function getContacts(int $user_id): void {
         $contacts = $this->repository->getContactsForId($user_id);
 

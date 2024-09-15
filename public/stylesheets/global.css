@@ -37,6 +37,7 @@ body{
 }
 .submit_button:hover {
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    cursor: pointer;
 }
 
 .edit_button {
@@ -51,6 +52,7 @@ body{
 }
 .edit_button:hover {
     background: linear-gradient(180deg, #00cc66 0%, #02af3c 100%);
+    cursor: pointer;
 }
 
 .delete_button {
@@ -64,6 +66,7 @@ body{
 }
 .delete_button:hover {
     background: linear-gradient(180deg, #ED0800 0%, #ba0c0c 100%);
+    cursor: pointer;
 }
 
 /* end of global */
@@ -73,8 +76,10 @@ body{
 #nav_bar {
     /* grid properties*/
     width: 100vw;
+    min-width: 500px;
     display: grid;
-    grid-template-columns: 30% 40% 30%;
+    /* min max keeps it clean when window gets smaller */
+    grid-template-columns: minmax(100px, 30%) minmax(300px, 40%) minmax(100px, 30%); 
 
     /* other styling properties */
     background-color: var(--citro_blue); /* Citronaut Blue */
@@ -107,6 +112,7 @@ body{
 
 #account_options:hover {
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    cursor: pointer;
 }
 /* end of header */
 
@@ -120,7 +126,7 @@ body{
     /* other styling properties */
     height: 80vh;
     max-height: 80vh;
-    margin: 20px;
+    margin-top: 20px;
 }
 
 /* styles both containers */
@@ -195,6 +201,7 @@ body{
 #dynamic_contacts_list > li:hover, #dynamic_contacts_list > li:focus {
     transform: scale(1.02);
     box-shadow: 5px 5px 6px #cccbc9;
+    cursor: pointer;
 }
 
 #new_contact_button {
@@ -398,4 +405,10 @@ body{
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 8;
+}
+
+@media (max-width: 800px) {
+    #content{
+        grid-template-columns: [margin1]2% [list_box]minmax(250px, 45%)  [details_box]minmax(200px, 51%) [margin3]2%;
+    }
 }
