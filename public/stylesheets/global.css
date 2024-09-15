@@ -127,16 +127,18 @@ body{
     height: 80vh;
     max-height: 80vh;
     margin-top: 20px;
+    min-height: 400px;
 }
 
 /* styles both containers */
 #content > div {
     width: 100%;
-    max-height: 100%;
+    /* max-height: 100%; */
     height: 100%;
     place-self: center;
     background-color: var(--off_white);
     overflow: hidden;
+    min-height: 400px;
 }
 
 #contacts_list_container {
@@ -220,7 +222,8 @@ body{
     /* grid properties */
     grid-column: details_box;
     display: grid;
-    grid-template-rows: [contact_image] auto [contact_name] auto [contact_info] auto [number_control] auto [option_buttons] auto;
+    /* grid-template-rows: [contact_image] auto [contact_name] auto [contact_info] auto [number_control] auto [option_buttons] auto; */
+    grid-template-rows: [contact_image]minmax(160px, 30%) [contact_name]minmax(40px, 15%) [contact_info]minmax(40px, 15%) [number_control]minmax(85px, 25%) [option_buttons]minmax(70px, 15%);
     border-top-right-radius: var(--std_border_radius);
     border-bottom-right-radius: var(--std_border_radius);
 }
@@ -245,10 +248,12 @@ body{
 }
 #number_control{
     align-self: center;
-    justify-self: center;
+    justify-self: center; 
 }
 #number_display{
     font-size:80px;
+    padding-right: 20px;
+    padding-left: 20px;
 }
 #decrement_button{
     height:80px;
@@ -410,5 +415,10 @@ body{
 @media (max-width: 800px) {
     #content{
         grid-template-columns: [margin1]2% [list_box]minmax(250px, 45%)  [details_box]minmax(200px, 51%) [margin3]2%;
+    }
+
+    #number_display{
+        padding-right: 3px;
+        padding-left: 3px;
     }
 }
