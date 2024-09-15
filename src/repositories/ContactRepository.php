@@ -24,12 +24,15 @@ class ContactRepository {
     // May need to create seperate functions for first and last name if LIKE emptyString returns all contacts
     public function getContactsByName(int $user_id, string $query): ?array {
         $stmt = 'SELECT * FROM ContactInfo WHERE created_by_id = :user_id 
-            AND (first_name LIKE :searched_first_name% OR last_name LIKE :searched_last_name%)';
+            AND (first_name LIKE :first_name OR last_name LIKE :last_name OR email LIKE :email)';
 
         $params = [
             ':user_id' => $user_id,
-            ':searched_first_name' => $query,
-            ':searched_last_name' => $query,
+            // Need to do this three times 
+            // because PDO can't bind the same parameter multiple times...
+            ':first_name' => $query . '%',
+            ':last_name' => $query . '%',
+            ':email' => $query . '%',
         ];
 
         try {
