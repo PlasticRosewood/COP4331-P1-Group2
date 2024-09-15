@@ -64,14 +64,14 @@ class ContactController {
         $query_params = [];
         parse_str($_SERVER['QUERY_STRING'], $query_params);
 
-        $search = $query_params['search'] ?? null;
+        $query = $query_params['query'] ?? null;
 
-        if ($search === null) {
-            $this->sendJsonResponse(['error' => "Query 'search' term not provided"], 400);
+        if ($query === null) {
+            $this->sendJsonResponse(['error' => "Search query term 'query' not provided"], 400);
             return;
         }
 
-        $contacts = $this->repository->getContactsByName($user_id, $search);
+        $contacts = $this->repository->getContactsByName($user_id, $query);
 
         if ($contacts !== null) {
             $this->sendJsonResponse(['contacts' => $contacts], 200);
