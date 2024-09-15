@@ -2,11 +2,12 @@ const urlBase = '/api/contact';
 let sessionToken;
 
 // create contact object and cache array upon startup
-function Contact(id, fname, lname, email) { //TODO: add rating field once API and DBA add it
+function Contact(id, fname, lname, email) { 
     this.id = id;
     this.fname = fname;
     this.lname = lname;
     this.email = email;
+    this.rating = rating;
 }
 
 let cachedContacts;
@@ -30,7 +31,7 @@ async function cacheContacts() {
         let jsonContacts = await response.json();
         for (let i = 0; i < jsonContacts.length; i++) {
             let cur = jsonContacts[i];
-            cachedContacts.push(new Contact(cur.id, cur.firstName, cur.lastName, cur.email));
+            cachedContacts.push(new Contact(cur.id, cur.firstName, cur.lastName, cur.email, cur.rating));
         }
     } catch(error) {
         console.log('Issue in cacheContacts()');
@@ -63,7 +64,8 @@ document.getElementById('sign_out').addEventListener('click', logout);
 
 // TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
-function getSessionToken() {
+
+/*function getSessionToken() {
     let name = 'token=';
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
@@ -81,6 +83,7 @@ function getSessionToken() {
     //cookie not found; redirect to login page
     window.location.href = '/login.html';
 }
+*/
 document.addEventListener("DOMContentLoaded", function() {
     //getSessionToken();
     cacheContacts();
@@ -167,13 +170,12 @@ async function createContact() {
     
 }
 
-// fetch and append a specific contact by its contact ID FROM DATABASE
+
 var dynamicContactList = document.getElementById('dynamic_contacts_list');
 async function appendContact(contactID) {
     const url = urlBase + '/' + contactID;
 
     try {
-        // request data for specific contact from DB
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -199,12 +201,23 @@ async function appendContact(contactID) {
     }
 }
 
-// function checks if user is in positions 1-10, otherwise they are thrown into the void
-function voidPosition(userPosition) {
-    if(userPosition <= 10)
-        return true;
-    return false;
-} 
+function dynamicDetailsPane(contact) {
+    const detailsPane = document.getElementById('details_pane');
+    detailsPane.innerHTML = `
+      <div class="contact-info">
+        <h2>${contact.firstName} ${contact.lastName}</h2>
+        <p>Email: ${contact.email}</p>
+        <p>Phone: ${contact.phone}</p>
+        <p>Address: ${contact.address}</p>
+        <div class="buttons">
+          <button id="editButton">Edit</button>
+          <button id="deleteButton">Delete</button>
+        </div>
+      </div>
+    `;
+    
+   
+  }  
 
 // function accepts an li element and removes it from the ul
 async function deleteContact(contactID) { 
