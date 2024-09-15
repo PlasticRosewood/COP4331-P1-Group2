@@ -205,18 +205,22 @@ function dynamicDetailsPane(contact) {
     const detailsPane = document.getElementById('details_pane');
     detailsPane.innerHTML = `
       <div class="contact-info">
-        <h2>${contact.firstName} ${contact.lastName}</h2>
-        <p>Email: ${contact.email}</p>
-        <p>Phone: ${contact.phone}</p>
-        <p>Address: ${contact.address}</p>
-        <div class="buttons">
-          <button id="editButton">Edit</button>
-          <button id="deleteButton">Delete</button>
-        </div>
+        <img id="contact_image" src="https://via.placeholder.com/150" alt="Contact Image">
+          <h2 id="contact_name">${contact.firstName} ${contact.lastName}</h2>
+          <div id="contact_details">
+              <p id="contact_email">${contact.email}</p>
+          </div>
+          <div id="number_control">
+              <button id="decrement_button" class="number_button">-</button>
+              <span id="number_display">${contact.rating}</span>
+              <button id="increment_button" class="number_button">+</button>
+          </div>
+          <div id="option_buttons">
+              <button id="edit_contact_button" class="edit_button">Edit Contact</button>
+              <button id="delete_contact_button" class="delete_button">Delete Contact</button>
+          </div>
       </div>
     `;
-    
-   
   }  
 
 // function accepts an li element and removes it from the ul
