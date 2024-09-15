@@ -22,12 +22,21 @@ class ContactRepository {
     }
     
     // May need to create seperate functions for first and last name if LIKE emptyString returns all contacts
-    public function getContactsByName(int $user_id, string $searched_first_name, string $searched_last_name): ?array {
-        $stmt = 'SELECT contact_id, first_name, last_name, email FROM ContactInfo WHERE created_by_id = :user_id 
-            AND (first_name LIKE :searched_first_name% OR last_name LIKE :searched_last_name%)';
+    public function getContactsByName(int $user_id, string $query): ?array {
+        $stmt = 'SELECT * FROM ContactInfo WHERE created_by_id = :user_id 
+            AND (first_name LIKE :first_name OR last_name LIKE :last_name OR email LIKE :email)';
+
+        $params = [
+            ':user_id' => $user_id,
+            // Need to do this three times 
+            // because PDO can't bind the same parameter multiple times...
+            ':first_name' => $query . '%',
+            ':last_name' => $query . '%',
+            ':email' => $query . '%',
+        ];
 
         try {
-            $result = $this->db->run($stmt, ['user_id' => $user_id]);
+            $result = $this->db->run($stmt, $params);
         } catch (PDOException $e) {
             return null;
         }
@@ -35,7 +44,7 @@ class ContactRepository {
         return $result->fetchAll();
     }
 
-    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): bool {
+    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?int {
         $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
             VALUES (:created_by_id, :first_name, :last_name, :email)';
 
@@ -48,8 +57,9 @@ class ContactRepository {
 
         try {
             $result = $this->db->run($stmt, $params);
+            return $this->db->dbConnection->lastInsertId();
         } catch (PDOException $e) {
-            return false;
+            return null;
         }
     }
 
@@ -71,17 +81,19 @@ class ContactRepository {
             return false;
         }
 
+        return true;
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
     public function deleteContact(int $contact_id): bool {
         $stmt = 'DELETE FROM ContactInfo WHERE contact_id = :contact_id';
 
-        
         try {
             $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
         } catch (PDOException $e) {
             return false;
         }
+
+        return true;
     }
 }

@@ -31,23 +31,32 @@
         </div>
 
         <div id="details_pane">
-            <h2 id="contact_name">Contact Name</h2>
-            <div id="contact_details">
-                <p id="contact_email">Email: Eample</p>
-            </div>
-            <div id="option_buttons">
-                <button id="edit_contact_button" class="edit_button">Edit Contact</button>
-                <button id="delete_contact_button" class="delete_button">Delete Contact</button>
-            </div>
-        </div>
+          <img id="contact_image" src="https://via.placeholder.com/150" alt="Contact Image">
+          <h2 id="contact_name">Contact Name</h2>
+          <div id="contact_details">
+              <p id="contact_email">Email: Example</p>
+          </div>
+          <div id="number_control">
+              <button id="decrement_button" class="number_button">-</button>
+              <span id="number_display">3</span>
+              <button id="increment_button" class="number_button">+</button>
+          </div>
+          <div id="option_buttons">
+              <button id="edit_contact_button" class="edit_button">Edit Contact</button>
+              <button id="delete_contact_button" class="delete_button">Delete Contact</button>
+          </div>
+      </div>
+      
 
     </div> <!-- end of content -->
 
     <!-- Account options popup -->
     <div id="account_options_popup" class="popup_window">
         <h3 id="acc_opt_close_button">x</h3>
-        <p id="sign_out" class="submit_button">Sign Out</p>
-        <p id="delete_account" class="delete_button">Delete Account</p>
+        <div>
+            <p id="sign_out" class="submit_button">Sign Out</p>
+            <p id="delete_account" class="delete_button">Delete Account</p>
+        </div>
     </div>
 
     <!-- This contains the popup form to fill out when creating a new contact -->
