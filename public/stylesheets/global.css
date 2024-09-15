@@ -260,11 +260,12 @@ body{
     width: 450px;
     height: 300px;
     padding: 20px;
+    padding-top: 80px;
     z-index: 9;
     animation: grow 0.2s ease forwards;
     text-align: center;
 
-    display: none;
+    display: none; /* this is changed to grid in the js */
 
     background-color: var(--off_white);
     border-radius: var(--std_border_radius);
@@ -294,14 +295,14 @@ body{
     border-radius: var(--std_border_radius);
 }
 
-#form_close_button {
+#form_close_button, #acc_opt_close_button {
     position: absolute;
     user-select: none;
     top: 20px;
     right: 30px;
 }
 
-#form_close_button:hover {
+#form_close_button:hover, #acc_opt_close_button:hover {
     color: gray;
 }
 

@@ -46,7 +46,9 @@ class ContactController {
         }
 
         }
+
     }
+    
 
     public function getContacts(int $user_id): void {
         $contacts = $this->repository->getContactsForId($user_id);
