@@ -52,15 +52,15 @@ class ContactController {
             return;
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
-            switch($request_method) {
+            switch($request_method) { //Note that none of these functions verify if the contact belongs to the right user
             case 'GET':
-                $this->getContactById($user_id);
+                $this->getContactById($data);
                 return;
             case 'PUT':
-                $this->updateContact($user_id, $data);
+                $this->updateContact($data);
                 return;
             case 'DELETE':
-                $this->deleteContact($user_id, $data);
+                $this->deleteContact($data);
                 return;
             default:
                 $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
@@ -121,6 +121,71 @@ class ContactController {
             $this->sendJsonResponse(['id' => $result], 201);
         } else {
             $this->sendJsonResponse(['error' => 'Could not create contact'], 500);
+        }
+    }
+
+    public function getContactById(?array $data): void {
+        if ($data === null) {
+            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+            return;
+        }
+
+        // Not certain if the contact ID would just be stored as 'id' like the schema
+        if (!isset($data['contactId'])) {
+            $this->sendJsonResponse(['error' => 'contactId must be sent'], 400);
+            return;
+        }
+
+        $contact = $this->repository->getContactById($data['contactId']);
+
+        if ($contact !== null) {
+            $this->sendJsonResponse(['contact' => $contact], 200);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not get contact'], 500);
+        }
+    }
+
+    // Unsure of behavior when handed a null value for one of the parameters, for optional params
+    public function updateContact(?array $data): void {
+        if ($data === null) {
+            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+            return;
+        }
+
+        //potential problem line here for null values, double check behavior when trying to only update one value
+        if (!isset($data['contactId']) || !isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
+            $this->sendJsonResponse(['error' => 'contactId, firstName, lastName, or email must be set'], 400);
+            return;
+        }
+
+        $result = $this->repository->updateContact($data['contactId'], $data['firstName'], $data['lastName'], $data['email']);
+
+        if ($result !== null) {
+            // TODO: Should this return the full contact? - Copied comment as still may apply
+            $this->sendJsonResponse(['id' => $result], 201);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not update contact'], 400);
+        }
+    }
+
+    public function deleteContact(?array $data): void {
+        if ($data === null) {
+            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+            return;
+        }
+
+        if (!isset($data['contactId'])) {
+            $this->sendJsonResponse(['error' => 'contactId must be set'], 400);
+            return;
+        }
+
+        $result = $this->repository->deleteContact($data['contactId']);
+
+        if ($result !== null) {
+            // Proper response may not be exactly this
+            $this->sendJsonResponse(['success' => $result], 204);
+        } else {
+            $this->sendJsonResponse(['error' => 'Could not delete contact'], 500);
         }
     }
 }
