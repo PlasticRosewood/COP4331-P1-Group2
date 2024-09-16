@@ -48,6 +48,7 @@ body{
     background: linear-gradient(180deg, #07cd6a 0%, #07c044 100%);
     border: 0;
     border-radius: var(--std_border_radius);
+    width: 140px;
     
 }
 .edit_button:hover {
@@ -63,6 +64,7 @@ body{
     background: linear-gradient(180deg, #ec403a 0%, #ca1919 100%);
     border: 0;
     border-radius: var(--std_border_radius);
+    width: 140px;
 }
 .delete_button:hover {
     background: linear-gradient(180deg, #ED0800 0%, #ba0c0c 100%);
@@ -222,7 +224,6 @@ body{
     /* grid properties */
     grid-column: details_box;
     display: grid;
-    /* grid-template-rows: [contact_image] auto [contact_name] auto [contact_info] auto [number_control] auto [option_buttons] auto; */
     grid-template-rows: [contact_image]minmax(160px, 30%) [contact_name]minmax(40px, 15%) [contact_info]minmax(40px, 15%) [number_control]minmax(85px, 25%) [option_buttons]minmax(70px, 15%);
     border-top-right-radius: var(--std_border_radius);
     border-bottom-right-radius: var(--std_border_radius);
@@ -240,12 +241,14 @@ body{
     padding: 30px;
     align-self: center;
     justify-self: center;
+    font-size: 20px;
 }
 
 #option_buttons {
     justify-self: center;
     align-self: center;
 }
+
 #number_control{
     align-self: center;
     justify-self: center; 
