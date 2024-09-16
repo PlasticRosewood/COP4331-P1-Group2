@@ -125,11 +125,12 @@ class ContactController {
     }
 
     public function getContactById(int $contact_id): void {
-        $contact = $this->repository->getContactById($contact_id);
-
         try {
+            $contact = $this->repository->getContactById($contact_id);
             $this->sendJsonResponse(['contact' => $contact], 200);
-        } catch (PDOException $e) {
+        } catch(ContactNotFoundException $e) {
+            $this->sendJsonResponse(['error' => $e->getMessage()], 400);
+        } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not get contact'], 500);
         }
     }
