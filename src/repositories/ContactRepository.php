@@ -33,11 +33,7 @@ class ContactRepository {
             ':email' => $query . '%',
         ];
 
-        try {
-            $result = $this->db->run($stmt, $params);
-        } catch (PDOException $e) {
-            return null;
-        }
+        $result = $this->db->run($stmt, $params);
 
         return $result->fetchAll();
     }

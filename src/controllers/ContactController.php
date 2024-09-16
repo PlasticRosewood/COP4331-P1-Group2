@@ -97,11 +97,10 @@ class ContactController {
             return;
         }
 
-        $contacts = $this->repository->getContactsByName($user_id, $query);
-
-        if ($contacts !== null) {
+        try { 
+            $contacts = $this->repository->getContactsByName($user_id, $query);
             $this->sendJsonResponse(['contacts' => $contacts], 200);
-        } else {
+        } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not search contacts'], 500);
         }
     }
