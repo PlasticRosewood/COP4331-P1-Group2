@@ -170,37 +170,6 @@ async function createContact() {
     
 }
 
-
-var dynamicContactList = document.getElementById('dynamic_contacts_list');
-async function appendContact(contactID) {
-    const url = urlBase + '/' + contactID;
-
-    try {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error('Reponse status: ' + response.status);
-        }
-
-        const contactData = await response.json();
-
-        // checking user position
-        if(!voidPosition(contactData.position)){
-            console.log("User was given too much space.");
-            return;
-        } 
-
-    } catch(error) {
-        console.log('Error with appendContact() function!');
-        console.error(error);
-    }
-}
-
 function dynamicDetailsPane(contact) {
     const detailsPane = document.getElementById('details_pane');
     detailsPane.innerHTML = `
