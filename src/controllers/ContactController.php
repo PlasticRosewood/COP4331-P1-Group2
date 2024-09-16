@@ -52,8 +52,34 @@ class ContactController {
             return;
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
-            echo $contact_id;
-            return;
+
+            try {
+                if(!$this->repository->checkUserIdOwnsContact($user_id, $contact_id)) {
+                    $this->sendJsonResponse(['error' => 'Access forbidden.'], 403);
+                    return;
+                }
+            } catch (ContactNotFoundException $e) {
+                $this->sendJsonResponse(['error' => $e->getMessage()], 404);
+                return;
+            } catch (PDOException $e) {
+                $this->sendJsonResponse(['error' => 'Error fetching contact.'], 500);
+                return;
+            }
+
+            switch($request_method) {
+            case 'GET':
+                $this->getContactById($contact_id);
+                return;
+            case 'PUT':
+                $this->updateContact($contact_id, $data);
+                return;
+            case 'DELETE':
+                $this->deleteContact($contact_id);
+                return;
+            default:
+                $this->sendJsonResponse(['error' => 'Method not allowed.'], 405);
+                return;
+            }
         } else {
             $this->sendJsonResponse(['error' => 'Not found.'], 404);
             return;
@@ -71,23 +97,23 @@ class ContactController {
             return;
         }
 
-        $contacts = $this->repository->getContactsByName($user_id, $query);
-
-        if ($contacts !== null) {
+        try { 
+            $contacts = $this->repository->getContactsByName($user_id, $query);
             $this->sendJsonResponse(['contacts' => $contacts], 200);
-        } else {
+        } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not search contacts'], 500);
         }
     }
     
     public function getContacts(int $user_id): void {
-        $contacts = $this->repository->getContactsForId($user_id);
-
-        if ($contacts !== null) {
-            $this->sendJsonResponse(['contacts' => $contacts], 200);
-        } else {
+        try {
+            $contacts = $this->repository->getContactsForId($user_id);
+        } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not get contacts'], 500);
+            return;
         }
+
+        $this->sendJsonResponse(['contacts' => $contacts], 200);
     }
 
     public function createContact(int $user_id, ?array $data): void {
@@ -102,13 +128,51 @@ class ContactController {
             return;
         }
 
-        $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email']);
-
-        if ($result !== null) {
+        try {
+            $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email']);
             // TODO: Should this return the full contact?
             $this->sendJsonResponse(['id' => $result], 201);
-        } else {
+        } catch (PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not create contact'], 500);
+        }
+    }
+
+    public function getContactById(int $contact_id): void {
+        try {
+            $contact = $this->repository->getContactById($contact_id);
+            $this->sendJsonResponse(['contact' => $contact], 200);
+        } catch(PDOException $e) {
+            $this->sendJsonResponse(['error' => 'Could not get contact'], 500);
+        }
+    }
+
+    // Unsure of behavior when handed a null value for one of the parameters, for optional params
+    public function updateContact(int $contact_id, ?array $data): void {
+        if ($data === null) {
+            $this->sendJsonResponse(['error' => 'No data sent'], 400);
+            return;
+        }
+
+        //potential problem line here for null values, double check behavior when trying to only update one value
+        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
+            $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
+            return;
+        }
+
+        try { 
+            $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email']);
+            http_response_code(204);
+        } catch(PDOException $e) {
+            $this->sendJsonResponse(['error' => 'Could not update contact'], 500);
+        }
+    }
+
+    public function deleteContact(int $contact_id): void {
+        try { 
+            $result = $this->repository->deleteContact($contact_id);
+            http_response_code(204);
+        } catch(PDOException $e) {
+            $this->sendJsonResponse(['error' => 'Could not update contact'], 500);
         }
     }
 }
