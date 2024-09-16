@@ -125,11 +125,6 @@ class ContactController {
     }
 
     public function getContactById(int $contact_id): void {
-        if ($contact_id === null) {
-            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
-            return;
-        }
-
         $contact = $this->repository->getContactById($contact_id);
 
         if ($contact !== null) {
@@ -146,38 +141,28 @@ class ContactController {
             return;
         }
 
-        if ($contact_id === null) {
-            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
-            return;
-        }
-
         //potential problem line here for null values, double check behavior when trying to only update one value
         if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
-            $this->sendJsonResponse(['error' => 'firstName, lastName, or email must be set'], 400);
+            $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
             return;
         }
 
         $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email']);
 
         if ($result !== null) {
-            // TODO: Should this return the full contact? - Copied comment as still may apply
-            $this->sendJsonResponse(['id' => $result], 201);
+            // Return 204 (no content) on success.
+            http_response_code(204);
         } else {
             $this->sendJsonResponse(['error' => 'Could not update contact'], 400);
         }
     }
 
     public function deleteContact(int $contact_id): void {
-        if ($contact_id === null) {
-            $this->sendJsonResponse(['error' => 'No contact_id sent'], 400);
-            return;
-        }
-
         $result = $this->repository->deleteContact($contact_id);
 
         if ($result !== null) {
-            // Proper response may not be exactly this
-            $this->sendJsonResponse(['success' => $result], 204);
+            // Return 204 (no content) on success.
+            http_response_code(204);
         } else {
             $this->sendJsonResponse(['error' => 'Could not delete contact'], 500);
         }
