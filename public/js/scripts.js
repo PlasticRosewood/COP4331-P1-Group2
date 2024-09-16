@@ -2,7 +2,7 @@ const urlBase = '/api/contact';
 let sessionToken;
 
 // create contact object and cache array upon startup
-function Contact(id, fname, lname, email) { 
+function Contact(id, fname, lname, email, rating) { 
     this.id = id;
     this.fname = fname;
     this.lname = lname;
@@ -10,7 +10,7 @@ function Contact(id, fname, lname, email) {
     this.rating = rating;
 }
 
-let cachedContacts;
+let cachedContacts = []; // initialized as an array
 
 async function cacheContacts() {
     let url = urlBase;
@@ -44,7 +44,13 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
     // create new list item
     var newContact = document.createElement('li');
     newContact.textContent = contactObject.fname + ' ' + contactObject.lname;
-    dynamicContactList.appendChild(tempNewItem);
+
+    document.getElementById('dynamic_contacts_list').appendChild(newContact); // adding the line to the list
+
+    newContact.addEventListener('click', () => { // should open the details for specific contact clicked
+        dynamicDetailsPane(contactObject);
+    });
+
 }
 
 function displayCachedContacts() {
@@ -65,7 +71,7 @@ document.getElementById('sign_out').addEventListener('click', logout);
 // TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
 
-/*function getSessionToken() {
+function getSessionToken() {
     let name = 'token=';
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
@@ -83,9 +89,9 @@ document.getElementById('sign_out').addEventListener('click', logout);
     //cookie not found; redirect to login page
     window.location.href = '/login.html';
 }
-*/
+
 document.addEventListener("DOMContentLoaded", function() {
-    //getSessionToken();
+    getSessionToken();
     cacheContacts();
     appendContactToHTML();
 });
@@ -170,12 +176,12 @@ async function createContact() {
     
 }
 
-function dynamicDetailsPane(contact) {
+function dynamicDetailsPane(contact) { // populating the details pane 
     const detailsPane = document.getElementById('details_pane');
     detailsPane.innerHTML = `
       <div class="contact-info">
         <img id="contact_image" src="https://via.placeholder.com/150" alt="Contact Image">
-          <h2 id="contact_name">${contact.firstName} ${contact.lastName}</h2>
+          <h2 id="contact_name">${contact.fname} ${contact.lname}</h2>
           <div id="contact_details">
               <p id="contact_email">${contact.email}</p>
           </div>
