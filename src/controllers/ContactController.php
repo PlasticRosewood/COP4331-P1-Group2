@@ -52,6 +52,12 @@ class ContactController {
             return;
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
+
+            if(!$this->repository->checkUserIdOwnsContact($user_id, $contact_id)) {
+                $this->sendJsonResponse(['error' => 'Access forbidden.'], 403);
+                return;
+            }
+
             switch($request_method) { //Note that none of these functions verify if the contact belongs to the right user
             case 'GET':
                 $this->getContactById($contact_id);

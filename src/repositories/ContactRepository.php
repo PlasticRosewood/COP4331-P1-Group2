@@ -70,6 +70,19 @@ class ContactRepository {
         return $this->db->dbConnection->lastInsertId();
     }
 
+    public function checkUserIdOwnsContact(int $user_id, int $contact_id): bool {
+        $stmt = 'SELECT created_by_id FROM ContactInfo WHERE contact_id = :contact_id';
+
+        $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
+
+        $contact = $result->fetch();
+        if(!$contact) {
+            throw new ContactNotFoundException("Contact with ID $contact_id not found");
+        }
+
+        return ($contact['created_by_id'] === $user_id);
+    }
+
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
     public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): void {
         $stmt = 'UPDATE ContactInfo SET first_name = :first_name, last_name = :last_name, email = :email 
