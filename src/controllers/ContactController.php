@@ -53,12 +53,20 @@ class ContactController {
         } else if (is_numeric($request_uri)) {
             $contact_id = intval($request_uri);
 
-            if(!$this->repository->checkUserIdOwnsContact($user_id, $contact_id)) {
-                $this->sendJsonResponse(['error' => 'Access forbidden.'], 403);
+            try {
+                if(!$this->repository->checkUserIdOwnsContact($user_id, $contact_id)) {
+                    $this->sendJsonResponse(['error' => 'Access forbidden.'], 403);
+                    return;
+                }
+            } catch (ContactNotFoundException $e) {
+                $this->sendJsonResponse(['error' => $e->getMessage()], 404);
+                return;
+            } catch (PDOException $e) {
+                $this->sendJsonResponse(['error' => 'Error fetching contact.'], 500);
                 return;
             }
 
-            switch($request_method) { //Note that none of these functions verify if the contact belongs to the right user
+            switch($request_method) {
             case 'GET':
                 $this->getContactById($contact_id);
                 return;
@@ -134,8 +142,6 @@ class ContactController {
         try {
             $contact = $this->repository->getContactById($contact_id);
             $this->sendJsonResponse(['contact' => $contact], 200);
-        } catch(ContactNotFoundException $e) {
-            $this->sendJsonResponse(['error' => $e->getMessage()], 400);
         } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not get contact'], 500);
         }
@@ -157,8 +163,6 @@ class ContactController {
         try { 
             $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email']);
             http_response_code(204);
-        } catch(ContactNotFoundException $e) {
-            $this->sendJsonResponse(['error' => $e->getMessage()], 400);
         } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not update contact'], 500);
         }
@@ -168,8 +172,6 @@ class ContactController {
         try { 
             $result = $this->repository->deleteContact($contact_id);
             http_response_code(204);
-        } catch(ContactNotFoundException $e) {
-            $this->sendJsonResponse(['error' => $e->getMessage()], 400);
         } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not update contact'], 500);
         }
