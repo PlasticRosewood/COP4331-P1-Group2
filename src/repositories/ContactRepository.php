@@ -92,10 +92,6 @@ class ContactRepository {
         ];
 
         $result = $this->db->run($stmt, $params);
-
-        if ($result->rowCount() == 0) {
-            throw new ContactNotFoundException("Contact with ID $contact_id not found");
-        }
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
