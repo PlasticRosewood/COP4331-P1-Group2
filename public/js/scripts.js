@@ -55,7 +55,7 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
 
 function displayCachedContacts() {
     for (let i = 0; i < cachedContacts.length; i++) {
-        appendContactToHTML(cacheContacts[i]);
+        appendContactToHTML(cachedContacts[i]); // NOTE: changing cache to cached
     }
 }
 
@@ -90,9 +90,9 @@ function getSessionToken() {
     window.location.href = '/login.html';
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async function() {
     getSessionToken();
-    cacheContacts();
+    await cacheContacts(); // waiting for contacts to cache then displaying
     appendContactToHTML();
 });
 
@@ -196,6 +196,9 @@ function dynamicDetailsPane(contact) { // populating the details pane
           </div>
       </div>
     `;
+
+    document.getElementById('increment_button').addEventListener('click', () => updateRating(contact.id, contact.rating + 1)); // buttons to increment and decrement the buttons
+    document.getElementById('decrement_button').addEventListener('click', () => updateRating(contact.id, contact.rating - 1));
   }  
 
 // function accepts an li element and removes it from the ul
