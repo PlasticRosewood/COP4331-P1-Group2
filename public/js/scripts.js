@@ -2,12 +2,14 @@ const urlBase = '/api/contact';
 let sessionToken;
 
 // create contact object and cache array upon startup
-function Contact(id, fname, lname, email, rating) { 
-    this.id = id;
-    this.fname = fname;
-    this.lname = lname;
-    this.email = email;
-    this.rating = rating;
+class Contact {
+    constructor(id, fname, lname, email, rating) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.rating = rating;
+    }
 }
 
 let cachedContacts = []; // initialized as an array
@@ -92,8 +94,8 @@ function getSessionToken() {
 
 document.addEventListener("DOMContentLoaded", async function() {
     getSessionToken();
-    await cacheContacts(); // waiting for contacts to cache then displaying
-    appendContactToHTML();
+    cacheContacts();
+    displayCachedContacts();
 });
 
 // gray out screen for all popups
@@ -177,28 +179,10 @@ async function createContact() {
 }
 
 function dynamicDetailsPane(contact) { // populating the details pane 
-    const detailsPane = document.getElementById('details_pane');
-    detailsPane.innerHTML = `
-      <div class="contact-info">
-        <img id="contact_image" src="https://via.placeholder.com/150" alt="Contact Image">
-          <h2 id="contact_name">${contact.fname} ${contact.lname}</h2>
-          <div id="contact_details">
-              <p id="contact_email">${contact.email}</p>
-          </div>
-          <div id="number_control">
-              <button id="decrement_button" class="number_button">-</button>
-              <span id="number_display">${contact.rating}</span>
-              <button id="increment_button" class="number_button">+</button>
-          </div>
-          <div id="option_buttons">
-              <button id="edit_contact_button" class="edit_button">Edit Contact</button>
-              <button id="delete_contact_button" class="delete_button">Delete Contact</button>
-          </div>
-      </div>
-    `;
-
-    document.getElementById('increment_button').addEventListener('click', () => updateRating(contact.id, contact.rating + 1)); // buttons to increment and decrement the buttons
-    document.getElementById('decrement_button').addEventListener('click', () => updateRating(contact.id, contact.rating - 1));
+    // TODO: add images field
+    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
+    document.getElementById('contact_email').textContent = contact.email;
+    document.getElementById('number_display').textContent = contact.rating;
   }  
 
 // function accepts an li element and removes it from the ul
