@@ -2,12 +2,14 @@ const urlBase = '/api/contact';
 let sessionToken;
 
 // create contact object and cache array upon startup
-function Contact(id, fname, lname, email, rating) { 
-    this.id = id;
-    this.fname = fname;
-    this.lname = lname;
-    this.email = email;
-    this.rating = rating;
+class Contact {
+    constructor(id, fname, lname, email, rating) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.rating = rating;
+    }
 }
 
 let cachedContacts = []; // initialized as an array
