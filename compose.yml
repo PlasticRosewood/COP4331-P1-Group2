@@ -1,0 +1,27 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+services:
+  mariadb:
+    build: ./db
+    environment:
+      MARIADB_ROOT_PASSWORD: AU6eWZvv7alvWHXTfQy
+      MARIADB_DATABASE: givemespace
+      MARIADB_USER: givemespace_admin
+      MARIADB_PASSWORD: AU6eWZvv7alvWHXTfQy
+      MARIADB_PORT_NUMBER: 3306
+      MARIADB_BIND_ADDRESS: 0.0.0.0
+    volumes:
+      - 'mariadb_data:/bitnami'
+  apache:
+    build: ./apache
+    ports:
+      - '80:8080'
+      - '443:8443'
+    depends_on:
+      - mariadb
+    volumes:
+      - ./:/opt/bitnami/apache/htdocs
+volumes:
+  mariadb_data:
+    driver: local
