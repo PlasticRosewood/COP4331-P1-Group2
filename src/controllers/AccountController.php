@@ -68,7 +68,6 @@ class AccountController {
 
         if ($this->repository->createUser($data['username'], $data['password'])) {
             //http_response_code(200);
-            echo 'hi';
             # Automatically log in after registration
             $this->login($data);
         } else {
