@@ -148,3 +148,31 @@ button:hover{
         font-size: 5rem;
     }
 }
+
+/* Media queires for mobile phones */
+@media (max-width: 500px) {
+    .container{
+        grid-template-columns: [margin1]10% [login_content] 80% [margin3]10%; /*Two columns of equal width*/
+        grid-template-rows: [margin_top]10% [site_info_row]40% [login_panel] 20% [margin_bottom]30%;
+    }
+    
+    .login_panel{
+        min-width: 300px;
+        grid-column: login_content;
+        grid-row: login_panel;
+    }
+
+    .site_info{
+        grid-column: login_content;
+        grid-row: site_info_row;
+        padding-bottom: 50px;
+        text-align: center;
+    }
+}
+
+@media (max-height: 550px)
+{
+    .container{
+        grid-template-rows: [margin_top]10% [elements]50% [margin_bottom]40%;
+    }
+}
