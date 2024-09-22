@@ -5,23 +5,34 @@ services:
   mariadb:
     build: ./db
     environment:
-      MARIADB_ROOT_PASSWORD: AU6eWZvv7alvWHXTfQy
-      MARIADB_DATABASE: givemespace
-      MARIADB_USER: givemespace_admin
-      MARIADB_PASSWORD: AU6eWZvv7alvWHXTfQy
-      MARIADB_PORT_NUMBER: 3306
-      MARIADB_BIND_ADDRESS: 0.0.0.0
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASS}
+      MARIADB_ROOT_PASSWORD: ${DB_PASS}
     volumes:
       - 'mariadb_data:/bitnami'
-  apache:
-    build: ./apache
     ports:
-      - '80:8080'
-      - '443:8443'
+      - "3306:3306"
+    networks:
+      - givemespace
+  apache:
+    build:
+      context: .
+      dockerfile: ./apache/Dockerfile
+    container_name: lamp-apache
+    volumes:
+      - ./:/var/www/html
+      - ./apache/default-host.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - "8080:80"
     depends_on:
       - mariadb
-    volumes:
-      - ./:/opt/bitnami/apache/htdocs
+    networks:
+      - givemespace
 volumes:
   mariadb_data:
     driver: local
+
+networks:
+  givemespace:
+    attachable: true
