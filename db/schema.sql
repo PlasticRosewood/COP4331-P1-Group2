@@ -34,19 +34,8 @@ CREATE TABLE `ContactInfo` (
   PRIMARY KEY (`contact_id`),
   KEY `created_by_id` (`created_by_id`),
   CONSTRAINT `ContactInfo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `UserAccountInfo` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `ContactInfo`
---
-
-LOCK TABLES `ContactInfo` WRITE;
-/*!40000 ALTER TABLE `ContactInfo` DISABLE KEYS */;
-INSERT INTO `ContactInfo` VALUES
-(2,3,'FirstName','Lastname','Email','2024-09-23 20:33:30',3);
-/*!40000 ALTER TABLE `ContactInfo` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `UserAccountInfo`
@@ -63,21 +52,8 @@ CREATE TABLE `UserAccountInfo` (
   `session_token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `UserAccountInfo`
---
-
-LOCK TABLES `UserAccountInfo` WRITE;
-/*!40000 ALTER TABLE `UserAccountInfo` DISABLE KEYS */;
-INSERT INTO `UserAccountInfo` VALUES
-(3,'asd','$2y$10$kMfYZyDD0zdaDy7PSpn1MupVt6hfdxOlFQeRKg6CtetdPLiSIzC8C','2024-09-23 20:14:09',NULL),
-(4,'asda','$2y$10$KZF.mS0MLp6awas2saw2mOKkqjAs4jZlzatynVBrUBVBoim8UGXSm','2024-09-23 20:14:14',NULL),
-(5,'Username','PasswordHash','2024-09-23 20:32:49',NULL);
-/*!40000 ALTER TABLE `UserAccountInfo` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
