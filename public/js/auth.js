@@ -1,4 +1,4 @@
-let sessionToken;
+/*let sessionToken;
 
 //TODO: maybe don't fetch this twice? Idk I don't care enough rn to fix it
 // attempt to retreive session token from cookie
@@ -23,3 +23,4 @@ function getSessionToken() {
 }
 
 
+*/

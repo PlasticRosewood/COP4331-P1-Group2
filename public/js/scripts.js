@@ -1,5 +1,39 @@
 const urlBase = '/api/contact';
 let sessionToken;
+const defaultRating = 3;
+let focusContact; // global tracker for current contact to focus on
+
+function logout() {
+    // delete cookie
+    document.cookie = 'token=; Path=/; Expires=Thu, 11 Sep 2001 00:00:01 GMT;';
+
+    // return user to login page
+    window.location.href = '/login.html';
+}
+document.getElementById('sign_out').addEventListener('click', logout);
+
+// TODO: move this to separate non-deferred file for quicker redirect
+// validate user session
+
+function getSessionToken() {
+    let name = 'token=';
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        sessionToken = c.substring(name.length, c.length);
+        return;
+      }
+    }
+    
+    //cookie not found; redirect to login page
+    window.location.href = '/login.html';
+}
+
 
 // create contact object and cache array upon startup
 class Contact {
@@ -61,36 +95,6 @@ function displayCachedContacts() {
     }
 }
 
-function logout() {
-    // delete cookie
-    document.cookie = 'token=; Path=/; Expires=Thu, 11 Sep 2001 00:00:01 GMT;';
-
-    // return user to login page
-    window.location.href = '/login.html';
-}
-document.getElementById('sign_out').addEventListener('click', logout);
-
-// TODO: move this to separate non-deferred file for quicker redirect
-// validate user session
-
-function getSessionToken() {
-    let name = 'token=';
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        sessionToken = c.substring(name.length, c.length);
-        return;
-      }
-    }
-    
-    //cookie not found; redirect to login page
-    window.location.href = '/login.html';
-}
 
 document.addEventListener("DOMContentLoaded", async function() {
     getSessionToken();
@@ -157,33 +161,41 @@ async function createContact() {
                 'Authorization': 'Bearer ' + sessionToken 
             },
             body: JSON.stringify({
-                firstname: fname,
-                lastname: lname,
-                email: emailText
-                //TODO: ensure that API has updated the schema
+                firstName: fname,
+                lastName: lname,
+                email: emailText,
+                rating: '' + defaultRating
             })
         });
 
-        if (!response.ok) {
-            throw new Error('Response status: ' + response.status);
+        // on some type of failure, alert user
+        if (response.status != 201) {
+            console.error(response.status);
+            let error = await response.json();
+            alert("Error: " + error.error);
+            
+        } else {
+            let usrID = await response.json();
+            //TODO ask joey about correctness of field names
+            let contactObject = new Contact(usrId, fname, lanme, emailText, defaultRating);
+            appendContactToHTML(contactObject);
+            cachedContacts.push(contactObject);
+            hideNewContactForm();
         }
 
-        //TODO: handle response codes
-            //TODO: on successful code received, fetch data from given id 
-            //TODO: @SilverMight make sure userID is returned
     } catch (error) {
         console.log("Something wen't wrong in the createContact function!");
         console.error(error);
     }
-    
 }
+createContactButton.addEventListener('click', createContact);
 
 function dynamicDetailsPane(contact) { // populating the details pane 
     // TODO: add images field
     document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
     document.getElementById('contact_email').textContent = contact.email;
     document.getElementById('number_display').textContent = contact.rating;
-  }  
+}  
 
 // function accepts an li element and removes it from the ul
 async function deleteContact(contactID) { 
@@ -237,4 +249,11 @@ async function editContact(contactID) {
 }   
 // end of dynamic contacts list
 
+
+// search functionality
+let searchBar = document.getElementById('search_bar');
+function search() {
+
+}
+// execute search functionality everytime a key is pressed
 
