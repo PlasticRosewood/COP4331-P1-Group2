@@ -1,9 +1,9 @@
 /*M!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19-11.4.3-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.19-11.5.2-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: givemespace
 -- ------------------------------------------------------
--- Server version	11.4.3-MariaDB
+-- Server version	11.5.2-MariaDB-ubu2404
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,12 +29,24 @@ CREATE TABLE `ContactInfo` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `rating` int(11) DEFAULT 3,
   `last_updated` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`contact_id`),
   KEY `created_by_id` (`created_by_id`),
   CONSTRAINT `ContactInfo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `UserAccountInfo` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ContactInfo`
+--
+
+LOCK TABLES `ContactInfo` WRITE;
+/*!40000 ALTER TABLE `ContactInfo` DISABLE KEYS */;
+INSERT INTO `ContactInfo` VALUES
+(2,3,'FirstName','Lastname','Email','2024-09-23 20:33:30',3);
+/*!40000 ALTER TABLE `ContactInfo` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `UserAccountInfo`
@@ -51,8 +63,21 @@ CREATE TABLE `UserAccountInfo` (
   `session_token` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `UserAccountInfo`
+--
+
+LOCK TABLES `UserAccountInfo` WRITE;
+/*!40000 ALTER TABLE `UserAccountInfo` DISABLE KEYS */;
+INSERT INTO `UserAccountInfo` VALUES
+(3,'asd','$2y$10$kMfYZyDD0zdaDy7PSpn1MupVt6hfdxOlFQeRKg6CtetdPLiSIzC8C','2024-09-23 20:14:09',NULL),
+(4,'asda','$2y$10$KZF.mS0MLp6awas2saw2mOKkqjAs4jZlzatynVBrUBVBoim8UGXSm','2024-09-23 20:14:14',NULL),
+(5,'Username','PasswordHash','2024-09-23 20:32:49',NULL);
+/*!40000 ALTER TABLE `UserAccountInfo` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -63,4 +88,4 @@ CREATE TABLE `UserAccountInfo` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*M!100616 SET NOTE_VERBOSITY=@OLD_NOTE_VERBOSITY */;
 
--- Dump completed on 2024-09-22  3:30:25
+-- Dump completed on 2024-09-23 20:35:33
