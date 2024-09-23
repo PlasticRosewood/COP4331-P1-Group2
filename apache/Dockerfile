@@ -1,11 +1,16 @@
-FROM bitnami/phpmyadmin:latest
+# Use the official PHP Apache image as the base
+FROM php:8.1-apache
 
-#installs composer
-COPY --from=composer:latest /composer /usr/local/bin/composer
+# Enable the rewrite module
+RUN a2enmod rewrite
 
-USER root
+RUN docker-php-ext-install pdo pdo_mysql
 
-RUN composer require firebase/php-jwt
+# Get 7zip for composer
+RUN apt-get update && apt-get install -y p7zip-full
+RUN rm -rf /var/lib/apt/lists/*
 
-USER 1001
+# Get composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
 

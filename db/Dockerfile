@@ -1,3 +1,5 @@
-FROM docker.io/bitnami/mariadb:11.4
+FROM mariadb:latest
 
 ADD schema.sql /docker-entrypoint-initdb.d
+
+EXPOSE 3306
