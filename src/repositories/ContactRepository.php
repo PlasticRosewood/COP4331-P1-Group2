@@ -39,7 +39,7 @@ class ContactRepository {
     }
 
     public function getContactById(int $contact_id): array {
-        $stmt = 'SELECT contact_id, first_name, last_name, email FROM ContactInfo WHERE contact_id = :contact_id';
+        $stmt = 'SELECT contact_id, first_name, last_name, email, rating FROM ContactInfo WHERE contact_id = :contact_id';
 
         $result = $this->db->run($stmt, ['contact_id' => $contact_id]);
 
@@ -51,15 +51,16 @@ class ContactRepository {
         return $contact;
     }
 
-    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email): ?int {
-        $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email) 
-            VALUES (:created_by_id, :first_name, :last_name, :email)';
+    public function createContact(int $created_by_id, string $first_name, string $last_name, string $email, int $rating): ?int {
+        $stmt = 'INSERT INTO ContactInfo (created_by_id, first_name, last_name, email, rating) 
+            VALUES (:created_by_id, :first_name, :last_name, :email, :rating)';
 
         $params = [
             ':created_by_id' => $created_by_id,
             ':first_name' => $first_name,
             ':last_name' => $last_name,
             ':email' => $email,
+            ':rating' => $rating,
         ];
 
         $result = $this->db->run($stmt, $params);
@@ -80,8 +81,8 @@ class ContactRepository {
     }
 
     // Assuming this function can only be called on a contact accessible by the user, otherwise ID check needed
-    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email): void {
-        $stmt = 'UPDATE ContactInfo SET first_name = :first_name, last_name = :last_name, email = :email 
+    public function updateContact(int $contact_id, string $first_name, string $last_name, string $email, int $rating): void {
+        $stmt = 'UPDATE ContactInfo SET first_name = :first_name, last_name = :last_name, email = :email, rating = :rating
             WHERE contact_id = :contact_id';
 
         $params = [
@@ -89,6 +90,7 @@ class ContactRepository {
             ':first_name' => $first_name,
             ':last_name' => $last_name,
             ':email' => $email,
+            ':rating' => $rating,
         ];
 
         $result = $this->db->run($stmt, $params);

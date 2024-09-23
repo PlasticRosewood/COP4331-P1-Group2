@@ -123,13 +123,13 @@ class ContactController {
             return;
         }
 
-        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
-            $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
+        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email']) || !isset($data['rating'])) {
+            $this->sendJsonResponse(['error' => 'firstName, lastName, email, and rating must be set'], 400);
             return;
         }
 
         try {
-            $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email']);
+            $result = $this->repository->createContact($user_id, $data['firstName'], $data['lastName'], $data['email'], $data['rating']);
             // TODO: Should this return the full contact?
             $this->sendJsonResponse(['id' => $result], 201);
         } catch (PDOException $e) {
@@ -154,13 +154,13 @@ class ContactController {
         }
 
         //potential problem line here for null values, double check behavior when trying to only update one value
-        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email'])) {
-            $this->sendJsonResponse(['error' => 'firstName, lastName, and email must be set'], 400);
+        if (!isset($data['firstName']) || !isset($data['lastName']) || !isset($data['email']) || !isset($data['rating'])) {
+            $this->sendJsonResponse(['error' => 'firstName, lastName, email, and rating must be set'], 400);
             return;
         }
 
         try { 
-            $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email']);
+            $result = $this->repository->updateContact($contact_id, $data['firstName'], $data['lastName'], $data['email'], $data['rating']);
             http_response_code(204);
         } catch(PDOException $e) {
             $this->sendJsonResponse(['error' => 'Could not update contact'], 500);
