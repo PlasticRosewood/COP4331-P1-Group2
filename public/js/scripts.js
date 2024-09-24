@@ -108,32 +108,6 @@ document.addEventListener("DOMContentLoaded", async function() {
 // gray out screen for all popups
 var grayOutScreen = document.getElementById('gray_out');
 
-// variables for account options page
-var accountOptionsPopup = document.getElementById('account_options_popup');
-
-function showAccountOptionsPopup() {
-    accountOptionsPopup.style.display = 'grid';
-    grayOutScreen.style.display = 'block';
-}
-document.getElementById('account_options').addEventListener('click', showAccountOptionsPopup);
-
-function hideAccountOptionsPopup() {
-    accountOptionsPopup.style.display = 'none';
-    grayOutScreen.style.display = 'none';
-}
-document.getElementById('acc_opt_close_button').addEventListener('click', hideAccountOptionsPopup);
-
-// code for bringing up delete confirmation popup
-function showDeleteConfirmationPopup() {
-    deleteConfirmationPopup.style.display = 'grid';
-}
-
-document.getElementById('delete_account').addEventListener('click', showDeleteConfirmationPopup);
-
-function hideDeleteConfirmationPopup() {
-    deleteConfirmationPopup.style.display = 'none';
-}
-
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
 

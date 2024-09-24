@@ -97,7 +97,7 @@ body{
     padding: 20px;
 }
 
-#account_options {
+#sign_out {
     /* grid properties */
     grid-column: 3;
     justify-self: right;
@@ -112,7 +112,7 @@ body{
     border-radius: var(--std_border_radius);
 }
 
-#account_options:hover {
+#sign_out:hover {
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
     cursor: pointer;
 }
@@ -289,81 +289,6 @@ body{
     }
 }
 
-
-/* account options popup */
-#account_options_popup {
-    /* popup settings */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0); 
-    transform-origin: center;
-    width: 350px;
-    height: 100px;
-    padding: 20px;
-    z-index: 9;
-    animation: grow 0.2s ease forwards;
-    text-align: center;
-
-    /* grid properties */
-    display: none; /* this is changed to grid in the js */
-
-    background-color: var(--off_white);
-    border-radius: var(--std_border_radius);
-}
-
-#account_options_popup > div {
-    display: grid;
-    grid-template-columns: 45% 45%;
-    column-gap: 10%;
-    place-items: center;
-
-    margin: 20px;
-    height: 80%;
-}
-
-/* delete confirmation popup */
-#delete_confirmation {
-    /* popup settings */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0); 
-    transform-origin: center;
-    width: 550px;
-    height: 350px;
-    padding: 20px;
-    z-index: 9;
-    animation: grow 0.2s ease forwards;
-    text-align: center;
-
-    /* grid properties */
-    display: none; /* this is changed to 'grid' in the JavaScript */
-
-    /* other styling properties */
-    background-color: var(--off_white);
-    border-radius: var(--std_border_radius);
-}
-
-#delete_confirmation > div {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 25% 40% 35%;
-    grid-template-areas: "warning_text warning_text"
-                         "delete_text delete_text"
-                         "reject_delete confirm_delete";
-    place-items: center;
-    margin: 20px;
-}
-
-#reject_delete{
-    grid-area: reject_delete;
-}
-
-#confirm_delete{
-    grid-area: confirm_delete;
-}
-
 /* new contact form */
 #new_contact_container {
     /* popup settings */
@@ -482,10 +407,10 @@ body{
         min-width: 300px;
     }
     
-    #account_options {    
+    #sign_out {    
         /* other styling properties */
         margin: 10px; 
-        padding: 8px;
+        padding: 10px;
     }    
     
     /* content grid */
