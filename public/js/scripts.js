@@ -65,14 +65,25 @@ async function cacheContacts() {
         }
 
         let jsonContacts = await response.json();
-        for (let i = 0; i < jsonContacts.length; i++) {
-            let cur = jsonContacts[i];
-            cachedContacts.push(new Contact(cur.id, cur.firstName, cur.lastName, cur.email, cur.rating));
+        for (let i = 0; i < jsonContacts.contacts.length; i++) {
+            let cur = jsonContacts.contacts[i];
+            let newContact = new Contact(cur.contact_id, cur.first_name, cur.last_name, cur.email, cur.rating);
+            console.log(newContact);
+            cachedContacts.push(newContact);
         }
+        displayCachedContacts(); // display contacts here to avoid race condition
     } catch(error) {
         console.log('Issue in cacheContacts()');
         alert('Issue with caching contacts for user!');
         console.error(error);
+    }
+}
+
+function displayCachedContacts() {
+    console.log(cachedContacts.length);
+    for (let i = 0; i < cachedContacts.length; i++) {
+        appendContactToHTML(cachedContacts[i]); // NOTE: changing cache to cached
+        alert("Contact displayed: " + cachedContacts[i].fname + ' ' + cachedContacts[i].lname);
     }
 }
 
@@ -89,17 +100,9 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
 
 }
 
-function displayCachedContacts() {
-    for (let i = 0; i < cachedContacts.length; i++) {
-        appendContactToHTML(cachedContacts[i]); // NOTE: changing cache to cached
-    }
-}
-
-
 document.addEventListener("DOMContentLoaded", async function() {
     getSessionToken();
     cacheContacts();
-    displayCachedContacts();
 });
 
 // gray out screen for all popups
@@ -176,11 +179,10 @@ async function createContact() {
             
         } else {
             let usrID = await response.json();
-            //TODO ask joey about correctness of field names
-            let contactObject = new Contact(usrId, fname, lanme, emailText, defaultRating);
+            hideNewContactForm();
+            let contactObject = new Contact(usrID, fname, lname, emailText, defaultRating);
             appendContactToHTML(contactObject);
             cachedContacts.push(contactObject);
-            hideNewContactForm();
         }
 
     } catch (error) {
