@@ -205,14 +205,66 @@ async function createContact() {
 }
 createContactButton.addEventListener('click', createContact);
 
+
 function dynamicDetailsPane(contact) { // populating the details pane 
-    // TODO: add images field
+    focusContact = contact;
+     // TODO: add images field
     document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
     document.getElementById('contact_email').textContent = contact.email;
     document.getElementById('number_display').textContent = contact.rating;
+    document.getElementById('increment_button').onclick = () => {
+        updateRating(focusContact, 1);  
+    };
+    document.getElementById('decrement_button').onclick = () => {
+        updateRating(focusContact, -1);  
+    };
+}
 
-    focusContact = contact;
-}  
+function updateRating(contact, change) {
+    let newRating = contact.rating + change;
+    if (newRating < 1) { // minimum rating
+        newRating = 1;
+    } else if (newRating > 5) { // maximum rating
+        newRating = 5;
+    }
+    document.getElementById('number_display').textContent = newRating;
+    contact.rating = newRating;
+    let cachedContact = cachedContacts.find(c => c.id === contact.id);
+    if (cachedContact) {
+        cachedContact.rating = newRating;
+    }
+    storeVals(contact);
+}
+
+async function storeVals(contact) {
+    console.log(contact);  
+
+    const url = `${urlBase}/${contact.id}`;  
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
+            },
+            body: JSON.stringify({
+                id: contact.id,
+                firstName: contact.fname,   
+                lastName: contact.lname,
+                email: contact.email,
+                rating: contact.rating  
+            })
+        });
+        if (!response.ok) {
+            throw new Error(`I'm dumb this no work, status: ${response.status}`);
+        }
+
+        console.log('YAY IT WORKED.');// WHY THE HELL ARE YOU NOT CACHING PROPERLY
+    } catch (error) {
+        console.log('you suck:', error);
+    }
+}
 
 // function accepts an li element and removes it from the ul
 async function deleteContact() { 
