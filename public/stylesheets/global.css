@@ -229,10 +229,6 @@ body{
     border-bottom-right-radius: var(--std_border_radius);
 }
 
-#image_and_name {
-    justify-self: center;
-    align-self: center;
-}
 
 #contact_image {
     grid-row: contact_image;
@@ -302,7 +298,7 @@ body{
     left: 50%;
     transform: translate(-50%, -50%) scale(0); 
     transform-origin: center;
-    width: 250px;
+    width: 350px;
     height: 100px;
     padding: 20px;
     z-index: 9;
@@ -326,6 +322,47 @@ body{
     height: 80%;
 }
 
+/* delete confirmation popup */
+#delete_confirmation {
+    /* popup settings */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transform-origin: center;
+    width: 550px;
+    height: 350px;
+    padding: 20px;
+    z-index: 9;
+    animation: grow 0.2s ease forwards;
+    text-align: center;
+
+    /* grid properties */
+    display: none; /* this is changed to 'grid' in the JavaScript */
+
+    /* other styling properties */
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+}
+
+#delete_confirmation > div {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 25% 40% 35%;
+    grid-template-areas: "warning_text warning_text"
+                         "delete_text delete_text"
+                         "reject_delete confirm_delete";
+    place-items: center;
+    margin: 20px;
+}
+
+#reject_delete{
+    grid-area: reject_delete;
+}
+
+#confirm_delete{
+    grid-area: confirm_delete;
+}
 
 /* new contact form */
 #new_contact_container {

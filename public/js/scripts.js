@@ -123,6 +123,16 @@ function hideAccountOptionsPopup() {
 }
 document.getElementById('acc_opt_close_button').addEventListener('click', hideAccountOptionsPopup);
 
+// code for bringing up delete confirmation popup
+function showDeleteConfirmationPopup() {
+    deleteConfirmationPopup.style.display = 'grid';
+}
+
+document.getElementById('delete_account').addEventListener('click', showDeleteConfirmationPopup);
+
+function hideDeleteConfirmationPopup() {
+    deleteConfirmationPopup.style.display = 'none';
+}
 
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
