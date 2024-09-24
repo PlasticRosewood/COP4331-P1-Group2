@@ -11,15 +11,13 @@ function logout() {
     window.location.href = '/login.html';
 }
 document.getElementById('sign_out').addEventListener('click', logout);
-
-// TODO: move this to separate non-deferred file for quicker redirect
 // validate user session
 
 function getSessionToken() {
     let name = 'token=';
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
+    for(let i = 0; i < ca.length; i++) {
       let c = ca[i];
       while (c.charAt(0) == ' ') {
         c = c.substring(1);
@@ -75,7 +73,6 @@ async function cacheContacts() {
         displayCachedContacts(); // display contacts here to avoid race condition
     } catch(error) {
         console.log('Issue in cacheContacts()');
-        alert('Issue with caching contacts for user!');
         console.error(error);
     }
 }
@@ -295,7 +292,19 @@ async function editContact(contactID) {
 // search functionality
 let searchBar = document.getElementById('search_bar');
 function search() {
+    let search = searchBar.value.toLowerCase(); // standardize input
+    let mini_contacts = document.getElementsByClassName('mini_contact'); // get all current contacts in the html
 
+    // loop through each element
+    // hide if doesn't match, show if it does
+    // TODO: consider upgraded to trie structure for speed
+    for (let i = 0; i < mini_contacts.length; i++) {
+        if (mini_contacts[i].textContent.toLowerCase().includes(search)) { // include in search
+            mini_contacts[i].style.display = 'block';
+        } else {
+            mini_contacts[i].style.display = 'none';
+        }
+    }
 }
-// execute search functionality everytime a key is pressed
-
+// execute search functionality everytime a key is pressed and search bar is focused
+searchBar.addEventListener('keyup', search);
