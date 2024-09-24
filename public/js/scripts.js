@@ -43,8 +43,10 @@ class Contact {
         this.lname = lname;
         this.email = email;
         this.rating = rating;
+        this.display = true;
     }
 }
+const fillerContact = new Contact(-1, 'Choose', 'Contact', 'Select Contact', 3);
 
 let cachedContacts = []; // initialized as an array
 
@@ -68,7 +70,6 @@ async function cacheContacts() {
         for (let i = 0; i < jsonContacts.contacts.length; i++) {
             let cur = jsonContacts.contacts[i];
             let newContact = new Contact(cur.contact_id, cur.first_name, cur.last_name, cur.email, cur.rating);
-            console.log(newContact);
             cachedContacts.push(newContact);
         }
         displayCachedContacts(); // display contacts here to avoid race condition
@@ -80,10 +81,9 @@ async function cacheContacts() {
 }
 
 function displayCachedContacts() {
-    console.log(cachedContacts.length);
     for (let i = 0; i < cachedContacts.length; i++) {
-        appendContactToHTML(cachedContacts[i]); // NOTE: changing cache to cached
-        alert("Contact displayed: " + cachedContacts[i].fname + ' ' + cachedContacts[i].lname);
+        if (cachedContacts[i].display === true)
+            appendContactToHTML(cachedContacts[i]); // NOTE: changing cache to cached
     }
 }
 
@@ -91,6 +91,8 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
     // create new list item
     var newContact = document.createElement('li');
     newContact.textContent = contactObject.fname + ' ' + contactObject.lname;
+    newContact.id = contactObject.id;
+    newContact.classList.add('mini_contact');
 
     document.getElementById('dynamic_contacts_list').appendChild(newContact); // adding the line to the list
 
@@ -101,6 +103,7 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
 }
 
 document.addEventListener("DOMContentLoaded", async function() {
+    focusContact = fillerContact;
     getSessionToken();
     cacheContacts();
 });
@@ -190,7 +193,7 @@ async function createContact() {
         } else {
             let usrID = await response.json();
             hideNewContactForm();
-            let contactObject = new Contact(usrID, fname, lname, emailText, defaultRating);
+            let contactObject = new Contact(usrID.id, fname, lname, emailText, defaultRating);
             appendContactToHTML(contactObject);
             cachedContacts.push(contactObject);
         }
@@ -207,33 +210,60 @@ function dynamicDetailsPane(contact) { // populating the details pane
     document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
     document.getElementById('contact_email').textContent = contact.email;
     document.getElementById('number_display').textContent = contact.rating;
+
+    focusContact = contact;
 }  
 
 // function accepts an li element and removes it from the ul
-async function deleteContact(contactID) { 
-    const url = urlBase + '/' + contactID;
+async function deleteContact() { 
+    // don't attempt to delete non-focused target
+    if (focusContact.id === fillerContact.id) return;
+
+    const url = `${urlBase}/${focusContact.id}`;
+
+    if (focusContact.id === fillerContact.id) {
+        return;
+    }
 
     try {
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
             },
             body: JSON.stringify({
-                contactId: contactID
+                contactId: focusContact.id
             })
         });
 
-        if (!response.ok) {
-            throw new Error('Response status: ' + response.status);
-        }
+        if (response.status != 204) {
+            console.error(response.status);
+            let error = await response.json();
+        } else {
+            // remove contact to delete from cachedContacts
+            cachedContacts = cachedContacts.filter(function (contact) {
+                return contact.id != focusContact.id;
+            });
 
-        //TODO: handle response codes properly
+            // remove contact to delete from HTML
+            let mini_contacts = document.getElementsByClassName('mini_contact');
+            console.log(mini_contacts);
+            for (let i = 0; i < mini_contacts.length; i++) {
+                if (mini_contacts[i].id == focusContact.id) {
+                    mini_contacts[i].remove();
+                    dynamicDetailsPane(fillerContact);
+                    console.log(cachedContacts);
+                    break;
+                }
+            }
+        }
     } catch(error) {
         console.log('Error with deleteContact() function!');
         console.error(error);
     }
 }
+document.getElementById('delete_contact_button').addEventListener('click', deleteContact);
 
 async function editContact(contactID) {
     const url = urlBase + '/' + contactID;
