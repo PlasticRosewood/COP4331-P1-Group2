@@ -195,8 +195,19 @@ function updateRating(contact, change) { //updating the rating
     let newRating = contact.rating + change;
     if (newRating < 1) { // minimum rating
         newRating = 1;
-    } else if (newRating > 5) { // maximum rating
+    } 
+    else if (newRating > 5) { // maximum rating
         newRating = 5;
+    }
+    if (newRating === 1) { //checking when rating hits one
+        const voidChoice = confirm(`Warning: Do you want more space from ${contact.fname} ${contact.lname}?`);
+        if (voidChoice) { // if confirmed should delete the contact
+            deleteContact();
+            return;
+        }
+        else { // otherwise will revert it and put it at 2
+            newRating = 2;
+        }
     }
     document.getElementById('number_display').textContent = newRating; 
     contact.rating = newRating;
