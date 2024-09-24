@@ -217,23 +217,23 @@ function dynamicDetailsPane(contact) { // populating the details pane
     };
 }
 
-function updateRating(contact, change) {
+function updateRating(contact, change) { //updating the rating 
     let newRating = contact.rating + change;
     if (newRating < 1) { // minimum rating
         newRating = 1;
     } else if (newRating > 5) { // maximum rating
         newRating = 5;
     }
-    document.getElementById('number_display').textContent = newRating;
+    document.getElementById('number_display').textContent = newRating; 
     contact.rating = newRating;
-    let cachedContact = cachedContacts.find(c => c.id === contact.id);
+    let cachedContact = cachedContacts.find(c => c.id === contact.id); //looking for cached contact in array
     if (cachedContact) {
-        cachedContact.rating = newRating;
+        cachedContact.rating = newRating; //update rating if found
     }
     storeVals(contact);
 }
 
-async function storeVals(contact) {
+async function storeVals(contact) { //update contact information
     console.log(contact);  
 
     const url = `${urlBase}/${contact.id}`;  
@@ -257,7 +257,7 @@ async function storeVals(contact) {
             throw new Error(`I'm dumb this no work, status: ${response.status}`);
         }
 
-        console.log('YAY IT WORKED.');// WHY THE HELL ARE YOU NOT CACHING PROPERLY
+        console.log('YAY IT WORKED.');
     } catch (error) {
         console.log('you suck:', error);
     }
