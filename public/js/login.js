@@ -23,6 +23,11 @@ async function userLogin() {
 
     const url = urlBase + '/login';
     try {
+        // check for empty fields
+        if (usernameText == '' || passwordFieldText == '') {
+            throw new Error('Enter username and password');
+        }
+
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -40,20 +45,19 @@ async function userLogin() {
             throw new Error('Response status: ' + response.status);
         }         
 
-        // successful login
-        if (response.status === 200) {
+        if (response.status !== 200) { // error has occured
+            let error = await response.json();
+            throw new Error(error.error);
+        } else{  // successful login
             // store token and redirect to index.html
             const responseData = await response.json();
             setCookie(responseData.token);
             window.location.href = '/index.html';
-        } else if (response.status === 401) { // invalid login code
-            alert('Account not found!')
-            console.error('account not found!');
         }
 
     } catch (error) {
-        console.log('Connection failed on userLogin()');
         console.error(error);
+        alert(error);
     }        
 }
 
@@ -63,6 +67,11 @@ async function createAccount() {
 
     const url = urlBase + '/register';
     try {
+        // check for empty fields
+        if (usernameText == '' || passwordFieldText == '') {
+            throw new Error('Enter username and password');
+        }
+
         const response = await fetch(url, {
            method: 'POST',
            headers: {
@@ -75,23 +84,19 @@ async function createAccount() {
            })
         });
 
-        if (!response.ok) {
-            throw new Error('Response status: ' + response.status);
-        }
-
-        if (response.status === 200) {
-            //TODO: alert user of successful account creation
+        if (response.status != 200) { // error occured
+            let error = await response.json();
+            throw new Error(error.error);
+        } else {
             console.log('account successfully created');
             const responseData = await response.json();
             setCookie(responseData.token);
             window.location.href = '/index.html';
-        } else if (response.status === 400) {
-            //TODO: alert user of issue with creating account
-            console.error('bad request on create account');
         }
 
     } catch (error) {
         console.error(error);
+        alert(error);
     }
 }
 
