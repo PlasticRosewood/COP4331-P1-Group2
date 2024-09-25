@@ -23,11 +23,6 @@ async function userLogin() {
 
     const url = urlBase + '/login';
     try {
-        // check for empty fields
-        if (usernameText == '' || passwordFieldText == '') {
-            throw new Error('Enter username and password');
-        }
-
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -67,11 +62,6 @@ async function createAccount() {
 
     const url = urlBase + '/register';
     try {
-        // check for empty fields
-        if (usernameText == '' || passwordFieldText == '') {
-            throw new Error('Enter username and password');
-        }
-
         const response = await fetch(url, {
            method: 'POST',
            headers: {
