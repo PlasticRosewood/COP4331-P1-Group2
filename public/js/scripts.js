@@ -119,34 +119,37 @@ function dynamicDetailsPane(contact) { // populating the details pane
 // gray out screen for all popups
 var grayOutScreen = document.getElementById('gray_out');
 
-// variables for account options page
-var accountOptionsPopup = document.getElementById('account_options_popup');
-
-function showAccountOptionsPopup() {
-    accountOptionsPopup.style.display = 'grid';
-    grayOutScreen.style.display = 'block';
-}
-document.getElementById('account_options').addEventListener('click', showAccountOptionsPopup);
-
-function hideAccountOptionsPopup() {
-    accountOptionsPopup.style.display = 'none';
-    grayOutScreen.style.display = 'none';
-}
-document.getElementById('acc_opt_close_button').addEventListener('click', hideAccountOptionsPopup);
-
 // variables for new contacts popup
 var newContactsForm = document.getElementById('new_contact_container');
 
 // code for bringing up new contacts form
-function showNewContactsForm() {
+
+// VERY VERY NOT SURE IF THIS WORKS
+const newContactButton = document.getElementById('new_contact_submit');
+const updateContactButton = document.getElementById('update_contact_submit');
+
+function showCreateButton() {
+    newContactButton.style.display = 'grid';
+    updateContactButton.style.display = 'none';
+}
+
+function showUpdateButton() {
+    newContactButton.style.display = 'none';
+    updateContactButton.style.display = 'grid';
+}
+
+function showNewContactsForm(option) {
     newContactsForm.style.display = 'grid';
     grayOutScreen.style.display = 'block';
-
-    // hide update button
-    document.getElementById('new_contact_submit').style
-    // show submit button
+    if (option === 1) {
+        showCreateButton();
+    }
+    if (option === 2) {
+        showUpdateButton();
+    }
 }
-document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm);   // brings up the form
+document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm(1));   // brings up the form
+document.getElementById('edit_contact_button').addEventListener('click', showNewContactsForm(2)); // brings up the form
 
 // code for hiding contact form
 function hideNewContactForm() {
@@ -205,6 +208,106 @@ async function createContact() {
     }
 }
 createContactButton.addEventListener('click', createContact);
+
+
+// VERY VERY NOT SURE IF THIS WORKS
+async function updateContact(Contact) {
+    const url = urlBase + '/' + Contact.id;
+    var fname = document.getElementById('fname').value;
+    var lname = document.getElementById('lname').value;
+    var emailText = document.getElementById('email').value;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
+            },
+            body: JSON.stringify({
+                id: Contact.id,
+                firstName: fname,
+                lastName: lname,
+                email: emailText,
+                rating: Contact.rating
+            })
+        });
+
+        if (response.status != 204) {
+            console.error(response.status);
+            let error = await response.json();
+            alert("Error: " + error.error);
+        } else {
+            hideNewContactForm();
+            let contactObject = new Contact(Contact.id, fname, lname, emailText, Contact.rating);
+            cachedContacts.push(contactObject);
+        }
+    } catch (error) {
+        console.log("Something wen't wrong in the updateContact function!");
+        console.error(error);
+    }
+}
+
+function dynamicDetailsPane(contact) { // populating the details pane 
+    focusContact = contact;
+     // TODO: add images field
+    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
+    document.getElementById('contact_email').textContent = contact.email;
+    document.getElementById('number_display').textContent = contact.rating;
+    document.getElementById('increment_button').onclick = () => {
+        updateRating(focusContact, 1);  
+    };
+    document.getElementById('decrement_button').onclick = () => {
+        updateRating(focusContact, -1);  
+    };
+}
+
+function updateRating(contact, change) {
+    let newRating = contact.rating + change;
+    if (newRating < 1) { // minimum rating
+        newRating = 1;
+    } else if (newRating > 5) { // maximum rating
+        newRating = 5;
+    }
+    document.getElementById('number_display').textContent = newRating;
+    contact.rating = newRating;
+    let cachedContact = cachedContacts.find(c => c.id === contact.id);
+    if (cachedContact) {
+        cachedContact.rating = newRating;
+    }
+    storeVals(contact);
+}
+
+async function storeVals(contact) {
+    console.log(contact);  
+
+    const url = `${urlBase}/${contact.id}`;  
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
+            },
+            body: JSON.stringify({
+                id: contact.id,
+                firstName: contact.fname,   
+                lastName: contact.lname,
+                email: contact.email,
+                rating: contact.rating  
+            })
+        });
+        if (!response.ok) {
+            throw new Error(`I'm dumb this no work, status: ${response.status}`);
+        }
+
+        console.log('YAY IT WORKED.');// WHY THE HELL ARE YOU NOT CACHING PROPERLY
+    } catch (error) {
+        console.log('you suck:', error);
+    }
+}
 
 // function accepts an li element and removes it from the ul
 async function deleteContact() { 
