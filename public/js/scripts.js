@@ -143,13 +143,27 @@ function showNewContactsForm(option) {
     grayOutScreen.style.display = 'block';
     if (option === 1) {
         showCreateButton();
+
+        // change placeholder values back to initial
+        document.getElementById('fname').placeholder = 'John';
+        document.getElementById('lname').placeholder = 'Doe';
+        document.getElementById('email').placeholder = 'user@website.tld';
     }
     if (option === 2) {
         showUpdateButton();
+        
+        // initialize values with current
+        document.getElementById('fname').placeholder = focusContact.fname;
+        document.getElementById('lname').placeholder = focusContact.lname;
+        document.getElementById('email').placeholder = focusContact.email;
     }
 }
-document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm(1));   // brings up the form
-document.getElementById('edit_contact_button').addEventListener('click', showNewContactsForm(2)); // brings up the form
+document.getElementById('new_contact_button').addEventListener('click', ()=> {
+    showNewContactsForm(1);
+});   // brings up the form
+document.getElementById('edit_contact_button').addEventListener('click', ()=> {
+    showNewContactsForm(2);
+}); // brings up the form
 
 // code for hiding contact form
 function hideNewContactForm() {
@@ -209,45 +223,6 @@ async function createContact() {
 }
 createContactButton.addEventListener('click', createContact);
 
-
-// VERY VERY NOT SURE IF THIS WORKS
-async function updateContact(Contact) {
-    const url = urlBase + '/' + Contact.id;
-    var fname = document.getElementById('fname').value;
-    var lname = document.getElementById('lname').value;
-    var emailText = document.getElementById('email').value;
-
-    try {
-        const response = await fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionToken 
-            },
-            body: JSON.stringify({
-                id: Contact.id,
-                firstName: fname,
-                lastName: lname,
-                email: emailText,
-                rating: Contact.rating
-            })
-        });
-
-        if (response.status != 204) {
-            console.error(response.status);
-            let error = await response.json();
-            alert("Error: " + error.error);
-        } else {
-            hideNewContactForm();
-            let contactObject = new Contact(Contact.id, fname, lname, emailText, Contact.rating);
-            cachedContacts.push(contactObject);
-        }
-    } catch (error) {
-        console.log("Something wen't wrong in the updateContact function!");
-        console.error(error);
-    }
-}
 
 function dynamicDetailsPane(contact) { // populating the details pane 
     focusContact = contact;
@@ -362,6 +337,7 @@ document.getElementById('delete_contact_button').addEventListener('click', delet
 
 async function editContact(contactID) {
     const url = `${urlBase}/${contactID}`;
+    
     var fname = document.getElementById('fname').value;
     var lname = document.getElementById('lname').value;
     var emailText = document.getElementById('email').value;
@@ -408,8 +384,11 @@ async function editContact(contactID) {
             for (let i = 0; i < mini_contacts.length; i++) {
                 if (mini_contacts[i].id == contactID) {
                     mini_contacts[i].textContent = `${fname} ${lname}`;
+                    break;
                 }
             }
+
+            hideNewContactForm();
         }
 
     } catch (error) {
