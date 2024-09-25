@@ -112,11 +112,33 @@ var grayOutScreen = document.getElementById('gray_out');
 var newContactsForm = document.getElementById('new_contact_container');
 
 // code for bringing up new contacts form
-function showNewContactsForm() {
+
+// VERY VERY NOT SURE IF THIS WORKS
+const newContactButton = document.getElementById('new_contact_submit');
+const updateContactButton = document.getElementById('update_contact_submit');
+
+function showCreateButton() {
+    newContactButton.style.display = 'grid';
+    updateContactButton.style.display = 'none';
+}
+
+function showUpdateButton() {
+    newContactButton.style.display = 'none';
+    updateContactButton.style.display = 'grid';
+}
+
+function showNewContactsForm(option) {
     newContactsForm.style.display = 'grid';
     grayOutScreen.style.display = 'block';
+    if (option === 1) {
+        showCreateButton();
+    }
+    if (option === 2) {
+        showUpdateButton();
+    }
 }
-document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm);   // brings up the form
+document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm(1));   // brings up the form
+document.getElementById('edit_contact_button').addEventListener('click', showNewContactsForm(2)); // brings up the form
 
 // code for hiding contact form
 function hideNewContactForm() {
@@ -176,6 +198,45 @@ async function createContact() {
 }
 createContactButton.addEventListener('click', createContact);
 
+
+// VERY VERY NOT SURE IF THIS WORKS
+async function updateContact(Contact) {
+    const url = urlBase + '/' + Contact.id;
+    var fname = document.getElementById('fname').value;
+    var lname = document.getElementById('lname').value;
+    var emailText = document.getElementById('email').value;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
+            },
+            body: JSON.stringify({
+                id: Contact.id,
+                firstName: fname,
+                lastName: lname,
+                email: emailText,
+                rating: Contact.rating
+            })
+        });
+
+        if (response.status != 204) {
+            console.error(response.status);
+            let error = await response.json();
+            alert("Error: " + error.error);
+        } else {
+            hideNewContactForm();
+            let contactObject = new Contact(Contact.id, fname, lname, emailText, Contact.rating);
+            cachedContacts.push(contactObject);
+        }
+    } catch (error) {
+        console.log("Something wen't wrong in the updateContact function!");
+        console.error(error);
+    }
+}
 
 function dynamicDetailsPane(contact) { // populating the details pane 
     focusContact = contact;

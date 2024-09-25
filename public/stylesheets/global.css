@@ -346,6 +346,15 @@ body{
     border-radius: var(--std_border_radius);
     border: 1px solid #ddd;
 }
+
+#new_contact_submit {
+    display: none; /* this is changed in the JavaScript */
+}
+
+#update_contact_submit {
+    display: none; /* this is changed in the JavaScript */
+}
+
 /* end of new contact form */
 
 /* delete confirmation pop-up */
