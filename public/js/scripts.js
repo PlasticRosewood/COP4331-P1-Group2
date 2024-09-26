@@ -49,6 +49,8 @@ const fillerContact = new Contact(-1, 'Choose', 'Contact', 'Select Contact', 3);
 let cachedContacts = []; // initialized as an array
 
 /* CACHES ONLY CONTACTS ASSOCIATED WITH CURRENT USER */
+/* DOES NOT CACHE ALL CONTACTS, AS PER INSTRUCTIONS */
+/* SEARCHING FOR ALL CONTACTS OF A PARTICULAR USER IS DONE IN API */
 async function cacheContacts() {
     let url = urlBase;
     try {
