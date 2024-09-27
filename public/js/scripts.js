@@ -48,6 +48,9 @@ const fillerContact = new Contact(-1, 'Choose', 'Contact', 'Select Contact', 3);
 
 let cachedContacts = []; // initialized as an array
 
+/* CACHES ONLY CONTACTS ASSOCIATED WITH CURRENT USER */
+/* DOES NOT CACHE ALL CONTACTS, AS PER INSTRUCTIONS */
+/* SEARCHING FOR ALL CONTACTS OF A PARTICULAR USER IS DONE IN API */
 async function cacheContacts() {
     let url = urlBase;
     try {
@@ -105,6 +108,16 @@ document.addEventListener("DOMContentLoaded", async function() {
     cacheContacts();
 });
 
+
+function dynamicDetailsPane(contact) { // populating the details pane 
+    // TODO: add images field
+    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
+    document.getElementById('contact_email').textContent = contact.email;
+    document.getElementById('number_display').textContent = contact.rating;
+
+    focusContact = contact;
+}  
+
 // gray out screen for all popups
 var grayOutScreen = document.getElementById('gray_out');
 
@@ -112,11 +125,47 @@ var grayOutScreen = document.getElementById('gray_out');
 var newContactsForm = document.getElementById('new_contact_container');
 
 // code for bringing up new contacts form
-function showNewContactsForm() {
+
+// VERY VERY NOT SURE IF THIS WORKS
+const newContactButton = document.getElementById('new_contact_submit');
+const updateContactButton = document.getElementById('update_contact_submit');
+
+function showCreateButton() {
+    newContactButton.style.display = 'grid';
+    updateContactButton.style.display = 'none';
+}
+
+function showUpdateButton() {
+    newContactButton.style.display = 'none';
+    updateContactButton.style.display = 'grid';
+}
+
+function showNewContactsForm(option) {
     newContactsForm.style.display = 'grid';
     grayOutScreen.style.display = 'block';
+    if (option === 1) {
+        showCreateButton();
+
+        // change placeholder values back to initial
+        document.getElementById('fname').placeholder = 'John';
+        document.getElementById('lname').placeholder = 'Doe';
+        document.getElementById('email').placeholder = 'user@website.tld';
+    }
+    if (option === 2) {
+        showUpdateButton();
+        
+        // initialize values with current
+        document.getElementById('fname').placeholder = focusContact.fname;
+        document.getElementById('lname').placeholder = focusContact.lname;
+        document.getElementById('email').placeholder = focusContact.email;
+    }
 }
-document.getElementById('new_contact_button').addEventListener('click', showNewContactsForm);   // brings up the form
+document.getElementById('new_contact_button').addEventListener('click', ()=> {
+    showNewContactsForm(1);
+});   // brings up the form
+document.getElementById('edit_contact_button').addEventListener('click', ()=> {
+    showNewContactsForm(2);
+}); // brings up the form
 
 // code for hiding contact form
 function hideNewContactForm() {
@@ -315,29 +364,69 @@ async function deleteContact() {
 document.getElementById('delete_contact_button').addEventListener('click', deleteContact);
 
 async function editContact(contactID) {
-    const url = urlBase + '/' + contactID;
+    const url = `${urlBase}/${contactID}`;
+    
+    var fname = document.getElementById('fname').value;
+    var lname = document.getElementById('lname').value;
+    var emailText = document.getElementById('email').value;
 
+    // send PUT request to server
     try {
         const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken 
             },
             body: JSON.stringify({
-                contactId: contactID,
-                //TODO: poll contact update from form
+                id: contactID,
+                firstName: fname,
+                lastName: lname,
+                email: emailText,
+                rating: focusContact.rating
             })
         });
 
-        if (!response.ok) {
-            throw new Error('Response status: ' + response.status);
+        // on some type of failure, alert user
+        if (response.status != 204) {
+            console.error(response.status);
+            let error = await response.json();
+            alert("Error: " + error.error);
+        } else {
+            // look through js array
+            for (let i = 0; i < cachedContacts.length; i++) {
+                if (cachedContacts[i].id == contactID) {
+                    //update js array
+                    cachedContacts[i].fname = fname;
+                    cachedContacts[i].lname = lname;
+                    cachedContacts[i].email = emailText;
+                    dynamicDetailsPane(cachedContacts[i]); // update in details pane
+                    break;
+                }
+            }
+            
+            
+            // look through html array
+            let mini_contacts = document.getElementsByClassName('mini_contact');
+            for (let i = 0; i < mini_contacts.length; i++) {
+                if (mini_contacts[i].id == contactID) {
+                    mini_contacts[i].textContent = `${fname} ${lname}`;
+                    break;
+                }
+            }
+
+            hideNewContactForm();
         }
-    } catch(error) {
-        console.log('Error with editContact() function!');
+
+    } catch (error) {
+        console.log("Something wen't wrong in the editContact function!");
         console.error(error);
     }
 }   
+document.getElementById('update_contact_submit').addEventListener('click', () => {
+    editContact(focusContact.id);
+});
 // end of dynamic contacts list
 
 
