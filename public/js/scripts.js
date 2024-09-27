@@ -191,31 +191,46 @@ function dynamicDetailsPane(contact) { // populating the details pane
     };
 }
 
-function updateRating(contact, change) { //updating the rating 
+function updateRating(contact, change) { 
     let newRating = contact.rating + change;
-    if (newRating < 1) { // minimum rating
+    
+    if (newRating < 1) { 
         newRating = 1;
-    } 
-    else if (newRating > 5) { // maximum rating
+    } else if (newRating > 5) { 
         newRating = 5;
     }
-    if (newRating === 1) { //checking when rating hits one
-        const voidChoice = confirm(`Warning: Do you want more space from ${contact.fname} ${contact.lname}?`);
-        if (voidChoice) { // if confirmed should delete the contact
+    if (newRating === 1) {
+        document.getElementById('number_display').textContent = 1;
+        contact.rating = 1; 
+        document.getElementById('void_Container').style.display = 'block';
+        document.getElementById('gray_out').style.display = 'block';
+        document.getElementById('contactName').textContent = `${contact.fname} ${contact.lname}`;
+
+        document.getElementById('cancelSpace').onclick = function () {
+            contact.rating = 2; 
+            document.getElementById('number_display').textContent = 2;  
+            closeSpacePopup();  
+        };
+
+        document.getElementById('voidContact').onclick = function () {
             deleteContact();
-            return;
-        }
-        else { // otherwise will revert it and put it at 2
-            newRating = 2;
-        }
+            closeSpacePopup();
+        };
+        return; 
     }
     document.getElementById('number_display').textContent = newRating; 
     contact.rating = newRating;
-    let cachedContact = cachedContacts.find(c => c.id === contact.id); //looking for cached contact in array
+    let cachedContact = cachedContacts.find(c => c.id === contact.id);
     if (cachedContact) {
-        cachedContact.rating = newRating; //update rating if found
+        cachedContact.rating = newRating;
     }
     storeVals(contact);
+}
+
+
+function closeSpacePopup() {
+    document.getElementById('void_Container').style.display = 'none';
+    document.getElementById('gray_out').style.display = 'none';
 }
 
 async function storeVals(contact) { //update contact information
