@@ -344,6 +344,12 @@ async function editContact(contactID) {
     var lname = document.getElementById('lname').value;
     var emailText = document.getElementById('email').value;
 
+    // ignore edit request if none selected
+    if (contactID === fillerContact.id) {
+        hideNewContactForm();
+        return;
+    }
+
     // send PUT request to server
     try {
         const response = await fetch(url, {
@@ -405,8 +411,10 @@ document.getElementById('update_contact_submit').addEventListener('click', () =>
 
 
 // search functionality
+let doSearchFast = document.getElementById('fast_search_toggle').checkd; // flag to determine if search is fast or slow
+
 let searchBar = document.getElementById('search_bar');
-function search() {
+function searchFast() {
     let search = searchBar.value.toLowerCase(); // standardize input
     let mini_contacts = document.getElementsByClassName('mini_contact'); // get all current contacts in the html
 
@@ -421,5 +429,60 @@ function search() {
         }
     }
 }
+
+async function searchSlow() {
+    let search = searchBar.value.toLowerCase(); // standardize input
+    let params = new URLSearchParams();
+    params.append('query', search);
+    let url = `${urlBase}/search?${params}`;
+
+    // make fetch request to backend
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionToken,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Response status: ' + response.status);
+        }   
+
+        let jsonContacts = await response.json();
+        let mini_contacts = document.getElementsByClassName('mini_contact');
+        for (let i = 0; i < mini_contacts.length; i++) {
+            let show = false;
+            for (let j = 0; j < jsonContacts.contacts.length; j++) {
+                let cur = jsonContacts.contacts[j];
+                if (mini_contacts[i].id == cur.contact_id) show = true;
+            }
+
+            if (show === true) {
+                mini_contacts[i].style.display = 'block';
+            } else {
+                mini_contacts[i].style.display = 'none';
+            }
+        }
+
+    } catch (error) {  
+        console.log('Error in searchSlow()');
+        console.error(error);
+    }
+}
+
+// determine which search function to use
+document.getElementById('fast_search_toggle').addEventListener('click', ()=>{
+    doSearchFast = document.getElementById('fast_search_toggle').checked; 
+});
+
 // execute search functionality everytime a key is pressed and search bar is focused
-searchBar.addEventListener('keyup', search);
+searchBar.addEventListener('keyup', () => {
+    if (doSearchFast) {
+        searchFast();
+    } else {
+        searchSlow();
+    }
+});
