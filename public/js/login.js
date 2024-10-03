@@ -35,11 +35,6 @@ async function userLogin() {
             })
         });
         
-        
-        if (!response.ok) {
-            throw new Error('Response status: ' + response.status);
-        }         
-
         if (response.status !== 200) { // error has occured
             let error = await response.json();
             throw new Error(error.error);
