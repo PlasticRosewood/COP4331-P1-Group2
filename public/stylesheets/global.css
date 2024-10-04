@@ -279,6 +279,16 @@ body{
 }
 /* end of content grid */
 
+/* fast search toggle button */
+#fast_search {
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+    position: fixed;
+    padding: 10px 5px 10px 5px;
+    bottom: 10px;
+    left: 10px;
+}
+
 /* grow animation for pop-up windows */
 @keyframes grow {
     0% {
