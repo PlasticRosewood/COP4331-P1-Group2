@@ -242,13 +242,13 @@ function dynamicDetailsPane(contact) { // populating the details pane
 
 function updateRating(contact, change) { 
     let newRating = contact.rating + change;
-    
-    if (newRating < 1) { 
+
+    if (newRating < 1) { //ensuring rating doesn't pass boundry
         newRating = 1;
     } else if (newRating > 5) { 
         newRating = 5;
     }
-    if (newRating === 1) {
+    if (newRating === 1) { //pop up occurs when one
         document.getElementById('number_display').textContent = 1;
         contact.rating = 1; 
         document.getElementById('void_Container').style.display = 'block';
@@ -261,9 +261,27 @@ function updateRating(contact, change) {
             closeSpacePopup();  
         };
 
-        document.getElementById('voidContact').onclick = function () {
-            deleteContact();
-            closeSpacePopup();
+        document.getElementById('voidContact').onclick = function () { // void is clicked
+            const detailsPane = document.getElementById('details_pane'); 
+            if (detailsPane) {
+                const voidScreen = document.createElement('div');
+                voidScreen.id = 'voidScreen';
+                detailsPane.appendChild(voidScreen); 
+
+                detailsPane.classList.add('voiding');
+                setTimeout(() => { //time for voiding ani
+
+                    detailsPane.classList.remove('voiding');
+        
+                    detailsPane.classList.add('hidden'); 
+                    detailsPane.removeChild(voidScreen);
+                    detailsPane.classList.remove('hidden');  
+                }, 4800); 
+                setTimeout(() => { //delayed time for delete and default pane to reappear
+                    deleteContact(); 
+                }, 4600);
+                closeSpacePopup(); 
+            }
         };
         return; 
     }
@@ -275,6 +293,7 @@ function updateRating(contact, change) {
     }
     storeVals(contact);
 }
+
 
 
 function closeSpacePopup() {
@@ -350,13 +369,14 @@ async function deleteContact() {
             for (let i = 0; i < mini_contacts.length; i++) {
                 if (mini_contacts[i].id == focusContact.id) {
                     mini_contacts[i].remove();
-                    dynamicDetailsPane(fillerContact);
+                    dynamicDetailsPane(fillerContact); //note to self: this is what is causing it to pop mid way
                     console.log(cachedContacts);
                     break;
                 }
             }
         }
-    } catch(error) {
+    } 
+    catch(error) {
         console.log('Error with deleteContact() function!');
         console.error(error);
     }
