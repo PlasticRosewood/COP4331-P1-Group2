@@ -301,6 +301,7 @@ function closeSpacePopup() {
     document.getElementById('gray_out').style.display = 'none';
 }
 
+// TODO: remove API calls and use existing CRUD functions where possible
 async function storeVals(contact) { //update contact information
     console.log(contact);  
 
@@ -322,7 +323,7 @@ async function storeVals(contact) { //update contact information
             })
         });
         if (!response.ok) {
-            throw new Error(`I'm dumb this no work, status: ${response.status}`);
+            throw new Error(`I'm dumb this no   work, status: ${response.status}`);
         }
 
         console.log('YAY IT WORKED.');
