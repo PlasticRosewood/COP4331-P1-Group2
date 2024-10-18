@@ -133,11 +133,15 @@ const updateContactButton = document.getElementById('update_contact_submit');
 function showCreateButton() {
     newContactButton.style.display = 'grid';
     updateContactButton.style.display = 'none';
+    newContactButton.style.userSelect = 'auto';
+    updateContactButton.style.userSelect = 'none';
 }
 
 function showUpdateButton() {
     newContactButton.style.display = 'none';
     updateContactButton.style.display = 'grid';
+    newContactButton.style.userSelect = 'none';
+    updateContactButton.style.userSelect = 'auto';
 }
 
 function showNewContactsForm(option) {
@@ -219,7 +223,7 @@ async function createContact() {
         }
 
     } catch (error) {
-        console.log("Something wen't wrong in the createContact function!");
+        console.log("Something went wrong in the createContact function!");
         console.error(error);
     }
 }
