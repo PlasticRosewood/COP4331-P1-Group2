@@ -532,7 +532,7 @@ function dynamicDetailsPane(contact) { // populating the details pane
     document.getElementById('contact_email').textContent = contact.email;
     document.getElementById('number_display').textContent = contact.rating;
 
-    const contactImageSrc = alienImage(contact);
+    const contactImageSrc = contact.id !== fillerContact.id ? alienImage(contact) : "images/placeholder.jpg";
     document.getElementById('contact_image').src = contactImageSrc;
     focusContact = contact;
 
@@ -554,7 +554,7 @@ function dynamicDetailsPane(contact) { // populating the details pane
 
 function alienImage(contact) { //function to assign example images to image pane
     // Use ID for contactNum
-    const exampleNum = (contact.id % 9) + 1
+    const exampleNum = (contact.id % 9) + 1;
 
     return `images/EXAMPLE${exampleNum}.png`; 
 }
