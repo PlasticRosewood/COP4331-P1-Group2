@@ -544,7 +544,7 @@ function dynamicDetailsPane(contact) { // populating the details pane
 
 function alienImage(contact) { //function to assign example images to image pane
     // Use ID for contactNum
-    const exampleNum = contact.id % 9;
+    const exampleNum = (contact.id % 9) + 1
 
     return `images/EXAMPLE${exampleNum}.png`; 
 }
