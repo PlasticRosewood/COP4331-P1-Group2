@@ -115,16 +115,6 @@ document.addEventListener("DOMContentLoaded", async function() {
     cacheContacts();
 });
 
-
-function dynamicDetailsPane(contact) { // populating the details pane 
-    // TODO: add images field
-    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
-    document.getElementById('contact_email').textContent = contact.email;
-    document.getElementById('number_display').textContent = contact.rating;
-
-    focusContact = contact;
-}  
-
 // gray out screen for all popups
 var grayOutScreen = document.getElementById('gray_out');
 
