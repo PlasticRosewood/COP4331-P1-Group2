@@ -229,21 +229,6 @@ async function createContact() {
 }
 createContactButton.addEventListener('click', createContact);
 
-
-function dynamicDetailsPane(contact) { // populating the details pane 
-    focusContact = contact;
-     // TODO: add images field
-    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
-    document.getElementById('contact_email').textContent = contact.email;
-    document.getElementById('number_display').textContent = contact.rating;
-    document.getElementById('increment_button').onclick = () => {
-        updateRating(focusContact, 1);  
-    };
-    document.getElementById('decrement_button').onclick = () => {
-        updateRating(focusContact, -1);  
-    };
-}
-
 function updateRating(contact, change) { 
     let newRating = contact.rating + change;
 
@@ -537,3 +522,44 @@ searchBar.addEventListener('keyup', () => {
         searchSlow();
     }
 });
+
+// changed to the bottom cause not working, too tired to figure out why
+function dynamicDetailsPane(contact) { // populating the details pane 
+    // TODO: add images field
+    document.getElementById('contact_name').textContent = `${contact.fname} ${contact.lname}`;
+    document.getElementById('contact_email').textContent = contact.email;
+    document.getElementById('number_display').textContent = contact.rating;
+
+    const contactImageSrc = alienImage(contact);
+    document.getElementById('contact_image').src = contactImageSrc;
+    focusContact = contact;
+}  
+
+function alienImage(contact) { //function to assign example images to image pane
+    const firstLetter = contact.fname.charAt(0).toUpperCase();
+    const charCode = firstLetter.charCodeAt(0);
+
+    // Map letters A-I (65-73), J-R (74-82), S-Z (83-90) to images 1-9
+    let exampleNum;
+    if (charCode >= 65 && charCode <= 67) { // a-c
+        exampleNum = 1;
+    } else if (charCode >= 68 && charCode <= 70) { // d-f
+        exampleNum = 2;
+    } else if (charCode >= 71 && charCode <= 73) { // g-i
+        exampleNum = 3;
+    } else if (charCode >= 74 && charCode <= 76) { // j-l
+        exampleNum = 4;
+    } else if (charCode >= 77 && charCode <= 79) { // m-o
+        exampleNum = 5;
+    } else if (charCode >= 80 && charCode <= 82) { // p-r
+        exampleNum = 6;
+    } else if (charCode >= 83 && charCode <= 85) { // S-u
+        exampleNum = 7;
+    } else if (charCode >= 86 && charCode <= 88) { // v-x
+        exampleNum = 8;
+    } else { // y-Z
+        exampleNum = 9; 
+    }
+
+    return `images/EXAMPLE${exampleNum}.PNG`; 
+}
