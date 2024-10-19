@@ -533,6 +533,13 @@ function dynamicDetailsPane(contact) { // populating the details pane
     const contactImageSrc = alienImage(contact);
     document.getElementById('contact_image').src = contactImageSrc;
     focusContact = contact;
+
+    document.getElementById('increment_button').onclick = () => {
+        updateRating(focusContact, 1);  
+    };
+    document.getElementById('decrement_button').onclick = () => {
+        updateRating(focusContact, -1);  
+    };
 }  
 
 function alienImage(contact) { //function to assign example images to image pane
