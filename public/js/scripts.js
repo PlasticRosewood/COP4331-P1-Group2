@@ -571,5 +571,5 @@ function alienImage(contact) { //function to assign example images to image pane
         exampleNum = 9; 
     }
 
-    return `images/EXAMPLE${exampleNum}.PNG`; 
+    return `images/EXAMPLE${exampleNum}.png`; 
 }
