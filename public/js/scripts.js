@@ -94,6 +94,13 @@ function appendContactToHTML(contactObject) { // accepts a contact object and cr
     newContact.id = contactObject.id;
     newContact.classList.add('mini_contact');
 
+    /*
+    var contactImage = document.createElement('img');
+    contactImage.src = alienImage(contactObject);
+    contactImage.alt = `${contactObject.fname} ${contactObject.lname}'s image`;
+    newContact.appendChild(contactImage); 
+    */
+   
     document.getElementById('dynamic_contacts_list').appendChild(newContact); // adding the line to the list
 
     newContact.addEventListener('click', () => { // should open the details for specific contact clicked
