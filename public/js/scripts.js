@@ -113,6 +113,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     focusContact = fillerContact;
     getSessionToken();
     cacheContacts();
+    document.getElementById('increment_button').disabled = true;
+    document.getElementById('decrement_button').disabled = true;
 });
 
 // gray out screen for all popups
@@ -534,12 +536,20 @@ function dynamicDetailsPane(contact) { // populating the details pane
     document.getElementById('contact_image').src = contactImageSrc;
     focusContact = contact;
 
-    document.getElementById('increment_button').onclick = () => {
-        updateRating(focusContact, 1);  
-    };
-    document.getElementById('decrement_button').onclick = () => {
-        updateRating(focusContact, -1);  
-    };
+    if(contact.id !== fillerContact.id){
+        document.getElementById('increment_button').disabled = false;
+        document.getElementById('decrement_button').disabled = false;
+        document.getElementById('increment_button').onclick = () => {
+            updateRating(focusContact, 1);  
+        };
+        document.getElementById('decrement_button').onclick = () => {
+            updateRating(focusContact, -1);  
+        };
+    }
+    else{
+        document.getElementById('increment_button').disabled = true;
+        document.getElementById('decrement_button').disabled = true;
+    }
 }  
 
 function alienImage(contact) { //function to assign example images to image pane
