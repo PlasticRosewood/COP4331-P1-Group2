@@ -358,7 +358,6 @@ body{
 }
 
 #new_contact_submit, #update_contact_submit {
-    display: none; /* this is changed in the JavaScript */
     text-align: center;
     place-items: center;
 }

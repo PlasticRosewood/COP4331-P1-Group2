@@ -182,6 +182,9 @@ document.getElementById('form_close_button').addEventListener('click', hideNewCo
 var form = document.getElementById('new_contact_form');
 function handleForm(event) { event.preventDefault(); } 
 form.addEventListener('submit', handleForm);
+form.addEventListener('keypress', (event) => {
+    if (event.key == 'Enter') event.preventDefault();
+});
 
 // submit button reads and sends data to server
 var createContactButton = document.getElementById('new_contact_submit'); // submits the form
