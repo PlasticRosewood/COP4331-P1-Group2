@@ -1,0 +1,766 @@
+@charset "UTF-8";
+
+/* global */
+
+/* create global variables here */
+:root { 
+    --std_border_radius: 10px;
+    --std_drop_shadow: 8px 8px 15px #b2afaf;
+    --citro_blue: #B4D1F7;
+    --off_white: #FAF9F6;
+}
+body{
+    background-image: url(../images/hdbg.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    /* backup color */
+    background-color: rgba(0, 0, 0, 0.95);
+}
+/* Joshua was here */
+
+/* create global properties here */
+* {
+    font-family: sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+.submit_button {
+    padding: 10px;
+    margin: 5px;
+    color: #fff;
+    font-size: large;;
+    background: linear-gradient(180deg, #77a9ea 0%, #5899ee 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+}
+.submit_button:hover {
+    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    cursor: pointer;
+}
+
+.edit_button {
+    padding: 10px;
+    margin: 5px;
+    color: #fff;
+    font-size: large;
+    background: linear-gradient(180deg, #07cd6a 0%, #07c044 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+    width: 140px;
+    
+}
+.edit_button:hover {
+    background: linear-gradient(180deg, #00cc66 0%, #02af3c 100%);
+    cursor: pointer;
+}
+
+.delete_button {
+    padding: 10px;
+    margin: 5px;
+    color: #fff;
+    font-size: large;
+    background: linear-gradient(180deg, #ec403a 0%, #ca1919 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+    width: 140px;
+}
+.delete_button:hover {
+    background: linear-gradient(180deg, #ED0800 0%, #ba0c0c 100%);
+    cursor: pointer;
+}
+
+/* end of global */
+
+
+/* header */
+#nav_bar {
+    /* grid properties*/
+    width: 100vw;
+    min-width: 500px;
+    display: grid;
+    /* min max keeps it clean when window gets smaller */
+    grid-template-columns: minmax(100px, 30%) minmax(300px, 40%) minmax(100px, 30%); 
+
+    /* other styling properties */
+    background-color: var(--citro_blue); /* Citronaut Blue */
+
+}
+
+#title_text {
+    /* grid properties */
+    grid-column: 2;
+    place-self: center;
+
+    /* other styling properties */
+    padding: 20px;
+}
+
+#sign_out {
+    /* grid properties */
+    grid-column: 3;
+    justify-self: right;
+    align-self: center;
+
+    /* other styling properties */
+    margin: 0 20px;
+    padding: 8px;
+    color: #fff;
+    background: linear-gradient(180deg, #77a9ea 0%, #5899ee 100%);
+    border: 0;
+    border-radius: var(--std_border_radius);
+}
+
+#sign_out:hover {
+    background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
+    cursor: pointer;
+}
+/* end of header */
+
+
+/* content grid */
+#content {
+    /* grid properties */
+    width: 100vw;
+    display: grid;
+    grid-template-columns: [margin1]10% [list_box]35%  [details_box]45% [margin3]10%;
+    /* other styling properties */
+    height: 80vh;
+    max-height: 80vh;
+    margin-top: 20px;
+    min-height: 400px;
+}
+
+/* styles both containers */
+#content > div {
+    width: 100%;
+    /* max-height: 100%; */
+    height: 100%;
+    place-self: center;
+    background-color: var(--off_white);
+    overflow: hidden;
+    min-height: 400px;
+}
+
+#contacts_list_container {
+    /* grid properties */
+    grid-column: list_box;
+    display: grid;
+    grid-template-rows: [search_bar] 14% [contact_cards] 66% [new_contacts_btn] 20%;
+
+    /* other styling properties */
+    border-top-left-radius: var(--std_border_radius);
+    border-bottom-left-radius: var(--std_border_radius);
+    
+}
+
+#search_row {
+    /* grid properties */
+    place-self: center;
+    display: grid;
+    grid-template-rows: 40% 60%;
+    row-gap: 5px;
+
+    /* other styling properties */
+    margin: 13px;
+    height: 90%;
+    width: 90%;
+}
+
+#search_row > label {
+    /* grid properties */
+    align-self: end;
+    justify-self: left;
+}
+
+#search_bar {
+    /* other styling proeprties */
+    border-radius: var(--std_border_radius);
+    padding: 10px;
+    font-size: 16px;
+}
+
+#dynamic_contacts_list {
+    /* grid properties */
+    grid-row: contact_cards;
+    
+    /* other styling properties */
+    padding: 5px;
+    margin: 8px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+#dynamic_contacts_list > li {
+    padding: 15px;
+    margin: 10px;
+    list-style-type: none;
+    border-radius: var(--std_border_radius);
+    box-shadow: 3px 3px 5px #cccbc9;
+    background-color: #ffffff;   
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+#dynamic_contacts_list > li:hover, #dynamic_contacts_list > li:focus {
+    transform: scale(1.02);
+    box-shadow: 5px 5px 6px #cccbc9;
+    cursor: pointer;
+}
+
+#new_contact_button {
+    /* grid properties */
+    grid-row: new_contacts_btn;
+    place-self: center;
+
+    /* other styling properties */
+    width: 50%;
+    height: 60%;
+}
+/* end of dynamic contacts list */
+
+/* details pane properties */
+#details_pane {
+    /* grid properties */
+    grid-column: details_box;
+    display: grid;
+    grid-template-rows: [contact_image]minmax(160px, 30%) [contact_name]minmax(40px, 15%) [contact_info]minmax(40px, 15%) [number_control]minmax(85px, 25%) [option_buttons]minmax(70px, 15%);
+    border-top-right-radius: var(--std_border_radius);
+    border-bottom-right-radius: var(--std_border_radius);
+}
+
+
+#contact_image {
+    grid-row: contact_image;
+    border-radius: 50%; /* Optional: make image circular */
+    justify-self: center; /* Center the image horizontally */
+    align-self: center;
+}
+#contact_name {
+    grid-row: contact_name;
+    align-self: center;
+    justify-self: center;
+}
+#contact_details {
+    grid-row: contact_info;
+    padding: 30px;
+    align-self: center;
+    justify-self: center;
+    font-size: 20px;
+}
+
+#option_buttons {
+    grid-row: option_buttons;
+    justify-self: center;
+    align-self: center;
+}
+
+#number_control{
+    grid-row: number_control;
+    align-self: center;
+    justify-self: center; 
+}
+#number_display{
+    font-size:80px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+#decrement_button{
+    height:80px;
+    width:80px;
+    border-radius:50%;
+    font-size:70px;
+}
+#increment_button {
+    height:80px;
+    width:80px;
+    font-size:70px;
+    border-radius:50%;
+}
+/* end of content grid */
+
+/* fast search toggle button */
+#fast_search {
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+    position: fixed;
+    padding: 10px 5px 10px 5px;
+    bottom: 10px;
+    left: 10px;
+}
+
+/* grow animation for pop-up windows */
+@keyframes grow {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* new contact form */
+#new_contact_container, #void_Container {
+    /* popup settings */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transform-origin: center;
+    width: 400px;
+    height: 500px;
+    z-index: 9;
+    animation: grow 0.2s ease forwards;
+    text-align: center; 
+    /* grid properties */
+    display: none; /* this is changed to 'grid' in the JavaScript */
+    grid-template-rows: 100%;
+
+    /* other styling properties */
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+}
+
+#form_close_button, #acc_opt_close_button {
+    position: absolute;
+    user-select: none;
+    top: 20px;
+    right: 30px;
+}
+
+#form_close_button:hover, #acc_opt_close_button:hover {
+    color: gray;
+}
+
+#new_contact_form {
+    /* grid properties */
+    grid-row: 1;
+    place-self: center;
+    place-content: center; 
+    display: grid;
+    grid-template-rows: [label1] 9% [input1] 15% [label2] 9% [input2] 15% [label3] 9% [input3] 15% [submit] 18%;
+
+    /* other styling properties */
+    padding: 20px;
+    width: 80%;
+    height: 80%;
+}
+
+#new_contact_form > label {
+    align-self: end;
+}
+
+#new_contact_form > input {
+    padding: 10px;
+    margin: 8px;
+    border-radius: var(--std_border_radius);
+    border: 1px solid #ddd;
+}
+
+#new_contact_submit, #update_contact_submit {
+    text-align: center;
+    place-items: center;
+}
+
+/* end of new contact form */
+
+/* delete confirmation pop-up */
+#delete_confirmation {
+    /* popup settings */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0); 
+    transform-origin: center;
+    width: 450px;
+    height: 300px;
+    padding: 20px;
+    z-index: 9;
+    animation: grow 0.2s ease forwards;
+    text-align: center;
+
+    /* grid properties */
+    display: none; /* this is changed to 'grid' in the JavaScript */
+    grid-template-rows: 30% 15% 55%;
+    place-items: center;
+
+    /* other styling properties */
+    background-color: var(--off_white);
+    border-radius: var(--std_border_radius);
+}
+/* void buttons and container styling prop */
+#void_Container {
+    height: auto; 
+    padding: 20px;
+}
+
+.void_popup p {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.void_buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.void_click.cancel {
+    width: 120px;
+    padding: 15px 20px;
+    font-size: 16px;
+    border-radius: 50px;
+    background: linear-gradient(to right, red, rgb(158, 14, 224));
+    color: white;
+    border: 2px solid red;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.void_click.cancel:hover {
+    background: linear-gradient(to right, rgb(158, 14, 224), red);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 13rem;
+    height: 3rem;
+    background-size: 300% 300%;
+    backdrop-filter: blur(1rem);
+    border-radius: 5rem;
+    transition: 0.5s;
+    animation: gradient_301 5s ease infinite;
+    border: double 4px transparent;
+    background-image: linear-gradient(#212121, #212121),  linear-gradient(137.48deg, #ffdb3b 10%,#FE53BB 45%, #8F51EA 67%, #0044ff 87%);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+#container-stars {
+    position: fixed;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transition: 0.5s;
+    backdrop-filter: blur(1rem);
+    border-radius: 5rem;
+}
+strong {
+    z-index: 2;
+    font-family: 'Avalors Personal Use';
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #FFFFFF;
+    text-shadow: 0 0 4px white;
+}
+#glow {
+    position: absolute;
+    display: flex;
+    width: 12rem;
+}
+.circle {
+    width: 100%;
+    height: 30px;
+    filter: blur(2rem);
+    animation: pulse_3011 4s infinite;
+    z-index: -1;
+}
+.circle:nth-of-type(1) {
+    background: rgba(254, 83, 186, 0.636);
+}
+  
+.circle:nth-of-type(2) {
+    background: rgba(142, 81, 234, 0.704);
+}
+  
+.btn:hover #container-stars {
+    z-index: 1;
+    background-color: #212121;
+}
+  
+.btn:hover {
+    transform: scale(1.1)
+}
+  
+.btn:active {
+    border: double 4px #FE53BB;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    animation: none;
+}
+  
+.btn:active .circle {
+background: #FE53BB;
+}
+#stars {
+    position: relative;
+    background: transparent;
+    width: 200rem;
+    height: 200rem;
+}
+  
+#stars::after {
+    content: "";
+    position: absolute;
+    top: -10rem;
+    left: -100rem;
+    width: 100%;
+    height: 100%;
+    animation: animStarRotate 90s linear infinite;
+}
+#stars::after {
+    background-image: radial-gradient(#ffffff 1px, transparent 1%);
+    background-size: 50px 50px;
+}
+  #stars::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 170%;
+    height: 500%;
+    animation: animStar 60s linear infinite;
+}
+#stars::before {
+    background-image: radial-gradient(#ffffff 1px, transparent 1%);
+    background-size: 50px 50px;
+    opacity: 0.5;
+}
+/* animation for stars in void btn */
+@keyframes animStar {
+    from {
+      transform: translateY(0);
+    }
+  
+    to {
+      transform: translateY(-135rem);
+    }
+}
+@keyframes animStarRotate {
+    from {
+      transform: rotate(360deg);
+    }
+  
+    to {
+      transform: rotate(80);
+    }
+}
+@keyframes gradient_301 {
+    0% {
+      background-position: 0% 50%;
+    }
+  
+    50% {
+      background-position: 100% 50%;
+    }
+  
+    100% {
+      background-position: 0% 50%;
+    }
+}
+@keyframes pulse_3011 {
+    0% {
+      transform: scale(0.75);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+    }
+  
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+    }
+  
+    100% {
+      transform: scale(0.75);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+    }
+}
+
+/* end of delete confirmation pop-up */
+
+/* gray out div used for pop-up forms */
+#gray_out {
+    display: none; /* this is changed in the JavaScript */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 8;
+}
+
+/* For tablets and smaller windows */
+@media (max-width: 800px) {
+    #content{
+        grid-template-columns: [margin1]2% [list_box]minmax(250px, 45%)  [details_box]minmax(200px, 51%) [margin3]2%;
+    }
+
+    #number_display{
+        padding-right: 3px;
+        padding-left: 3px;
+    }
+}
+
+/* For phones */
+@media (max-width: 520px) {
+    #nav_bar {
+        grid-template-columns: 10% 75% 15%; 
+        min-width: 300px;
+    }
+    
+    #sign_out {    
+        /* other styling properties */
+        margin: 10px; 
+        padding: 10px;
+    }    
+    
+    /* content grid */
+    #content {
+        /* grid properties */
+        grid-template-columns: [margin1]2% [content_column]96% [margin3]2%;
+        grid-template-rows: [margin1]5%  [details_box]40% [list_box]55%;
+        min-height: 650px;
+    }
+    
+    /* styles both containers */
+    #content > div {
+        width: 100%;
+        /* max-height: 100%; */
+        height: 100%;
+        background-color: var(--off_white);
+        overflow: hidden;
+        min-height: 250px;
+    }
+    
+    #contacts_list_container {
+        /* grid properties */
+        grid-column: content_column;
+        grid-row: list_box;
+        display: grid;
+        grid-template-rows: [search_bar] 19% [contact_cards] 66% [new_contacts_btn] 15%;
+    
+        /* other styling properties */
+        border-bottom-right-radius: var(--std_border_radius);
+        border-bottom-left-radius: var(--std_border_radius);
+        border-top-left-radius: 0;
+        
+    }
+    
+    #new_contact_button {
+        /* other styling properties */
+        width: 50%;
+        height: 90%;
+    }
+    /* end of dynamic contacts list */
+    
+    /* details pane properties */
+    #details_pane {
+        /* grid properties */
+        grid-column: content_column;
+        grid-row: details_box;
+        display: grid;
+        grid-template-rows: [image_and_name]40% [contact_info]15% [number_control]25% [option_buttons]20%;
+        grid-template-columns: 33% 67%;
+        grid-template-areas: 
+            "contact_image contact_name"
+            "contact_info contact_info"
+            "number_control number_control"
+            "option_buttons option_buttons";
+        border-top-right-radius: var(--std_border_radius);
+        border-top-left-radius: var(--std_border_radius);
+        border-bottom-right-radius: 0;
+    }
+
+     #contact_details {
+        grid-area: contact_info;
+        padding: 10px;
+        align-self: center;
+        justify-self: center;
+        font-size: 20px;
+    } 
+
+    #contact_image {
+        width: 100px;
+        height: 100px;
+        justify-self: left;
+        padding: 15px;
+        grid-area: contact_image;
+    }    
+    
+    #contact_name {
+        justify-self: left;
+        grid-area: contact_name;
+    }
+    
+    #number_control{
+        grid-area: number_control;
+    }
+
+    #number_display{
+        font-size: 45px;
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    #decrement_button{
+        height:50px;
+        width:50px;
+        font-size:40px;
+    }
+    #increment_button{
+        height:50px;
+        width:50px;
+        font-size:40px;
+    } 
+
+    #option_buttons {
+        grid-area: option_buttons;
+    }
+}
+
+/* screen shaking animation */
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+/* goodbye details pane */
+@keyframes voidEffect {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(0.5); opacity: 0.5; }
+    100% { transform: scale(0); opacity: 0; }
+}
+/*void effect for the details pane */
+#details_pane.voiding {
+    animation: shake 2s ease, voidEffect 2s ease 2s forwards;
+    pointer-events: none;
+    position: relative;
+    z-index: 9999;
+}
+/* hiding details pane until deletion */
+#details_pane.hidden {
+    visibility: hidden;
+    height: 0;
+    padding: 0;
+    margin: 0;
+}
+#details_pane #voidScreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
+    z-index: 9999;
+    animation: fadeToBlack 4s ease 2s forwards; 
+}

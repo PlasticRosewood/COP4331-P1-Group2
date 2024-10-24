@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/scripts.js" defer></script>
+    <script src="js/auth.js" defer></script>
+    <link rel="stylesheet" href="stylesheets/global.css">
+    <link rel="icon" href="images/TempLogo.jpg">
+    <title>Give Me Space</title>
+</head>
+<body>
+    <!-- This is the title bar of the website with settings etc. in it -->
+    <div id="nav_bar">
+        <h1 id="title_text">Give Me Space</h1>
+        <p id="sign_out" class="submit_button">Sign Out</p>
+    </div>
+
+    <!-- This contains the contacts list and the expanded contact box (see figma for reference) -->
+    <div id="content">
+
+        <div id="contacts_list_container">
+            <div id="search_row">
+                <label for="search_bar">Search:</label>
+                <input type="text" id="search_bar" name="search_bar" placeholder="Search for a contact...">
+            </div>
+            <ul id="dynamic_contacts_list">
+
+            </ul>
+            <button id="new_contact_button" class="submit_button">New Contact</button>
+        </div>
+
+        <div id="details_pane">
+          <img id="contact_image" src="images/placeholder.jpg" alt="Contact Image">
+          <h2 id="contact_name">Contact Name</h2>
+          <div id="contact_details">
+              <p id="contact_email">Choose a contact to get started.</p>
+          </div>
+          <div id="number_control">
+              <button id="decrement_button" class="number_button">-</button>
+              <span id="number_display">3</span>
+              <button id="increment_button" class="number_button">+</button>
+          </div>
+          <div id="option_buttons">
+              <button id="edit_contact_button" class="edit_button">Edit Contact</button>
+              <button id="delete_contact_button" class="delete_button">Delete Contact</button>
+          </div>
+      </div>
+    </div>
+
+    <div id="fast_search">
+        <label for="fast_search_toggle">Enable Fast Search</label>
+        <input type="checkbox" id="fast_search_toggle" name="fast_search_toggle">
+    </div>
+    
+    <div id="new_contact_container" class="popup_window">
+        <h3 id="form_close_button">x</h3>
+        <form id="new_contact_form">
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" autocomplete="given-name" name="fname" placeholder="John">
+
+            <label for="lname">Last Name:</label>
+            <input type="text" id="lname" autocomplete="family-name" name="lname" placeholder="Doe">
+
+            <label for="email">Email Address:</label>
+            <input type="text" id="email" autocomplete="email" name="email" placeholder="user@website.tld">
+            
+            <button class="submit_button" id="new_contact_submit">Create</button> <!--Only one of these will be visible at a time-->      
+            <button class="submit_button" id="update_contact_submit">Update</button>    
+    </form> 
+    </div> 
+
+    <div id="delete_confirmation" class="popup_window">
+        <h1 id="warning_text">You are about to delete all information for </h1> <!--appnd name w/ javascript-->
+        <h3 id="delete_text">Are you sure you want to do this?</h3>
+        <div id="delete_confirmation_buttons">
+            <button id="reject_delete" class="submit_button">No, keep contact</button>
+            <button id="confirm_delete" class="delete_button">Yes, delete contact</button>
+        </div>
+    </div>
+
+     <!--popup container for rating getting too low-->
+     <div id="void_Container" class="popup_window" style="display:none;">
+        <div class="void_popup">
+            <p>Do you want space from: <span id="contactName"></span>?</p>
+            <div class="void_buttons">
+                <button id="cancelSpace" class="void_click cancel">Cancel</button>
+                <button id="voidContact" class="btn void">
+                    <strong>Void</strong>
+                    <div id="container-stars">
+                        <div id="stars"></div>
+                    </div>
+                    <div id="glow">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>    
+    
+    
+     <div id="gray_out"></div>
+</body>
+</html>

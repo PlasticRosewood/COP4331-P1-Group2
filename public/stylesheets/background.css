@@ -1,0 +1,59 @@
+/* Defines a keyframe animation for the stars*/
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+/* Generates mutliple box-shadow values for stars */
+.star-layers {
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+  position: relative;
+}
+.star-layers .star-layer {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+}
+.star-layers .star-layer::after {
+  content: " ";
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+}
+.star-layers #stars {
+  box-shadow: multiple-box-shadow(700);
+  animation: animStar 50s linear infinite;
+}
+.star-layers #stars::after {
+  box-shadow: multiple-box-shadow(700);
+}
+.star-layers #stars2 {
+  width: 2px;
+  height: 2px;
+  box-shadow: multiple-box-shadow(200);
+  animation: animStar 100s linear infinite;
+}
+.star-layers #stars2::after {
+  width: 2px;
+  height: 2px;
+  box-shadow: multiple-box-shadow(200);
+}
+.star-layers #stars3 {
+  width: 3px;
+  height: 3px;
+  box-shadow: multiple-box-shadow(100);
+  animation: animStar 150s linear infinite;
+}
+.star-layers #stars3::after {
+  width: 3px;
+  height: 3px;
+  box-shadow: multiple-box-shadow(100);
+}/*# sourceMappingURL=background.css.map */

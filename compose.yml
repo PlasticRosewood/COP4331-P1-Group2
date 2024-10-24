@@ -1,0 +1,38 @@
+# Copyright Broadcom, Inc. All Rights Reserved.
+# SPDX-License-Identifier: APACHE-2.0
+
+services:
+  mariadb:
+    build: ./db
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASS}
+      MARIADB_ROOT_PASSWORD: ${DB_PASS}
+    volumes:
+      - 'mariadb_data:/bitnami'
+    ports:
+      - "3306:3306"
+    networks:
+      - givemespace
+  apache:
+    build:
+      context: .
+      dockerfile: ./apache/Dockerfile
+    container_name: lamp-apache
+    volumes:
+      - ./:/var/www/html
+      - ./apache/default-host.conf:/etc/apache2/sites-available/000-default.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+    networks:
+      - givemespace
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  givemespace:
+    attachable: true

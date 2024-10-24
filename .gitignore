@@ -1,0 +1,4 @@
+/vendor/
+.env
+js_struct.js
+public/js/temp

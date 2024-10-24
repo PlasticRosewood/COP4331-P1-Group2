@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/login.js" defer></script>
+    <link rel="stylesheet" href="stylesheets/login.css">
+    <title>Give Me Space</title>
+</head>
+<body>
+    <div class="container">
+        <!-- This is the left area of the screen, with the website and description-->
+        <div class="login_panel">
+            <form id="login_form">
+                <h4 class="options">Existing Users</h4> 
+                <input type = "text" id="username_field" placeholder = "Username">
+                <input type = "password" id="password_field" placeholder = "Password"> 
+                <button onclick="userLogin()" type = "submit">Login</button> 
+                <div class="line"></div> 
+                <h4 class="options">New to Give Me Space?</h4> 
+                <button onclick="createAccount()" class="create_account">Create New Account</button> 
+            </form>
+        </div>
+
+        <!-- This is the left area of the screen-->
+        <div class="site_info">
+            <h2 id="site_start">Give Me</h2>
+            <h1 id="site_fin">Space</h1> <br />
+            <p>Stay close to those who matter, and keep space from those who don't.</p>
+        </div>
+    </div>
+
+    <!-- The starry background -->
+    <div class = "background">
+        <div class="star-layers">
+            <div class="star-layer" id="stars"></div>
+            <div class="star-layer" id="stars2"></div>
+            <div class="star-layer" id="stars3"></div>
+        </div>
+    </div>
+
+</body>
+</html>
